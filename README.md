@@ -17,3 +17,8 @@ Parkrr is an innovative parking management software designed to streamline the p
    - Integrated editor allowing administrators to create, modify, and manage parking spaces directly within the application.
    - Drag-and-drop functionality for easy layout adjustments and the ability to switch between 3D and 2D editing modes.
    - Save and load custom parking lot layouts to adapt to different venues and events.
+  
+**Prototype Screenshot**
+![image](https://github.com/saphalpdyl/Parkrr/assets/69297872/2e12ebd6-b137-41c0-8248-653197b70caa)
+![image](https://github.com/saphalpdyl/Parkrr/assets/69297872/f2304a00-9288-4110-83c8-f5e37193f368)
+![image](https://github.com/saphalpdyl/Parkrr/assets/69297872/70592844-95f2-476a-b419-1aa613603c08)
