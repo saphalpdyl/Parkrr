@@ -1,5 +1,11 @@
 import type { ParkingSpaceType, WorldObject } from "../../../types/parking";
 
+export interface ItemSize {
+  height: number;
+  width: number;
+  color: string;
+}
+
 export type ParkingItemCategory = "entrance" | "exit" | "space" | "office";
 
 export type EditorItem = Partial<WorldObject> & {
@@ -12,7 +18,7 @@ export type EditorItem = Partial<WorldObject> & {
 
 export interface Position {
   x: number;
-  y: number;
+  z: number;
 }
 
 export interface DraggableItemProps {

@@ -31,7 +31,7 @@ export interface ParkingFloor {
   spaces: ParkingSpaces[];
   entrances?: OtherObject[];
   exits?: OtherObject[];
-  Office?: OtherObject[];
+  offices?: OtherObject[];
 }
 
 export interface ParkingLot {

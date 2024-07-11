@@ -1,37 +1,7 @@
-import type { DraggableItemProps, ParkingItemCategory } from "../types";
+import type { DraggableItemProps } from "../types";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-
-interface ItemSize {
-  height: number;
-  width: number;
-  color: string;
-}
-
-const SIZE_FACTOR = 20;
-
-const itemSizes : Record<ParkingItemCategory, ItemSize> = {
-  "space" : {
-    height: 3,
-    width: 5,
-    color: "#ffffff"
-  },
-  "entrance" : {
-    height: 1,
-    width: 3,
-    color: "#ffa500"
-  },
-  "exit" : {
-    height: 1,
-    width: 3,
-    color: "#03c04a"
-  },
-  "office" : {
-    height: 5,
-    width: 5,
-    color: "#fff0"
-  }
-}
+import { itemSizes, SIZE_FACTOR } from "../constants";
 
 const DraggableItem: React.FC<DraggableItemProps> = ({
   item,
@@ -59,7 +29,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
       style={{
         transform: CSS.Translate.toString(transform),
         left: position.x,
-        top: position.y,
+        top: position.z,
         height: `${itemSizes[item.category].height * SIZE_FACTOR}px`,
         width: `${itemSizes[item.category].width * SIZE_FACTOR}px`,
         backgroundColor: itemSizes[item.category].color,

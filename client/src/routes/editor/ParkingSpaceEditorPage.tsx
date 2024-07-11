@@ -11,20 +11,33 @@ import {
   createSnapModifier,
   restrictToParentElement,
 } from "@dnd-kit/modifiers";
-import type { Position, EditorItem } from "./types";
+import type { EditorItem } from "./types";
 import DraggableItem from "./components/DraggableItem";
 import EditorSidebar from "./components/EditorSidebar";
 import BackgroundGrid from "./components/BackgroundGrid";
+import { Organization, OtherObject, ParkingSpace } from "../../types/parking";
+import { itemSizes } from "./constants";
 
 const DragAndDropPage = () => {
   const [items, setItems] = useState<EditorItem[]>([
-    { category: "space", id: Math.random().toString(36).slice(2), spaceType: "standard"},
-    { category: "space", id: Math.random().toString(36).slice(2), spaceType: "standard"},
-    { category: "space", id: Math.random().toString(36).slice(2), spaceType: "standard"},
-    { category: "exit", id: Math.random().toString(36).slice(2)},
-    { category: "entrance", id: Math.random().toString(36).slice(2)},
-    { category: "office", id: Math.random().toString(36).slice(2)},
-    
+    {
+      category: "space",
+      id: Math.random().toString(36).slice(2),
+      spaceType: "standard",
+    },
+    {
+      category: "space",
+      id: Math.random().toString(36).slice(2),
+      spaceType: "standard",
+    },
+    {
+      category: "space",
+      id: Math.random().toString(36).slice(2),
+      spaceType: "standard",
+    },
+    { category: "exit", id: Math.random().toString(36).slice(2) },
+    { category: "entrance", id: Math.random().toString(36).slice(2) },
+    { category: "office", id: Math.random().toString(36).slice(2) },
   ]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [collidingId, setCollidingId] = useState<string | null>(null);
@@ -36,16 +49,21 @@ const DragAndDropPage = () => {
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, delta } = event;
 
-    setItems(prev => {
-      return prev.map(item => item.id === active.id ? {
-        ...item,
-        position: {
-          x: ( item.position?.x || 0 )+ delta.x,
-          y: ( item.position?.y || 0 ) + delta.y,
-          z: 0,
-        }
-      } : item )
-    })
+    setItems((prev) => {
+      return prev.map((item) =>
+        item.id === active.id
+          ? {
+              ...item,
+              position: {
+                // Y is the axis pointing out of the screen for Three.js
+                x: (item.position?.x || 0) + delta.x,
+                z: (item.position?.y || 0) + delta.y,
+                y: 0,
+              },
+            }
+          : item,
+      );
+    });
 
     setActiveId(null);
     setCollidingId(null);
@@ -63,9 +81,74 @@ const DragAndDropPage = () => {
   const gridSize = 20;
   const gridSnapModifier = createSnapModifier(gridSize);
 
+  function handleSave() {
+    const org: Organization = {
+      name: "Saphal Parking Pvt. Ltd.",
+      lots: [
+        {
+          floors: [
+            {
+              floorPrefix: "A",
+              spaces: items
+                .filter((item) => item.category === "space")
+                .map<ParkingSpace>((item) => ({
+                  ...item,
+                  type: "standard",
+                  position: item.position ? {x: item?.position?.x / 20, y: 0, z: item?.position?.z / 20} : { x: 0, y: 0, z: 0 } ,
+                  rotation: { x: 0, y: 0, z: 0 },
+                  occupied: false,
+                })),
+              entrances: items
+                .filter((item) => item.category === "entrance")
+                .map<OtherObject>((item) => ({
+                  id: item.id,
+                  position: item?.position || { x: 0, y: 0, z: 0 },
+                  rotation: { x: 0, y: 0, z: 0 },
+                  color: itemSizes["entrance"].color,
+                  args: [
+                    itemSizes["entrance"].height,
+                    0.1,
+                    itemSizes["entrance"].width,
+                  ],
+                })),
+              exits: items
+                .filter((item) => item.category === "exit")
+                .map<OtherObject>((item) => ({
+                  id: item.id,
+                  position: item?.position || { x: 0, y: 0, z: 0 },
+                  rotation: { x: 0, y: 0, z: 0 },
+                  color: itemSizes["exit"].color,
+                  args: [
+                    itemSizes["exit"].height,
+                    0.1,
+                    itemSizes["exit"].width,
+                  ],
+                })),
+              offices: items
+                .filter((item) => item.category === "office")
+                .map<OtherObject>((item) => ({
+                  id: item.id,
+                  position: item?.position || { x: 0, y: 0, z: 0 },
+                  rotation: { x: 0, y: 0, z: 0 },
+                  color: itemSizes["office"].color,
+                  args: [
+                    itemSizes["office"].height,
+                    0.1,
+                    itemSizes["office"].width,
+                  ],
+                })),
+            },
+          ],
+        },
+      ],
+    };
+
+    console.log(org.lots[0].floors);
+  }
+
   return (
     <div className="relative flex h-screen w-screen items-center overflow-hidden">
-      <EditorSidebar />
+      <EditorSidebar onSave={handleSave} />
       <BackgroundGrid gridSize={gridSize} />
       <DndContext
         onDragStart={handleDragStart}
@@ -79,7 +162,10 @@ const DragAndDropPage = () => {
             <DraggableItem
               key={item.id}
               item={item}
-              position={items.filter(currentItem => currentItem.id === item.id)[0]?.position || {x: 0, y: 0}}
+              position={
+                items.filter((currentItem) => currentItem.id === item.id)[0]
+                  ?.position || { x: 0, z: 0 }
+              }
               isColliding={item.id === collidingId}
               hide={item.id === activeId}
             />

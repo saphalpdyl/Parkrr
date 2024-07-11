@@ -15,6 +15,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@react-spring/three": "^9.7.3",
     "@react-three/fiber": "^8.16.8",
+    "lucide-react": "^0.407.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.24.1",
