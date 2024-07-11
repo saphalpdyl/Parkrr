@@ -19,11 +19,12 @@ export interface OtherObject extends WorldObject {
   args: [number, number, number];
 }
 
+export type ParkingSpaceType = "standard" | "handicap" | "vip" | "electric";
+
 export interface ParkingSpace extends WorldObject {
   occupied: boolean;
-  type: String;
+  type: ParkingSpaceType;
 }
-
 
 export interface ParkingFloor {
   floorPrefix: String;

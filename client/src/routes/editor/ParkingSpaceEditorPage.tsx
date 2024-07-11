@@ -11,16 +11,16 @@ import {
   createSnapModifier,
   restrictToParentElement,
 } from "@dnd-kit/modifiers";
-import type { Position, Item } from "./types";
+import type { Position, EditorItem } from "./types";
 import DraggableItem from "./components/DraggableItem";
 import EditorSidebar from "./components/EditorSidebar";
 import BackgroundGrid from "./components/BackgroundGrid";
 
 const DragAndDropPage = () => {
-  const [items] = useState<Item[]>([
-    { id: "1", content: "Item 1" },
-    { id: "2", content: "Item 2" },
-    { id: "3", content: "Item 3" },
+  const [items] = useState<EditorItem[]>([
+    { category: "space", id: Math.random().toString(36).slice(2), spaceType: "standard"},
+    { category: "space", id: Math.random().toString(36).slice(2), spaceType: "standard"},
+    { category: "space", id: Math.random().toString(36).slice(2), spaceType: "standard"},
   ]);
   const [positions, setPositions] = useState<Record<string, Position>>({});
   const [activeId, setActiveId] = useState<string | null>(null);

@@ -1,7 +1,12 @@
-export interface Item {
+import type { ParkingSpaceType, WorldObject } from "../../../types/parking";
+
+export type EditorItem = Partial<WorldObject> & {
   id: string;
-  content: string;
-}
+  category: "entrance" | "exit" | "space" | "office";
+} & (
+  | { category: "entrance" | "exit" | "office" }
+  | { category: "space"; spaceType: ParkingSpaceType }
+);
 
 export interface Position {
   x: number;
@@ -9,7 +14,7 @@ export interface Position {
 }
 
 export interface DraggableItemProps {
-  item: Item;
+  item: EditorItem;
   position: Position;
   isColliding: boolean;
   hide ?: boolean;

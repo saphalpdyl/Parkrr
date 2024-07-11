@@ -33,7 +33,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
       {...listeners}
       {...attributes}
     >
-      {item.content}
+      {item.category === "space" ? item.spaceType : item.category}
     </div>
   );
 };
