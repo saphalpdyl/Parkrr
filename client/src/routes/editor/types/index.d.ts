@@ -26,4 +26,5 @@ export interface DraggableItemProps {
   position: Position;
   isColliding: boolean;
   hide ?: boolean;
+  onClick(event: React.MouseEvent<HTMLElement>) : void;
 }

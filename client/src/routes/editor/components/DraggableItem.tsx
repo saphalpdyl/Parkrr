@@ -8,6 +8,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
   position,
   isColliding,
   hide = false,
+  onClick,
 }) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: item.id,
@@ -24,8 +25,9 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
 
   return (
     <div
+      onClick={onClick}
       ref={ref}
-      className={`absolute ${isColliding ? "bg-green-500/40" : "" } cursor-move rounded-md p-2 shadow-md transition-colors ${hide ? "opacity-0" : "opacity-100"} z-20 flex items-center justify-center capitalize font-semibold text-xs ${item.category === "office" ? "border-2 border-gray-500 border-dashed shadow-none" : "" } `}
+      className={`absolute ${isColliding ? "bg-green-500/40" : ""} cursor-move rounded-md p-2 shadow-md transition-colors ${hide ? "opacity-0" : "opacity-100"} z-20 flex items-center justify-center text-xs font-semibold capitalize ${item.category === "office" ? "border-2 border-dashed border-gray-500 shadow-none" : ""} `}
       style={{
         transform: CSS.Translate.toString(transform),
         left: position.x,
