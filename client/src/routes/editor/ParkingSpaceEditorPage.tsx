@@ -4,7 +4,6 @@ import {
   DragEndEvent,
   DragStartEvent,
   DragOverlay,
-  defaultDropAnimationSideEffects,
   rectIntersection,
 } from "@dnd-kit/core";
 
@@ -30,7 +29,7 @@ const DragAndDropPage = () => {
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
-    const { active, delta, collisions } = event;
+    const { active, delta } = event;
 
     setPositions((prev) => ({
       ...prev,
@@ -57,7 +56,27 @@ const DragAndDropPage = () => {
 
   return (
     <div className="relative flex h-screen w-screen items-center overflow-hidden">
-      <div className="fixed left-0 z-10 h-1/2 w-16 bg-rose-500"></div>
+      <div className="fixed left-0 z-20 h-1/2 w-16 rounded-e-xl bg-gray-100 shadow-md transition-all hover:w-24"></div>
+      <div className="pointer-events-none absolute left-0 top-0 z-10 h-screen w-screen bg-[#f0f0f0]">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern
+              id="grid"
+              width={gridSize}
+              height={gridSize}
+              patternUnits="userSpaceOnUse"
+            >
+              <path
+                d={`M ${gridSize} 0 L 0 0 0 ${gridSize}`}
+                fill="none"
+                stroke="#6662"
+                strokeWidth="1"
+              />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+      </div>
       <DndContext
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
@@ -65,35 +84,7 @@ const DragAndDropPage = () => {
         collisionDetection={rectIntersection}
         modifiers={[gridSnapModifier, restrictToParentElement]}
       >
-        <div
-          style={{
-            height: "100%",
-            width: "calc(100% - 5rem)",
-            padding: "1rem",
-            backgroundColor: "#f0f0f0",
-            position: "relative",
-          }}
-        >
-          <div className="absolute left-0 top-0 h-screen w-screen">
-            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <pattern
-                  id="grid"
-                  width={gridSize}
-                  height={gridSize}
-                  patternUnits="userSpaceOnUse"
-                >
-                  <path
-                    d={`M ${gridSize} 0 L 0 0 0 ${gridSize}`}
-                    fill="none"
-                    stroke="#6662"
-                    strokeWidth="1"
-                  />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#grid)" />
-            </svg>
-          </div>
+        <div className="relative ms-20 h-full w-[calc(100%-5rem)] bg-transparent p-4">
           {items.map((item) => (
             <DraggableItem
               key={item.id}
@@ -103,28 +94,9 @@ const DragAndDropPage = () => {
               hide={item.id === activeId}
             />
           ))}
-          <DragOverlay
-            dropAnimation={{
-              sideEffects: defaultDropAnimationSideEffects({
-                styles: {
-                  active: {
-                    opacity: "0.5",
-                  },
-                },
-              }),
-            }}
-          >
+          <DragOverlay>
             {activeId ? (
-              <div
-                className="h-full"
-                style={{
-                  border: "3px solid #3b82f6",
-                  color: "white",
-                  padding: "0.5rem",
-                  borderRadius: "0.25rem",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                }}
-              ></div>
+              <div className="h-full rounded-md border-2 border-[#3b82f6] p-2 text-white shadow-sm"></div>
             ) : null}
           </DragOverlay>
         </div>
