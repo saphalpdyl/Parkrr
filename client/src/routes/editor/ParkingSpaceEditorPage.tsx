@@ -20,7 +20,6 @@ import EditorSidebar from "./components/EditorSidebar";
 import BackgroundGrid from "./components/BackgroundGrid";
 import { Organization, OtherObject, ParkingSpace } from "../../types/parking";
 import { itemSizes, SIZE_FACTOR } from "./constants";
-import IncrementButton from "../../components/IncrementButton";
 import EditorContextMenu from "./components/EditorContextMenu";
 
 const ParkingEditorPage = () => {
@@ -171,7 +170,11 @@ const ParkingEditorPage = () => {
         modifiers={[gridSnapModifier, restrictToParentElement]}
         sensors={sensors}
       >
-        <div className="relative ms-20 h-full w-[calc(100%-5rem)] bg-transparent p-4">
+        <div onClick={(e) => {
+          if ( e.currentTarget === e.target ) 
+            setSelectedItem(null);
+          
+        }} className="relative ms-20 h-full w-[calc(100%-5rem)] bg-transparent p-4">
           {selectedItem && (
             <EditorContextMenu
               selectedItem={selectedItem}
