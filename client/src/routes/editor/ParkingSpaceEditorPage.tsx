@@ -8,7 +8,10 @@ import {
   rectIntersection,
 } from "@dnd-kit/core";
 
-import { createSnapModifier, restrictToParentElement } from "@dnd-kit/modifiers";
+import {
+  createSnapModifier,
+  restrictToParentElement,
+} from "@dnd-kit/modifiers";
 import type { Position, Item } from "./types";
 import DraggableItem from "./components/DraggableItem";
 
@@ -53,8 +56,8 @@ const DragAndDropPage = () => {
   const gridSnapModifier = createSnapModifier(gridSize);
 
   return (
-    <div className="h-screen w-screen overflow-hidden">
-      <div className="h-10 w-full bg-rose-500 left-0 top-0"></div>
+    <div className="relative flex h-screen w-screen items-center overflow-hidden">
+      <div className="fixed left-0 z-10 h-1/2 w-16 bg-rose-500"></div>
       <DndContext
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
@@ -64,14 +67,14 @@ const DragAndDropPage = () => {
       >
         <div
           style={{
-            height: "calc(100% - 2.5rem)",
-            width: "100vw",
+            height: "100%",
+            width: "calc(100% - 5rem)",
             padding: "1rem",
             backgroundColor: "#f0f0f0",
             position: "relative",
           }}
         >
-          <div className="h-screen w-screen absolute top-0 left-0">
+          <div className="absolute left-0 top-0 h-screen w-screen">
             <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <pattern
@@ -126,7 +129,6 @@ const DragAndDropPage = () => {
           </DragOverlay>
         </div>
       </DndContext>
-
     </div>
   );
 };
