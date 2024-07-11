@@ -17,7 +17,7 @@ import EditorSidebar from "./components/EditorSidebar";
 import BackgroundGrid from "./components/BackgroundGrid";
 
 const DragAndDropPage = () => {
-  const [items] = useState<EditorItem[]>([
+  const [items, setItems] = useState<EditorItem[]>([
     { category: "space", id: Math.random().toString(36).slice(2), spaceType: "standard"},
     { category: "space", id: Math.random().toString(36).slice(2), spaceType: "standard"},
     { category: "space", id: Math.random().toString(36).slice(2), spaceType: "standard"},
@@ -26,7 +26,6 @@ const DragAndDropPage = () => {
     { category: "office", id: Math.random().toString(36).slice(2)},
     
   ]);
-  const [positions, setPositions] = useState<Record<string, Position>>({});
   const [activeId, setActiveId] = useState<string | null>(null);
   const [collidingId, setCollidingId] = useState<string | null>(null);
 
@@ -37,13 +36,17 @@ const DragAndDropPage = () => {
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, delta } = event;
 
-    setPositions((prev) => ({
-      ...prev,
-      [active.id]: {
-        x: (prev[active.id]?.x || 0) + delta.x,
-        y: (prev[active.id]?.y || 0) + delta.y,
-      },
-    }));
+    setItems(prev => {
+      return prev.map(item => item.id === active.id ? {
+        ...item,
+        position: {
+          x: ( item.position?.x || 0 )+ delta.x,
+          y: ( item.position?.y || 0 ) + delta.y,
+          z: 0,
+        }
+      } : item )
+    })
+
     setActiveId(null);
     setCollidingId(null);
   };
@@ -76,7 +79,7 @@ const DragAndDropPage = () => {
             <DraggableItem
               key={item.id}
               item={item}
-              position={positions[item.id] || { x: 0, y: 0 }}
+              position={items.filter(currentItem => currentItem.id === item.id)[0]?.position || {x: 0, y: 0}}
               isColliding={item.id === collidingId}
               hide={item.id === activeId}
             />
