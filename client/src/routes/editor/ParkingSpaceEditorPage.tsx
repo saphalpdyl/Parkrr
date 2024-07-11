@@ -58,7 +58,7 @@ const DragAndDropPage = () => {
                 // Y is the axis pointing out of the screen for Three.js
                 x: (item.position?.x || 0) + delta.x,
                 y: 0,
-                z: (item.position?.y || 0) + delta.y,
+                z: (item.position?.z || 0) + delta.y,
               },
             }
           : item,
