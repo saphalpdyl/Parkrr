@@ -21,6 +21,10 @@ const DragAndDropPage = () => {
     { category: "space", id: Math.random().toString(36).slice(2), spaceType: "standard"},
     { category: "space", id: Math.random().toString(36).slice(2), spaceType: "standard"},
     { category: "space", id: Math.random().toString(36).slice(2), spaceType: "standard"},
+    { category: "exit", id: Math.random().toString(36).slice(2)},
+    { category: "entrance", id: Math.random().toString(36).slice(2)},
+    { category: "office", id: Math.random().toString(36).slice(2)},
+    
   ]);
   const [positions, setPositions] = useState<Record<string, Position>>({});
   const [activeId, setActiveId] = useState<string | null>(null);
