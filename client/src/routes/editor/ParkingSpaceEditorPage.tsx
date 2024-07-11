@@ -11,12 +11,12 @@ import {
   createSnapModifier,
   restrictToParentElement,
 } from "@dnd-kit/modifiers";
-import type { EditorItem } from "./types";
+import type { EditorItem, ParkingItemCategory } from "./types";
 import DraggableItem from "./components/DraggableItem";
 import EditorSidebar from "./components/EditorSidebar";
 import BackgroundGrid from "./components/BackgroundGrid";
 import { Organization, OtherObject, ParkingSpace } from "../../types/parking";
-import { itemSizes } from "./constants";
+import { itemSizes, SIZE_FACTOR } from "./constants";
 
 const DragAndDropPage = () => {
   const [items, setItems] = useState<EditorItem[]>([
@@ -57,8 +57,8 @@ const DragAndDropPage = () => {
               position: {
                 // Y is the axis pointing out of the screen for Three.js
                 x: (item.position?.x || 0) + delta.x,
-                z: (item.position?.y || 0) + delta.y,
                 y: 0,
+                z: (item.position?.y || 0) + delta.y,
               },
             }
           : item,
@@ -82,6 +82,27 @@ const DragAndDropPage = () => {
   const gridSnapModifier = createSnapModifier(gridSize);
 
   function handleSave() {
+    function _generateCompatibleDataForOtherObjects(
+      items: EditorItem[],
+      category: ParkingItemCategory,
+    ) {
+      return items
+        .filter((item) => item.category === category)
+        .map<OtherObject>((item) => ({
+          id: item.id,
+          position: item.position
+            ? {
+                x: item?.position?.x / SIZE_FACTOR,
+                y: 0,
+                z: item?.position?.z / SIZE_FACTOR,
+              }
+            : { x: 0, y: 0, z: 0 },
+          rotation: { x: 0, y: 0, z: 0 },
+          color: itemSizes[category].color,
+          args: [itemSizes[category].height, 0.1, itemSizes[category].width],
+        }));
+    }
+
     const org: Organization = {
       name: "Saphal Parking Pvt. Ltd.",
       lots: [
@@ -94,49 +115,22 @@ const DragAndDropPage = () => {
                 .map<ParkingSpace>((item) => ({
                   ...item,
                   type: "standard",
-                  position: item.position ? {x: item?.position?.x / 20, y: 0, z: item?.position?.z / 20} : { x: 0, y: 0, z: 0 } ,
+                  position: item.position
+                    ? {
+                        x: item?.position?.x / 20,
+                        y: 0,
+                        z: item?.position?.z / 20,
+                      }
+                    : { x: 0, y: 0, z: 0 },
                   rotation: { x: 0, y: 0, z: 0 },
                   occupied: false,
                 })),
-              entrances: items
-                .filter((item) => item.category === "entrance")
-                .map<OtherObject>((item) => ({
-                  id: item.id,
-                  position: item?.position || { x: 0, y: 0, z: 0 },
-                  rotation: { x: 0, y: 0, z: 0 },
-                  color: itemSizes["entrance"].color,
-                  args: [
-                    itemSizes["entrance"].height,
-                    0.1,
-                    itemSizes["entrance"].width,
-                  ],
-                })),
-              exits: items
-                .filter((item) => item.category === "exit")
-                .map<OtherObject>((item) => ({
-                  id: item.id,
-                  position: item?.position || { x: 0, y: 0, z: 0 },
-                  rotation: { x: 0, y: 0, z: 0 },
-                  color: itemSizes["exit"].color,
-                  args: [
-                    itemSizes["exit"].height,
-                    0.1,
-                    itemSizes["exit"].width,
-                  ],
-                })),
-              offices: items
-                .filter((item) => item.category === "office")
-                .map<OtherObject>((item) => ({
-                  id: item.id,
-                  position: item?.position || { x: 0, y: 0, z: 0 },
-                  rotation: { x: 0, y: 0, z: 0 },
-                  color: itemSizes["office"].color,
-                  args: [
-                    itemSizes["office"].height,
-                    0.1,
-                    itemSizes["office"].width,
-                  ],
-                })),
+              entrances: _generateCompatibleDataForOtherObjects(
+                items,
+                "entrance",
+              ),
+              exits: _generateCompatibleDataForOtherObjects(items, "exit"),
+              offices: _generateCompatibleDataForOtherObjects(items, "office"),
             },
           ],
         },
@@ -144,6 +138,7 @@ const DragAndDropPage = () => {
     };
 
     console.log(org.lots[0].floors);
+    // TODO: Save to database and/or LocalStorage
   }
 
   return (
