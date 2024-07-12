@@ -22,6 +22,7 @@ import { Organization, OtherObject, ParkingSpace } from "../../types/parking";
 import { itemSizes, SIZE_FACTOR } from "./constants";
 import EditorContextMenu from "./components/EditorContextMenu";
 import OriginItem from "./components/OriginItem";
+import Logo from "../../components/Logo";
 
 const ParkingEditorPage = () => {
   const [items, setItems] = useState<EditorItem[]>([
@@ -176,6 +177,11 @@ const ParkingEditorPage = () => {
     <div className="relative flex h-screen w-screen items-center overflow-hidden">
       <EditorSidebar onSave={handleSave} />
       <BackgroundGrid gridSize={gridSize} />
+
+      {/* Parkrr logo on the top right */}
+      <div className="absolute top-3 left-3 z-40 opacity-70">
+        <Logo />
+      </div>
       <DndContext
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
