@@ -122,14 +122,14 @@ const ParkingEditorPage = () => {
           id: item.id,
           position: item.position
             ? {
-                x: (item?.position?.x - originPosition.x) / SIZE_FACTOR,
+                x: ((item?.position?.x - originPosition.x) / SIZE_FACTOR) + (itemSizes[category].width / 2),
                 y: 0,
-                z: (item?.position?.z - originPosition.z) / SIZE_FACTOR,
+                z: (item?.position?.z - originPosition.z) / SIZE_FACTOR + (itemSizes[category].height / 2),
               }
             : { x: 0, y: 0, z: 0 },
           rotation: { x: 0, y: 0, z: 0 },
           color: itemSizes[category].color,
-          args: [itemSizes[category].height, 0.1, itemSizes[category].width],
+          args: [itemSizes[category].width, 0.1, itemSizes[category].height],
         }));
     }
 
@@ -147,13 +147,14 @@ const ParkingEditorPage = () => {
                   type: "standard",
                   position: item.position
                     ? {
-                        x: (item?.position?.x - originPosition.x) / SIZE_FACTOR,
+                        x: ((item?.position?.x - originPosition.x) / SIZE_FACTOR) + (itemSizes["space"].width / 2),
                         y: 0,
-                        z: (item?.position?.z - originPosition.z) / SIZE_FACTOR,
+                        z: ((item?.position?.z - originPosition.z) / SIZE_FACTOR) + (itemSizes["space"].height / 2),
                       }
                     : { x: 0, y: 0, z: 0 },
                   rotation: { x: 0, y: 0, z: 0 },
                   occupied: false,
+                  args: [itemSizes["space"].width, 0.1, itemSizes["space"].height],
                 })),
               entrances: _generateCompatibleDataForOtherObjects(
                 items,

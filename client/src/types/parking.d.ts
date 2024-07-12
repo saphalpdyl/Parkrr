@@ -12,11 +12,11 @@ interface WorldObject {
   };
 
   id : String;
+  args: [number, number, number];
 }
 
 export interface OtherObject extends WorldObject {
   color: String;
-  args: [number, number, number];
 }
 
 export type ParkingSpaceType = "standard" | "handicap" | "vip" | "electric";
