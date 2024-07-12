@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   DndContext,
   DragEndEvent,
@@ -51,10 +51,7 @@ const ParkingEditorPage = () => {
     clickPosition: Position;
   } | null>(null);
   const [collidingId, setCollidingId] = useState<string | null>(null);
-  const [originPosition, setOriginPosition] = useState<Position>({
-    x: 200,
-    z: 200,
-  });
+  const [originPosition, setOriginPosition] = useState<Position | null>(null);
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
@@ -66,8 +63,8 @@ const ParkingEditorPage = () => {
 
     if ( active.id === "origin" ) {
       setOriginPosition(prev => ({
-        x: prev.x + delta.x,
-        z: prev.z + delta.y,
+        x: (prev?.x ?? 0) + delta.x,
+        z: (prev?.z ?? 0) + delta.y,
       }));
       return;
     }
@@ -123,9 +120,9 @@ const ParkingEditorPage = () => {
           id: item.id,
           position: item.position
             ? {
-                x: ((item?.position?.x - originPosition.x) / SIZE_FACTOR) + (itemSizes[category].width / 2),
+                x: ((item?.position?.x - (originPosition?.x ?? 0)) / SIZE_FACTOR) + (itemSizes[category].width / 2),
                 y: 0,
-                z: (item?.position?.z - originPosition.z) / SIZE_FACTOR + (itemSizes[category].height / 2),
+                z: (item?.position?.z - (originPosition?.z ?? 0)) / SIZE_FACTOR + (itemSizes[category].height / 2),
               }
             : { x: 0, y: 0, z: 0 },
           rotation: { x: 0, y: 0, z: 0 },
@@ -148,9 +145,9 @@ const ParkingEditorPage = () => {
                   type: "standard",
                   position: item.position
                     ? {
-                        x: ((item?.position?.x - originPosition.x) / SIZE_FACTOR) + (itemSizes["space"].width / 2),
+                        x: ((item?.position?.x - (originPosition?.x ?? 0)) / SIZE_FACTOR) + (itemSizes["space"].width / 2),
                         y: 0,
-                        z: ((item?.position?.z - originPosition.z) / SIZE_FACTOR) + (itemSizes["space"].height / 2),
+                        z: ((item?.position?.z - (originPosition?.z ?? 0)) / SIZE_FACTOR) + (itemSizes["space"].height / 2),
                       }
                     : { x: 0, y: 0, z: 0 },
                   rotation: { x: 0, y: 0, z: 0 },
@@ -173,6 +170,20 @@ const ParkingEditorPage = () => {
     // TODO: Save to database and/or LocalStorage
   }
 
+  const dndContextRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    if (dndContextRef.current) {
+      const { width, height } = dndContextRef.current.getBoundingClientRect();
+  
+      // Calculate center position
+      const centerX = Math.round((width / 2) / SIZE_FACTOR) * SIZE_FACTOR;
+      const centerZ = Math.round((height / 2) / SIZE_FACTOR) * SIZE_FACTOR;
+  
+      setOriginPosition({ x: centerX, z: centerZ });
+    }
+  }, []);
+
   return (
     <div className="relative flex h-screen w-screen items-center overflow-hidden">
       <EditorSidebar onSave={handleSave} />
@@ -190,7 +201,9 @@ const ParkingEditorPage = () => {
         modifiers={[gridSnapModifier, restrictToParentElement]}
         sensors={sensors}
       >
-        <div onClick={(e) => {
+        <div 
+          ref={dndContextRef}
+          onClick={(e) => {
           if ( e.currentTarget === e.target ) 
             setSelectedItem(null);
           
@@ -202,7 +215,9 @@ const ParkingEditorPage = () => {
               setItems={setItems}
             />
           )}
-          <OriginItem position={originPosition} />
+          {
+            originPosition && <OriginItem position={originPosition} />
+          }
           {items.map((item) => (
             <DraggableItem
               key={item.id}
