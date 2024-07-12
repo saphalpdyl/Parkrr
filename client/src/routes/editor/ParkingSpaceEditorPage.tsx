@@ -171,8 +171,8 @@ const ParkingEditorPage = () => {
   }
 
   const dndContextRef = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => {
+
+  function _handleCenterOrigin() {
     if (dndContextRef.current) {
       const { width, height } = dndContextRef.current.getBoundingClientRect();
   
@@ -181,7 +181,11 @@ const ParkingEditorPage = () => {
       const centerZ = Math.round((height / 2) / SIZE_FACTOR) * SIZE_FACTOR;
   
       setOriginPosition({ x: centerX, z: centerZ });
-    }
+    } 
+  }
+  
+  useEffect(() => {
+   _handleCenterOrigin(); 
   }, []);
 
   return (
