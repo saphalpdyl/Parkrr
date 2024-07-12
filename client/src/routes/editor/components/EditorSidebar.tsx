@@ -8,7 +8,7 @@ const EditorSidebar = ({
   onSave,
 }: EditorSidebarProps) => {
   return (
-    <div className="fixed left-0 z-20 h-1/2 w-16 rounded-e-xl bg-gray-100 shadow-md transition-all hover:w-24 border-e-2 border-y-2 border-slate-600 flex flex-col items-center py-3">
+    <div className="fixed left-0 z-20 h-1/4 w-16 rounded-e-xl bg-gray-100 shadow-md border-e-2 border-y-2 border-slate-600 flex flex-col items-center py-3">
       <div className="flex flex-col gap-1 items-center">
         <div 
           onClick={onSave}
