@@ -1,7 +1,15 @@
-import type { DraggableItemProps } from "../types";
+import type { EditorItem, Position } from "../types";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { itemSizes, SIZE_FACTOR } from "../constants";
+
+export interface DraggableItemProps {
+  item: EditorItem;
+  position: Position;
+  isColliding: boolean;
+  hide ?: boolean;
+  onClick(event: React.MouseEvent<HTMLElement>) : void;
+}
 
 const DraggableItem: React.FC<DraggableItemProps> = ({
   item,

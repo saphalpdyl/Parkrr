@@ -21,10 +21,3 @@ export interface Position {
   z: number;
 }
 
-export interface DraggableItemProps {
-  item: EditorItem;
-  position: Position;
-  isColliding: boolean;
-  hide ?: boolean;
-  onClick(event: React.MouseEvent<HTMLElement>) : void;
-}

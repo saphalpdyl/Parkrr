@@ -21,6 +21,7 @@ import BackgroundGrid from "./components/BackgroundGrid";
 import { Organization, OtherObject, ParkingSpace } from "../../types/parking";
 import { itemSizes, SIZE_FACTOR } from "./constants";
 import EditorContextMenu from "./components/EditorContextMenu";
+import OriginItem from "./components/OriginItem";
 
 const ParkingEditorPage = () => {
   const [items, setItems] = useState<EditorItem[]>([
@@ -49,6 +50,10 @@ const ParkingEditorPage = () => {
     clickPosition: Position;
   } | null>(null);
   const [collidingId, setCollidingId] = useState<string | null>(null);
+  const [originPosition, setOriginPosition] = useState<Position>({
+    x: 200,
+    z: 200,
+  });
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
@@ -57,6 +62,14 @@ const ParkingEditorPage = () => {
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, delta } = event;
+
+    if ( active.id === "origin" ) {
+      setOriginPosition(prev => ({
+        x: prev.x + delta.x,
+        z: prev.z + delta.y,
+      }));
+      return;
+    }
 
     setItems((prev) => {
       return prev.map((item) =>
@@ -109,9 +122,9 @@ const ParkingEditorPage = () => {
           id: item.id,
           position: item.position
             ? {
-                x: item?.position?.x / SIZE_FACTOR,
+                x: (item?.position?.x - originPosition.x) / SIZE_FACTOR,
                 y: 0,
-                z: item?.position?.z / SIZE_FACTOR,
+                z: (item?.position?.z - originPosition.z) / SIZE_FACTOR,
               }
             : { x: 0, y: 0, z: 0 },
           rotation: { x: 0, y: 0, z: 0 },
@@ -134,9 +147,9 @@ const ParkingEditorPage = () => {
                   type: "standard",
                   position: item.position
                     ? {
-                        x: item?.position?.x / 20,
+                        x: (item?.position?.x - originPosition.x) / SIZE_FACTOR,
                         y: 0,
-                        z: item?.position?.z / 20,
+                        z: (item?.position?.z - originPosition.z) / SIZE_FACTOR,
                       }
                     : { x: 0, y: 0, z: 0 },
                   rotation: { x: 0, y: 0, z: 0 },
@@ -182,6 +195,7 @@ const ParkingEditorPage = () => {
               setItems={setItems}
             />
           )}
+          <OriginItem position={originPosition} />
           {items.map((item) => (
             <DraggableItem
               key={item.id}
