@@ -15,11 +15,15 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@react-spring/three": "^9.7.3",
     "@react-three/fiber": "^8.16.8",
+    "lucide-react": "^0.407.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.24.1",
     "react-spring": "^9.7.3",
-    "three": "^0.166.1"
+    "tailwind-merge": "^2.4.0",
+    "three": "^0.166.1",
+    "zustand": "^4.5.4",
+    "zustymiddleware": "^1.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
@@ -32,6 +36,8 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
     "postcss": "^8.4.39",
+    "prettier": "^3.3.2",
+    "prettier-plugin-tailwindcss": "^0.6.5",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.2.2",
     "vite": "^5.3.1"

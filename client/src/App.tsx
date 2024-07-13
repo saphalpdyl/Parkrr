@@ -1,13 +1,12 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { DndContext } from "@dnd-kit/core";
 
-import ParkingSpaceEditorPage from "./routes/ParkingSpaceEditorPage";
+import ParkingSpaceEditorPage from "./routes/editor/ParkingSpaceEditorPage";
 
 const App = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <div>Hello World</div>,
+      element: <div>Renderer</div>,
     },
     {
       path: "/editor",

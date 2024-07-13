@@ -12,25 +12,26 @@ interface WorldObject {
   };
 
   id : String;
+  args: [number, number, number];
 }
 
 export interface OtherObject extends WorldObject {
   color: String;
-  args: [number, number, number];
 }
+
+export type ParkingSpaceType = "standard" | "handicap" | "vip" | "electric";
 
 export interface ParkingSpace extends WorldObject {
   occupied: boolean;
-  type: String;
+  type: ParkingSpaceType;
 }
-
 
 export interface ParkingFloor {
   floorPrefix: String;
   spaces: ParkingSpaces[];
   entrances?: OtherObject[];
   exits?: OtherObject[];
-  Office?: OtherObject[];
+  offices?: OtherObject[];
 }
 
 export interface ParkingLot {
