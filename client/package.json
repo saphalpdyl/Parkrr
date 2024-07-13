@@ -21,7 +21,9 @@
     "react-router-dom": "^6.24.1",
     "react-spring": "^9.7.3",
     "tailwind-merge": "^2.4.0",
-    "three": "^0.166.1"
+    "three": "^0.166.1",
+    "zustand": "^4.5.4",
+    "zustymiddleware": "^1.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

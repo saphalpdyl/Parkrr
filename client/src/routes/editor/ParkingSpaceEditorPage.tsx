@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import {
   DndContext,
   DragEndEvent,
@@ -14,7 +14,7 @@ import {
   createSnapModifier,
   restrictToParentElement,
 } from "@dnd-kit/modifiers";
-import type { EditorItem, ParkingItemCategory, Position } from "./types";
+import type { EditorItem, ParkingItemCategory } from "./types";
 import DraggableItem from "./components/DraggableItem";
 import EditorSidebar from "./components/EditorSidebar";
 import BackgroundGrid from "./components/BackgroundGrid";
@@ -23,35 +23,24 @@ import { itemSizes, SIZE_FACTOR } from "./constants";
 import EditorContextMenu from "./components/EditorContextMenu";
 import OriginItem from "./components/OriginItem";
 import Logo from "../../components/Logo";
+import { useEditorStore } from "../../stores/editorState";
 
 const ParkingEditorPage = () => {
-  const [items, setItems] = useState<EditorItem[]>([
-    {
-      category: "space",
-      id: Math.random().toString(36).slice(2),
-      spaceType: "standard",
-    },
-    {
-      category: "space",
-      id: Math.random().toString(36).slice(2),
-      spaceType: "standard",
-    },
-    {
-      category: "space",
-      id: Math.random().toString(36).slice(2),
-      spaceType: "standard",
-    },
-    { category: "exit", id: Math.random().toString(36).slice(2) },
-    { category: "entrance", id: Math.random().toString(36).slice(2) },
-    { category: "office", id: Math.random().toString(36).slice(2) },
-  ]);
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const [selectedItem, setSelectedItem] = useState<{
-    item: EditorItem;
-    clickPosition: Position;
-  } | null>(null);
-  const [collidingId, setCollidingId] = useState<string | null>(null);
-  const [originPosition, setOriginPosition] = useState<Position | null>(null);
+  const {
+    items,
+    activeId,
+    selectedItem,
+    collidingId,
+    originPosition,
+    setItems,
+    setActiveId,
+    setSelectedItem,
+    setCollidingId,
+    setOriginPosition,
+  } = useEditorStore();
+
+  console.log(useEditorStore());
+
 
   const handleDragStart = (event: DragStartEvent) => {
     setActiveId(event.active.id as string);
@@ -62,15 +51,15 @@ const ParkingEditorPage = () => {
     const { active, delta } = event;
 
     if ( active.id === "origin" ) {
-      setOriginPosition(prev => ({
-        x: (prev?.x ?? 0) + delta.x,
-        z: (prev?.z ?? 0) + delta.y,
+      setOriginPosition(({
+        x: (originPosition?.x ?? 0) + delta.x,
+        z: (originPosition?.z ?? 0) + delta.y,
       }));
       return;
     }
 
-    setItems((prev) => {
-      return prev.map((item) =>
+    setItems([
+      ...items.map((item) =>
         item.id === active.id
           ? {
               ...item,
@@ -82,8 +71,8 @@ const ParkingEditorPage = () => {
               },
             }
           : item,
-      );
-    });
+      )
+    ]);
 
     setActiveId(null);
     setCollidingId(null);
@@ -228,7 +217,7 @@ const ParkingEditorPage = () => {
           {
             originPosition && <OriginItem position={originPosition} />
           }
-          {items.map((item) => (
+          {Array.isArray(items) && items.map((item) => (
             <DraggableItem
               key={item.id}
               item={item}
