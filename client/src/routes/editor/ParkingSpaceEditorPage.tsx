@@ -23,6 +23,7 @@ import { itemSizes, SIZE_FACTOR } from "./constants";
 import EditorContextMenu from "./components/EditorContextMenu";
 import OriginItem from "./components/OriginItem";
 import Logo from "../../components/Logo";
+import { Save } from "lucide-react";
 
 const ParkingEditorPage = () => {
   const [items, setItems] = useState<EditorItem[]>([
@@ -172,7 +173,7 @@ const ParkingEditorPage = () => {
 
   const dndContextRef = useRef<HTMLDivElement>(null);
 
-  function _handleCenterOrigin() {
+  function handleCenterOrigin() {
     if (dndContextRef.current) {
       const { width, height } = dndContextRef.current.getBoundingClientRect();
   
@@ -185,12 +186,18 @@ const ParkingEditorPage = () => {
   }
   
   useEffect(() => {
-   _handleCenterOrigin(); 
+   handleCenterOrigin(); 
   }, []);
+
+  function handleClearCanvas() {
+    setItems([]);
+  }
+
+  // TODO: Migrate to zustand as the state management solution
 
   return (
     <div className="relative flex h-screen w-screen items-center overflow-hidden">
-      <EditorSidebar onSave={handleSave} />
+      <EditorSidebar onSave={handleSave} onCenterOrigin={handleCenterOrigin} onClearCanvas={handleClearCanvas} />
       <BackgroundGrid gridSize={gridSize} />
 
       {/* Parkrr logo on the top right */}

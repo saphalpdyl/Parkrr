@@ -1,22 +1,28 @@
-import { Save } from "lucide-react";
+import { CircleDotDashed, Eraser, Save } from "lucide-react";
+import EditorSidebarButton from "./EditorSidebarButton";
 
 type EditorSidebarProps = {
-  onSave: () => void;
+  onSave(): void;
+  onClearCanvas() : void;
+  onCenterOrigin() : void;
 };
 
-const EditorSidebar = ({
-  onSave,
-}: EditorSidebarProps) => {
+const EditorSidebar = ({ onSave, onCenterOrigin, onClearCanvas }: EditorSidebarProps) => {
   return (
-    <div className="fixed left-0 z-20 h-1/4 w-16 rounded-e-xl bg-gray-100 shadow-md border-e-2 border-y-2 border-slate-600 flex flex-col items-center py-3">
-      <div className="flex flex-col gap-1 items-center">
-        <div 
-          onClick={onSave}
-          className="p-2 rounded-lg bg-blue-500 cursor-pointer hover:bg-blue-600">
-          <Save className="text-white" />
-        </div>
-        <span className="font-light text-xs">Save</span>
-      </div>
+    <div className="fixed left-0 z-20 flex h-2/7 w-16 flex-col gap-2 items-center rounded-e-xl border-y-2 border-e-2 border-slate-600 bg-gray-100 py-3 shadow-md">
+      <EditorSidebarButton onClick={onSave} icon={Save} title="Save" />
+      <EditorSidebarButton
+        onClick={onClearCanvas}
+        icon={Eraser}
+        title="Clear"
+        className="bg-rose-500 hover:bg-rose-600"
+      />
+      <EditorSidebarButton
+        onClick={onCenterOrigin}
+        icon={CircleDotDashed}
+        title="Center Origin"
+        className="bg-gray-500 hover:bg-gray-600"
+      />
     </div>
   );
 };
