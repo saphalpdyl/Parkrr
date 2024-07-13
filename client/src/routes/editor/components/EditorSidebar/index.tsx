@@ -1,6 +1,6 @@
 import { CircleDotDashed, Eraser, Save } from "lucide-react";
 import EditorSidebarButton from "./EditorSidebarButton";
-import { useEditorStore } from "../../../stores/editorState";
+import { useEditorStore } from "../../../../stores/editorState";
 
 type EditorSidebarProps = {
   onSave(): void;
