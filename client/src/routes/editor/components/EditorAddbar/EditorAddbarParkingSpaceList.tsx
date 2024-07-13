@@ -33,6 +33,7 @@ function EditorAddbarParkingSpaceList() {
     <>
       {bottomNavigationBarParkingSpaces.map((item) => (
         <EditorAddbarItem 
+          key={item.spaceType}
           onClick={() => {
             addNewItem({
               category: "space",
