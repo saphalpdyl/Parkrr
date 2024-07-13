@@ -23,7 +23,6 @@ import { itemSizes, SIZE_FACTOR } from "./constants";
 import EditorContextMenu from "./components/EditorContextMenu";
 import OriginItem from "./components/OriginItem";
 import Logo from "../../components/Logo";
-import { Save } from "lucide-react";
 
 const ParkingEditorPage = () => {
   const [items, setItems] = useState<EditorItem[]>([
