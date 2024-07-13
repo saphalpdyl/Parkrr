@@ -1,17 +1,11 @@
 import { useEffect } from "react";
 import {
   DndContext,
-  DragEndEvent,
-  DragStartEvent,
   DragOverlay,
   rectIntersection,
-  useSensors,
-  useSensor,
-  PointerSensor,
 } from "@dnd-kit/core";
 
 import {
-  createSnapModifier,
   restrictToParentElement,
 } from "@dnd-kit/modifiers";
 import type { EditorItem, ParkingItemCategory } from "./types";
@@ -25,6 +19,7 @@ import OriginItem from "./components/OriginItem";
 import Logo from "../../components/Logo";
 import { useEditorStore } from "../../stores/editorState";
 import { useOrigin } from "../../hooks/useOrigin";
+import { useDragDrop } from "../../hooks/useDragDrop";
 
 const ParkingEditorPage = () => {
   const {
@@ -35,62 +30,12 @@ const ParkingEditorPage = () => {
     originPosition,
     setItems,
     deleteAllItems,
-    updateItemPosition,
-    setActiveId,
     setSelectedItem,
-    setCollidingId,
-    setOriginPosition,
   } = useEditorStore();
 
   const {handleCenterOrigin, dndContextRef} = useOrigin();
+  const {handleDragEnd, handleDragMove, handleDragStart, gridSnapModifier, sensors} = useDragDrop();
 
-
-  const handleDragStart = (event: DragStartEvent) => {
-    setActiveId(event.active.id as string);
-    setSelectedItem(null);
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, delta } = event;
-
-    if ( active.id === "origin" ) {
-      setOriginPosition(({
-        x: (originPosition?.x ?? 0) + delta.x,
-        z: (originPosition?.z ?? 0) + delta.y,
-      }));
-      return;
-    }
-
-    updateItemPosition(active.id.toString(), (item) => ({
-      // Y is the axis pointing out of the screen for Three.js
-      x: (item.position?.x || 0) + delta.x,
-      y: 0,
-      z: (item.position?.z || 0) + delta.y,
-    }));
-
-    setActiveId(null);
-    setCollidingId(null);
-  };
-
-  const handleDragMove = (event: any) => {
-    const { collisions } = event;
-    if (collisions && collisions.length > 0) {
-      setCollidingId(collisions[0].id);
-    } else {
-      setCollidingId(null);
-    }
-  };
-
-  const gridSize = 20;
-  const gridSnapModifier = createSnapModifier(gridSize);
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    }),
-  );
 
   function handleSave() {
     function _generateCompatibleDataForOtherObjects(
@@ -166,7 +111,7 @@ const ParkingEditorPage = () => {
   return (
     <div className="relative flex h-screen w-screen items-center overflow-hidden">
       <EditorSidebar onSave={handleSave} onCenterOrigin={handleCenterOrigin} onClearCanvas={handleClearCanvas} />
-      <BackgroundGrid gridSize={gridSize} />
+      <BackgroundGrid gridSize={SIZE_FACTOR} />
 
       {/* Parkrr logo on the top right */}
       <div className="absolute top-3 left-3 z-40 opacity-70">
@@ -174,7 +119,7 @@ const ParkingEditorPage = () => {
       </div>
       <DndContext
         onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
+        onDragEnd={(event) => handleDragEnd(event, originPosition ?? {x:0, z:0})}
         onDragMove={handleDragMove}
         collisionDetection={rectIntersection}
         modifiers={[gridSnapModifier, restrictToParentElement]}
