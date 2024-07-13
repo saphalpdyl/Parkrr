@@ -1,3 +1,4 @@
+import { useEditorStore } from "../../../../stores/editorState";
 import { ParkingSpaceType } from "../../../../types/parking";
 import EditorAddbarItem from "./EditorAddbarItem";
 
@@ -26,10 +27,22 @@ const bottomNavigationBarParkingSpaces: {
 ];
 
 function EditorAddbarParkingSpaceList() {
+  const { addNewItem, originPosition } = useEditorStore();
+  
   return (
     <>
       {bottomNavigationBarParkingSpaces.map((item) => (
-        <EditorAddbarItem title={item.spaceType}>
+        <EditorAddbarItem 
+          onClick={() => {
+            addNewItem({
+              category: "space",
+              spaceType: item.spaceType,
+              position: {...originPosition!, y: 0},
+              id: Math.random().toString(36).slice(2),
+            })
+          }}
+          title={item.spaceType}
+        >
           <div
             style={{
               backgroundColor: item.color,
