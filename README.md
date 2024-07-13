@@ -1,3 +1,8 @@
+<p align="center">
+   <img style="margin: auto;" src="https://github.com/user-attachments/assets/f46bde88-f13b-4be4-9775-66ce1c00915e" />
+</p>
+
+
 ## Parkrr: Advanced Parking Management Software
 
 **Overview:**
