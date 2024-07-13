@@ -33,13 +33,13 @@ const ParkingEditorPage = () => {
     collidingId,
     originPosition,
     setItems,
+    deleteAllItems,
+    updateItemPosition,
     setActiveId,
     setSelectedItem,
     setCollidingId,
     setOriginPosition,
   } = useEditorStore();
-
-  console.log(useEditorStore());
 
 
   const handleDragStart = (event: DragStartEvent) => {
@@ -58,21 +58,12 @@ const ParkingEditorPage = () => {
       return;
     }
 
-    setItems([
-      ...items.map((item) =>
-        item.id === active.id
-          ? {
-              ...item,
-              position: {
-                // Y is the axis pointing out of the screen for Three.js
-                x: (item.position?.x || 0) + delta.x,
-                y: 0,
-                z: (item.position?.z || 0) + delta.y,
-              },
-            }
-          : item,
-      )
-    ]);
+    updateItemPosition(active.id.toString(), (item) => ({
+      // Y is the axis pointing out of the screen for Three.js
+      x: (item.position?.x || 0) + delta.x,
+      y: 0,
+      z: (item.position?.z || 0) + delta.y,
+    }));
 
     setActiveId(null);
     setCollidingId(null);
@@ -178,7 +169,7 @@ const ParkingEditorPage = () => {
   }, []);
 
   function handleClearCanvas() {
-    setItems([]);
+    deleteAllItems();
   }
 
   // TODO: Migrate to zustand as the state management solution
