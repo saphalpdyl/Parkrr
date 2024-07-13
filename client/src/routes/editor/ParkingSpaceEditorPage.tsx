@@ -29,13 +29,11 @@ const ParkingEditorPage = () => {
     collidingId,
     originPosition,
     setItems,
-    deleteAllItems,
     setSelectedItem,
   } = useEditorStore();
 
   const {handleCenterOrigin, dndContextRef} = useOrigin();
   const {handleDragEnd, handleDragMove, handleDragStart, gridSnapModifier, sensors} = useDragDrop();
-
 
   function handleSave() {
     function _generateCompatibleDataForOtherObjects(
@@ -102,15 +100,9 @@ const ParkingEditorPage = () => {
    handleCenterOrigin(); 
   }, []);
 
-  function handleClearCanvas() {
-    deleteAllItems();
-  }
-
-  // TODO: Migrate to zustand as the state management solution
-
   return (
     <div className="relative flex h-screen w-screen items-center overflow-hidden">
-      <EditorSidebar onSave={handleSave} onCenterOrigin={handleCenterOrigin} onClearCanvas={handleClearCanvas} />
+      <EditorSidebar onSave={handleSave} onCenterOrigin={handleCenterOrigin}/>
       <BackgroundGrid gridSize={SIZE_FACTOR} />
 
       {/* Parkrr logo on the top right */}
