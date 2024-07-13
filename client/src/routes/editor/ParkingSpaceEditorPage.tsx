@@ -117,6 +117,7 @@ const ParkingEditorPage = () => {
 
   return (
     <div className="relative flex h-screen w-screen items-center justify-center overflow-hidden">
+      <span className="absolute right-2 top-2 z-20 font-semibold font-mono text-xs">Created with ❤️ by saphalpdyl</span>
       <BackgroundGrid gridSize={SIZE_FACTOR} />
       <EditorSidebar onSave={handleSave} onCenterOrigin={handleCenterOrigin} />
       <EditorAddBar />
