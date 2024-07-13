@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import {
   DndContext,
   DragEndEvent,
@@ -24,6 +24,7 @@ import EditorContextMenu from "./components/EditorContextMenu";
 import OriginItem from "./components/OriginItem";
 import Logo from "../../components/Logo";
 import { useEditorStore } from "../../stores/editorState";
+import { useOrigin } from "../../hooks/useOrigin";
 
 const ParkingEditorPage = () => {
   const {
@@ -40,6 +41,8 @@ const ParkingEditorPage = () => {
     setCollidingId,
     setOriginPosition,
   } = useEditorStore();
+
+  const {handleCenterOrigin, dndContextRef} = useOrigin();
 
 
   const handleDragStart = (event: DragStartEvent) => {
@@ -148,20 +151,6 @@ const ParkingEditorPage = () => {
 
     console.log(org.lots[0].floors);
     // TODO: Save to database and/or LocalStorage
-  }
-
-  const dndContextRef = useRef<HTMLDivElement>(null);
-
-  function handleCenterOrigin() {
-    if (dndContextRef.current) {
-      const { width, height } = dndContextRef.current.getBoundingClientRect();
-  
-      // Calculate center position
-      const centerX = Math.round((width / 2) / SIZE_FACTOR) * SIZE_FACTOR;
-      const centerZ = Math.round((height / 2) / SIZE_FACTOR) * SIZE_FACTOR;
-  
-      setOriginPosition({ x: centerX, z: centerZ });
-    } 
   }
   
   useEffect(() => {
