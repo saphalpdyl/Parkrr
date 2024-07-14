@@ -15,7 +15,8 @@ function EditorContextMenuButton({
   onClick
 } : EditorContextMenuButtonProps) {
   return (
-    <div onClick={onClick} className={twMerge("h-6 w-6 rounded-md bg-gray-300 flex items-center justify-center cursor-pointer", twColor)}>
+    <div onClick={onClick} className={twMerge("h-6 w-6 rounded-md bg-gray-300 flex items-center justify-center cursor-pointer relative group", twColor)}>
+      <div className="absolute bottom-0 translate-y-0 opacity-0 h-5 w-16 bg-black/40 text-white font-bold rounded-md flex justify-center items-center group-hover:translate-y-6 group-hover:opacity-100 transition-all pointer-events-none">{ tooltipTitle }</div>
       <Icon size={18} color="white" />
     </div>
   );
