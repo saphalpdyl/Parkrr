@@ -15,6 +15,8 @@ import { useEditorStore } from "../../stores/editorState";
 import { useOrigin } from "../../hooks/useOrigin";
 import { useDragDrop } from "../../hooks/useDragDrop";
 import EditorAddBar from "./components/EditorAddbar";
+import SelectedItemPropertiesSection from "./components/SelectedItemPropertiesSection";
+import { convertToRadians } from "../../utils";
 
 const ParkingEditorPage = () => {
   const {
@@ -23,7 +25,6 @@ const ParkingEditorPage = () => {
     selectedItem,
     collidingId,
     originPosition,
-    setItems,
     setSelectedItem,
   } = useEditorStore();
 
@@ -55,11 +56,12 @@ const ParkingEditorPage = () => {
                   (item?.position?.z - (originPosition?.z ?? 0)) / SIZE_FACTOR +
                   itemSizes[category].height / 2,
               }
-            : { x: 0, y: 0, z: 0 },
-          rotation: { x: 0, y: 0, z: 0 },
+            : { x: 0, y: 0, z: 0 }, 
+          rotation: { x: 0, y: item.isRotated ? convertToRadians(90) : 0, z: 0 },
           color: itemSizes[category].color,
           args: [itemSizes[category].width, 0.1, itemSizes[category].height],
         }));
+        // TODO: Rotation is a bit messed up on render
     }
 
     const org: Organization = {
@@ -87,7 +89,7 @@ const ParkingEditorPage = () => {
                           itemSizes["space"].height / 2,
                       }
                     : { x: 0, y: 0, z: 0 },
-                  rotation: { x: 0, y: 0, z: 0 },
+                  rotation: { x: 0, y: item.isRotated ? convertToRadians(90) : 0, z: 0 },
                   occupied: false,
                   args: [
                     itemSizes["space"].width,
@@ -121,6 +123,7 @@ const ParkingEditorPage = () => {
       <BackgroundGrid gridSize={SIZE_FACTOR} />
       <EditorSidebar onSave={handleSave} onCenterOrigin={handleCenterOrigin} />
       <EditorAddBar />
+      <SelectedItemPropertiesSection isHidden={selectedItem === null} />
 
       {/* Parkrr logo on the top right */}
       <div className="absolute left-3 top-3 z-40 opacity-70">
@@ -143,13 +146,7 @@ const ParkingEditorPage = () => {
           }}
           className="relative ms-20 h-full w-[calc(100%-5rem)] bg-transparent p-4"
         >
-          {selectedItem && (
-            <EditorContextMenu
-              selectedItem={selectedItem}
-              items={items}
-              setItems={setItems}
-            />
-          )}
+          {selectedItem && <EditorContextMenu/>}
           {originPosition && <OriginItem position={originPosition} />}
           {Array.isArray(items) &&
             items.map((item) => (
