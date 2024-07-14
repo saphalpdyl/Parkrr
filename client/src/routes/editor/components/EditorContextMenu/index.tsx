@@ -1,4 +1,4 @@
-import { RotateCwIcon } from "lucide-react";
+import { RotateCwIcon, Trash2 } from "lucide-react";
 import IncrementButton from "../../../../components/IncrementButton";
 import { useEditorStore } from "../../../../stores/editorState";
 import { SIZE_FACTOR } from "../../constants";
@@ -19,7 +19,7 @@ const EditorContextMenu = ({
   items,
   setItems,
 }: EditorContextMenuProps) => {
-  const { toggleRotation } = useEditorStore();
+  const { toggleRotation, deleteItem } = useEditorStore();
 
   function generateNewPositionedList(
     targetId: string,
@@ -135,6 +135,12 @@ const EditorContextMenu = ({
           onClick={() => toggleRotation(selectedItem.item.id)}
           twColor="bg-blue-500"
           tooltipTitle="Rotate"
+        />
+        <EditorContextMenuButton 
+          icon={Trash2}
+          onClick={() => deleteItem(selectedItem.item.id)}
+          twColor="bg-red-500"
+          tooltipTitle="Delete"
         />
       </div>
     </div>

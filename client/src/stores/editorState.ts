@@ -64,6 +64,7 @@ export const useEditorStore = create<EditorState>((set) => ({
   deleteItem: (itemId) =>
     set((state) => ({
       items: state.items.filter((item) => item.id !== itemId),
+      selectedItem: itemId === state.selectedItem?.item.id ? null : state.selectedItem,
     })),
   deleteAllItems: () => set({ items: [], selectedItem: null }),
   updateItemPosition: (itemId, getPosition) =>
