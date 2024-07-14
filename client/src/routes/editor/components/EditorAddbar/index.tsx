@@ -55,9 +55,14 @@ function EditorAddBar() {
             </div>
           </EditorAddbarItem>
         </div> 
-
-
-        
+        <div className="flex-1 flex justify-end items-center gap-2">
+          <div className="rounded-full p-2 hover:bg-gray-100 cursor-pointer">
+            <UserCircle color="black"/>
+          </div>
+          <div className="p-2 hover:bg-gray-100 rounded-full cursor-pointer">
+            <Settings />  
+          </div>
+        </div>
       </div>
     </div>
   );
