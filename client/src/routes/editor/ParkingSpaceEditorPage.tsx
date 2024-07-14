@@ -16,6 +16,7 @@ import { useOrigin } from "../../hooks/useOrigin";
 import { useDragDrop } from "../../hooks/useDragDrop";
 import EditorAddBar from "./components/EditorAddbar";
 import SelectedItemPropertiesSection from "./components/SelectedItemPropertiesSection";
+import { convertToRadians } from "../../utils";
 
 const ParkingEditorPage = () => {
   const {
@@ -24,7 +25,6 @@ const ParkingEditorPage = () => {
     selectedItem,
     collidingId,
     originPosition,
-    setItems,
     setSelectedItem,
   } = useEditorStore();
 
@@ -56,11 +56,12 @@ const ParkingEditorPage = () => {
                   (item?.position?.z - (originPosition?.z ?? 0)) / SIZE_FACTOR +
                   itemSizes[category].height / 2,
               }
-            : { x: 0, y: 0, z: 0 },
-          rotation: { x: 0, y: 0, z: 0 },
+            : { x: 0, y: 0, z: 0 }, 
+          rotation: { x: 0, y: item.isRotated ? convertToRadians(90) : 0, z: 0 },
           color: itemSizes[category].color,
           args: [itemSizes[category].width, 0.1, itemSizes[category].height],
         }));
+        // TODO: Rotation is a bit messed up on render
     }
 
     const org: Organization = {
@@ -88,7 +89,7 @@ const ParkingEditorPage = () => {
                           itemSizes["space"].height / 2,
                       }
                     : { x: 0, y: 0, z: 0 },
-                  rotation: { x: 0, y: 0, z: 0 },
+                  rotation: { x: 0, y: item.isRotated ? convertToRadians(90) : 0, z: 0 },
                   occupied: false,
                   args: [
                     itemSizes["space"].width,
