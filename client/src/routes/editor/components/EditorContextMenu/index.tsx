@@ -1,58 +1,19 @@
 import { RotateCwIcon, Trash2 } from "lucide-react";
-import IncrementButton from "../../../../components/IncrementButton";
 import { useEditorStore } from "../../../../stores/editorState";
-import { SIZE_FACTOR } from "../../constants";
-import type { EditorItem, Position } from "../../types";
 import EditorContextMenuButton from "./EditorContextMenuButton";
 
-interface EditorContextMenuProps {
-  selectedItem: {
-    item: EditorItem;
-    clickPosition: Position;
-  };
-  items: EditorItem[];
-  setItems(items: EditorItem[]): void;
-}
+const EditorContextMenu = () => {
+  const { toggleRotation, deleteItem, selectedItem, items } = useEditorStore();
 
-const EditorContextMenu = ({
-  selectedItem,
-  items,
-  setItems,
-}: EditorContextMenuProps) => {
-  const { toggleRotation, deleteItem } = useEditorStore();
-
-  function generateNewPositionedList(
-    targetId: string,
-    direction: "increase" | "decrease",
-    axis: "x" | "z",
-  ) {
-    const _getNewItem = (item: EditorItem) => ({
-      ...item,
-      position: {
-        y: 0,
-        z:
-          (item.position?.z || 0) +
-          SIZE_FACTOR *
-            (axis === "z" ? (direction === "increase" ? 1 : -1) : 0),
-        x:
-          (item.position?.x || 0) +
-          SIZE_FACTOR *
-            (axis === "x" ? (direction === "increase" ? 1 : -1) : 0),
-      },
-    });
-
-    return items.map((item) =>
-      item.id === targetId ? _getNewItem(item) : item,
-    );
-  }
-
+  if ( !selectedItem ) return null;
+  
   return (
     <div
       style={{
-        top: `calc(${selectedItem.item.position?.z || 0}px - 7rem - 0.5rem)`,
+        top: `calc(${selectedItem.item.position?.z || 0}px - 5rem - 0.5rem)`,
         left: selectedItem.item.position?.x || 0,
       }}
-      className="absolute z-30 h-28 w-40 rounded-lg bg-white/30 p-2 text-xs shadow-md flex flex-col"
+      className="absolute z-30 h-30 w-40 rounded-lg bg-white/30 p-2 text-xs shadow-md flex flex-col"
     >
       <div className="borde-gray-600 mb-2 flex justify-between border-b-2 pb-2">
         <span className="font-bold capitalize">
@@ -71,64 +32,7 @@ const EditorContextMenu = ({
           }
         </span>
       </div>
-      <div className="flex justify-between">
-        <div className="flex flex-1 items-center justify-around">
-          <span className="text-lg font-bold">X</span>
-          <div className="flex flex-col">
-            <IncrementButton
-              onClick={() => {
-                setItems(
-                  generateNewPositionedList(
-                    selectedItem.item.id,
-                    "increase",
-                    "x",
-                  ),
-                );
-              }}
-            />
-            <IncrementButton
-              down
-              onClick={() => {
-                setItems(
-                  generateNewPositionedList(
-                    selectedItem.item.id,
-                    "decrease",
-                    "x",
-                  ),
-                );
-              }}
-            />
-          </div>
-        </div>
-        <div className="flex flex-1 items-center justify-around">
-          <span className="text-lg font-bold">Y</span>
-          <div className="flex flex-col">
-            <IncrementButton
-              onClick={() => {
-                setItems(
-                  generateNewPositionedList(
-                    selectedItem.item.id,
-                    "decrease", //  Decrease for this axis means up
-                    "z",
-                  ),
-                );
-              }}
-            />
-            <IncrementButton
-              down
-              onClick={() => {
-                setItems(
-                  generateNewPositionedList(
-                    selectedItem.item.id,
-                    "increase",
-                    "z",
-                  ),
-                );
-              }}
-            />
-          </div>
-        </div>
-      </div>
+      
       <div className="flex flex-1 items-center gap-1 mt-2">
         <EditorContextMenuButton 
           icon={RotateCwIcon}

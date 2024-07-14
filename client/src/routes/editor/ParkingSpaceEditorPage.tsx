@@ -15,6 +15,7 @@ import { useEditorStore } from "../../stores/editorState";
 import { useOrigin } from "../../hooks/useOrigin";
 import { useDragDrop } from "../../hooks/useDragDrop";
 import EditorAddBar from "./components/EditorAddbar";
+import SelectedItemPropertiesSection from "./components/SelectedItemPropertiesSection";
 
 const ParkingEditorPage = () => {
   const {
@@ -121,6 +122,7 @@ const ParkingEditorPage = () => {
       <BackgroundGrid gridSize={SIZE_FACTOR} />
       <EditorSidebar onSave={handleSave} onCenterOrigin={handleCenterOrigin} />
       <EditorAddBar />
+      <SelectedItemPropertiesSection isHidden={selectedItem === null} />
 
       {/* Parkrr logo on the top right */}
       <div className="absolute left-3 top-3 z-40 opacity-70">
@@ -143,13 +145,7 @@ const ParkingEditorPage = () => {
           }}
           className="relative ms-20 h-full w-[calc(100%-5rem)] bg-transparent p-4"
         >
-          {selectedItem && (
-            <EditorContextMenu
-              selectedItem={selectedItem}
-              items={items}
-              setItems={setItems}
-            />
-          )}
+          {selectedItem && <EditorContextMenu/>}
           {originPosition && <OriginItem position={originPosition} />}
           {Array.isArray(items) &&
             items.map((item) => (
