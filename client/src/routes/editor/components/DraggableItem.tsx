@@ -31,6 +31,9 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
     setDroppableRef(node);
   };
 
+  const height = `${itemSizes[item.category].height * SIZE_FACTOR}px`;
+  const width = `${itemSizes[item.category].width * SIZE_FACTOR}px`;
+  
   return (
     <div
       onClick={onClick}
@@ -40,8 +43,8 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
         transform: CSS.Translate.toString(transform),
         left: position.x,
         top: position.z,
-        height: `${itemSizes[item.category].height * SIZE_FACTOR}px`,
-        width: `${itemSizes[item.category].width * SIZE_FACTOR}px`,
+        height: item.isRotated ? width : height,
+        width: item.isRotated ? height : width,
         backgroundColor: itemSizes[item.category].color,
       }}
       {...listeners}

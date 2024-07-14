@@ -1,6 +1,9 @@
-import IncrementButton from "../../../components/IncrementButton";
-import { SIZE_FACTOR } from "../constants";
-import type { EditorItem, Position } from "../types";
+import { RotateCwIcon } from "lucide-react";
+import IncrementButton from "../../../../components/IncrementButton";
+import { useEditorStore } from "../../../../stores/editorState";
+import { SIZE_FACTOR } from "../../constants";
+import type { EditorItem, Position } from "../../types";
+import EditorContextMenuButton from "./EditorContextMenuButton";
 
 interface EditorContextMenuProps {
   selectedItem: {
@@ -16,6 +19,8 @@ const EditorContextMenu = ({
   items,
   setItems,
 }: EditorContextMenuProps) => {
+  const { toggleRotation } = useEditorStore();
+
   function generateNewPositionedList(
     targetId: string,
     direction: "increase" | "decrease",
@@ -47,7 +52,7 @@ const EditorContextMenu = ({
         top: `calc(${selectedItem.item.position?.z || 0}px - 7rem - 0.5rem)`,
         left: selectedItem.item.position?.x || 0,
       }}
-      className="absolute z-30 h-28 w-40 rounded-lg bg-white/30 p-2 text-xs shadow-md"
+      className="absolute z-30 h-28 w-40 rounded-lg bg-white/30 p-2 text-xs shadow-md flex flex-col"
     >
       <div className="borde-gray-600 mb-2 flex justify-between border-b-2 pb-2">
         <span className="font-bold capitalize">
@@ -123,6 +128,14 @@ const EditorContextMenu = ({
             />
           </div>
         </div>
+      </div>
+      <div className="flex flex-1 items-center gap-1 mt-2">
+        <EditorContextMenuButton 
+          icon={RotateCwIcon}
+          onClick={() => toggleRotation(selectedItem.item.id)}
+          twColor="bg-blue-500"
+          tooltipTitle="Rotate"
+        />
       </div>
     </div>
   );

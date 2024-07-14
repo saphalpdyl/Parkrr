@@ -11,6 +11,7 @@ export type ParkingItemCategory = "entrance" | "exit" | "space" | "office";
 export type EditorItem = Partial<WorldObject> & {
   id: string;
   category: ParkingItemCategory;
+  isRotated ?: boolean;
 } & (
   | { category: "entrance" | "exit" | "office" }
   | { category: "space"; spaceType: ParkingSpaceType }

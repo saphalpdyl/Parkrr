@@ -13,7 +13,15 @@ interface EditorState {
   setItems: (items: EditorItem[]) => void;
   addNewItem: (item: EditorItem) => void;
   deleteItem: (itemId: string) => void;
-  updateItemPosition: (itemId: string, getPosition: (previousItem: EditorItem) => {x: number,y: number,z: number,}) => void;
+  updateItemPosition: (
+    itemId: string,
+    getPosition: (previousItem: EditorItem) => {
+      x: number;
+      y: number;
+      z: number;
+    },
+  ) => void;
+  toggleRotation: (itemId: string) => void;
   deleteAllItems: () => void;
   setActiveId: (id: string | null) => void;
   setSelectedItem: (
@@ -52,15 +60,29 @@ export const useEditorStore = create<EditorState>((set) => ({
   selectedItem: null,
   originPosition: null,
   setItems: (items) => set({ items }),
-  addNewItem: (item) => set((state) => ({items: [...state.items, item]})),
-  deleteItem: (itemId) => set((state) => ({ items: state.items.filter(item => item.id !== itemId)})),
+  addNewItem: (item) => set((state) => ({ items: [...state.items, item] })),
+  deleteItem: (itemId) =>
+    set((state) => ({
+      items: state.items.filter((item) => item.id !== itemId),
+    })),
   deleteAllItems: () => set({ items: [], selectedItem: null }),
-  updateItemPosition: (itemId, getPosition) => set(state => ({
-    items: state.items.map(item => item.id === itemId ? {
-      ...item,
-      position: getPosition(item),
-    } : item)
-  })),
+  updateItemPosition: (itemId, getPosition) =>
+    set((state) => ({
+      items: state.items.map((item) =>
+        item.id === itemId
+          ? {
+              ...item,
+              position: getPosition(item),
+            }
+          : item,
+      ),
+    })),
+  toggleRotation: (itemId) =>
+    set((state) => ({
+      items: state.items.map((item) =>
+        item.id === itemId ? { ...item, isRotated: !item.isRotated } : item,
+      ),
+    })),
   setActiveId: (activeId) => set({ activeId }),
   setSelectedItem: (selectedItem) => set({ selectedItem }),
   setCollidingId: (collidingId) => set({ collidingId }),
