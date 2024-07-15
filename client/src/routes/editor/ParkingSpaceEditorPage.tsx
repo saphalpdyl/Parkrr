@@ -156,6 +156,7 @@ const ParkingEditorPage = () => {
                     ?.position || { x: 0, z: 0 }
                 }
                 isColliding={item.id === collidingId}
+                isSelected={item.id === selectedItem?.item.id}
                 hide={item.id === activeId}
                 onClick={(event) => {
                   if (selectedItem && selectedItem.item.id === item.id) {
