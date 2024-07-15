@@ -1,4 +1,6 @@
 import { useCallback } from "react";
+import { v4 as uuid } from "uuid";
+
 import { useEditorStore } from "../../../stores/editorState";
 import { copyItemToClipboard, tryGetItemFromClipboard } from "../utils/clipboard";
 
@@ -7,7 +9,6 @@ export function useClipboard() {
 
   const copyItem = useCallback(() => {
     if ( selectedItem ) {
-      console.log("asd")
       copyItemToClipboard(selectedItem.item);
     }
   }, [selectedItem])
@@ -20,7 +21,7 @@ export function useClipboard() {
 
       addNewItem({
         ...item,
-        id: Math.random().toString(36).slice(2),
+        id: uuid(),
       });
     }();
   }, [selectedItem])
