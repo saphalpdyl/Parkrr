@@ -42,15 +42,24 @@ const ParkingEditorPage = () => {
       items: EditorItem[],
       category: ParkingItemCategory,
     ) {
+      let editorItemProps: Partial<Partial<EditorItem> & { occupied: boolean;}> = {};
+      if ( category === "space" ) {
+        editorItemProps = {
+          occupied: false,
+          category: "space",
+          spaceType: "standard",
+        }
+      }
+      
       return items
         .filter((item) => item.category === category)
-        .map<OtherObject>((item) => ({
+        .map<OtherObject | EditorItem>((item) => ({
           id: item.id,
           position: item.position
             ? {
                 x:
                   (item?.position?.x - (originPosition?.x ?? 0)) / SIZE_FACTOR +
-                  itemSizes[category].width / 2,
+                  (item.isRotated ? itemSizes[category].height : itemSizes[category].width)  / 2,
                 y: 0,
                 z:
                   (item?.position?.z - (originPosition?.z ?? 0)) / SIZE_FACTOR +
@@ -60,8 +69,8 @@ const ParkingEditorPage = () => {
           rotation: { x: 0, y: item.isRotated ? convertToRadians(90) : 0, z: 0 },
           color: itemSizes[category].color,
           args: [itemSizes[category].width, 0.1, itemSizes[category].height],
+          ...editorItemProps,
         }));
-        // TODO: Rotation is a bit messed up on render
     }
 
     const org: Organization = {
@@ -71,38 +80,13 @@ const ParkingEditorPage = () => {
           floors: [
             {
               floorPrefix: "A",
-              spaces: items
-                .filter((item) => item.category === "space")
-                .map<ParkingSpace>((item) => ({
-                  ...item,
-                  type: "standard",
-                  position: item.position
-                    ? {
-                        x:
-                          (item?.position?.x - (originPosition?.x ?? 0)) /
-                            SIZE_FACTOR +
-                          itemSizes["space"].width / 2,
-                        y: 0,
-                        z:
-                          (item?.position?.z - (originPosition?.z ?? 0)) /
-                            SIZE_FACTOR +
-                          itemSizes["space"].height / 2,
-                      }
-                    : { x: 0, y: 0, z: 0 },
-                  rotation: { x: 0, y: item.isRotated ? convertToRadians(90) : 0, z: 0 },
-                  occupied: false,
-                  args: [
-                    itemSizes["space"].width,
-                    0.1,
-                    itemSizes["space"].height,
-                  ],
-                })),
+              spaces: _generateCompatibleDataForOtherObjects(items, "space"),
               entrances: _generateCompatibleDataForOtherObjects(
                 items,
                 "entrance",
-              ),
-              exits: _generateCompatibleDataForOtherObjects(items, "exit"),
-              offices: _generateCompatibleDataForOtherObjects(items, "office"),
+              ) as OtherObject[],
+              exits: _generateCompatibleDataForOtherObjects(items, "exit") as OtherObject[],
+              offices: _generateCompatibleDataForOtherObjects(items, "office") as OtherObject[],
             },
           ],
         },
