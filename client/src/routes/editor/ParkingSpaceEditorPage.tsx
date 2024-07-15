@@ -17,6 +17,7 @@ import { useDragDrop } from "./hooks/useDragDrop";
 import EditorAddBar from "./components/EditorAddbar";
 import SelectedItemPropertiesSection from "./components/SelectedItemPropertiesSection";
 import { convertToRadians } from "../../utils";
+import { useClipboard } from "./hooks/useClipboard";
 
 const ParkingEditorPage = () => {
   const {
@@ -36,6 +37,8 @@ const ParkingEditorPage = () => {
     gridSnapModifier,
     sensors,
   } = useDragDrop();
+
+  const { copyItem, pasteItem } = useClipboard();
 
   function handleSave() {
     function _generateCompatibleDataForOtherObjects(
@@ -114,7 +117,7 @@ const ParkingEditorPage = () => {
   }, []);
 
   return (
-    <div className="relative flex h-screen w-screen items-center justify-center overflow-hidden">
+    <div onCopy={copyItem} onPaste={pasteItem} className="relative flex h-screen w-screen items-center justify-center overflow-hidden">
       <span className="absolute right-2 top-2 z-20 font-mono text-xs font-semibold">
         Created with ❤️ by saphalpdyl
       </span>

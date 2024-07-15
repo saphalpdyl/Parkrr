@@ -39,7 +39,6 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
   
   const isVerticallyRotated = Math.abs(item.rotation ?? 0) === 90 || Math.abs(item.rotation ?? 0) === 270;
   
-  console.log(isSelected);
   return (
     <div
       onClick={onClick}
