@@ -1,11 +1,14 @@
-import type { EditorItem, Position } from "../types";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
+import { twMerge } from "tailwind-merge";
+
+import type { EditorItem, Position } from "../types";
 import { itemSizes, SIZE_FACTOR } from "../constants";
 
 export interface DraggableItemProps {
   item: EditorItem;
   position: Position;
   isColliding: boolean;
+  isSelected: boolean;
   hide ?: boolean;
   onClick(event: React.MouseEvent<HTMLElement>) : void;
 }
@@ -15,6 +18,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
   position,
   isColliding,
   hide = false,
+  isSelected,
   onClick,
 }) => {
   const { attributes, listeners, setNodeRef } = useDraggable({
@@ -39,7 +43,10 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
     <div
       onClick={onClick}
       ref={ref}
-      className={`absolute ${isColliding ? "bg-green-500/40" : ""} cursor-move rounded-md p-2 shadow-md transition-colors ${hide ? "opacity-0" : "opacity-100"} z-20 flex items-center justify-center text-xs font-semibold capitalize ${item.category === "office" ? "border-2 border-dashed border-gray-500 shadow-none" : ""} select-none `}
+      className={twMerge(
+        `absolute ${isColliding ? "bg-green-500/40" : ""} cursor-move rounded-md p-2 shadow-md transition-colors ${hide ? "opacity-0" : "opacity-100"} z-20 flex items-center justify-center text-xs font-semibold capitalize ${item.category === "office" ? "border-2 border-dashed border-gray-500 shadow-none" : ""}`,
+        isSelected ? "border-[#3b82f6] border-2" : ""
+      )}
       style={{
         left: position.x,
         top: position.z,

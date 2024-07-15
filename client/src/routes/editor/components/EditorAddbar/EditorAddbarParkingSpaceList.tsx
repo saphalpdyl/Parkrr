@@ -1,3 +1,6 @@
+import { v4 as uuid } from "uuid";
+
+
 import { useEditorStore } from "../../../../stores/editorState";
 import { ParkingSpaceType } from "../../../../types/parking";
 import { itemSizes } from "../../constants";
@@ -40,7 +43,7 @@ function EditorAddbarParkingSpaceList() {
               category: "space",
               spaceType: item.spaceType,
               position: {...originPosition!, y: 0},
-              id: Math.random().toString(36).slice(2),
+              id: uuid(),
               args:[itemSizes["space"].width, 0, itemSizes["space"].height]
             })
           }}
