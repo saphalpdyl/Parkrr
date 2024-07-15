@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid";
 
 import { useEditorStore } from "../../../stores/editorState";
 import { copyItemToClipboard, tryGetItemFromClipboard } from "../utils/clipboard";
+import { SIZE_FACTOR } from "../constants";
 
 export function useClipboard() {
   const { selectedItem, addNewItem } = useEditorStore();
@@ -22,6 +23,11 @@ export function useClipboard() {
       addNewItem({
         ...item,
         id: uuid(),
+        position: {
+          x: (item.position?.x ?? 0) + Math.round((Math.random() * 6) - 3) * SIZE_FACTOR, 
+          y: item.position?.y ?? 0,
+          z: (item.position?.z ?? 0) + Math.round((Math.random() * 6) - 3) * SIZE_FACTOR,
+        }
       });
     }();
   }, [selectedItem])
