@@ -5,7 +5,7 @@ export const SIZE_FACTOR = 20;
 export const itemSizes : Record<ParkingItemCategory, ItemSize> = {
   "space" : {
     height: 3,
-    width: 5,
+    width: 6,
     color: "#ffffff"
   },
   "entrance" : {

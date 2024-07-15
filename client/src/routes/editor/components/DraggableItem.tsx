@@ -18,7 +18,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
   hide = false,
   onClick,
 }) => {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  const { attributes, listeners, setNodeRef } = useDraggable({
     id: item.id,
   });
 
@@ -34,23 +34,30 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
   const height = `${itemSizes[item.category].height * SIZE_FACTOR}px`;
   const width = `${itemSizes[item.category].width * SIZE_FACTOR}px`;
   
+  const isVerticallyRotated = Math.abs(item.rotation ?? 0) === 90 || Math.abs(item.rotation ?? 0) === 270;
+  
   return (
     <div
       onClick={onClick}
       ref={ref}
       className={`absolute ${isColliding ? "bg-green-500/40" : ""} cursor-move rounded-md p-2 shadow-md transition-colors ${hide ? "opacity-0" : "opacity-100"} z-20 flex items-center justify-center text-xs font-semibold capitalize ${item.category === "office" ? "border-2 border-dashed border-gray-500 shadow-none" : ""} select-none `}
       style={{
-        transform: CSS.Translate.toString(transform),
         left: position.x,
         top: position.z,
-        height: item.isRotated ? width : height,
-        width: item.isRotated ? height : width,
+        height: isVerticallyRotated ? width : height,
+        width: isVerticallyRotated ? height : width,
         backgroundColor: itemSizes[item.category].color,
       }}
       {...listeners}
       {...attributes}
     >
-      {item.category === "space" ? item.spaceType : item.category}
+      <div 
+        style={{
+          transform: `rotateZ(${item.rotation ?? 0}deg)`,
+        }}
+        className="w-full h-full flex items-center justify-center">
+        {item.category === "space" ? item.spaceType : item.category}
+      </div>
     </div>
   );
 };

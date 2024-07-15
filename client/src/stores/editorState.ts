@@ -21,7 +21,10 @@ interface EditorState {
       z: number;
     },
   ) => void;
-  toggleRotation: (itemId: string) => void;
+  updateRotation: (
+    itemId: string,
+    getRotation: (rotation: number | null) => number,
+  ) => void;
   deleteAllItems: () => void;
   setActiveId: (id: string | null) => void;
   setSelectedItem: (
@@ -64,7 +67,8 @@ export const useEditorStore = create<EditorState>((set) => ({
   deleteItem: (itemId) =>
     set((state) => ({
       items: state.items.filter((item) => item.id !== itemId),
-      selectedItem: itemId === state.selectedItem?.item.id ? null : state.selectedItem,
+      selectedItem:
+        itemId === state.selectedItem?.item.id ? null : state.selectedItem,
     })),
   deleteAllItems: () => set({ items: [], selectedItem: null }),
   updateItemPosition: (itemId, getPosition) =>
@@ -78,12 +82,15 @@ export const useEditorStore = create<EditorState>((set) => ({
           : item,
       ),
     })),
-  toggleRotation: (itemId) =>
+  updateRotation: (itemId, getRotation) => {
     set((state) => ({
       items: state.items.map((item) =>
-        item.id === itemId ? { ...item, isRotated: !item.isRotated } : item,
+        item.id === itemId
+          ? { ...item, rotation: getRotation(item.rotation ?? null) }
+          : item,
       ),
-    })),
+    }));
+  },
   setActiveId: (activeId) => set({ activeId }),
   setSelectedItem: (selectedItem) => set({ selectedItem }),
   setCollidingId: (collidingId) => set({ collidingId }),

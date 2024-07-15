@@ -5,11 +5,7 @@ interface WorldObject {
     z: number;
   };
 
-  rotation: {
-    x: number;
-    y: number;
-    z: number;
-  };
+  rotation: number;
 
   id : String;
   args: [number, number, number];

@@ -6,17 +6,16 @@ import type { EditorItem, ParkingItemCategory } from "./types";
 import DraggableItem from "./components/DraggableItem";
 import EditorSidebar from "./components/EditorSidebar";
 import BackgroundGrid from "./components/BackgroundGrid";
-import { Organization, OtherObject, ParkingSpace } from "../../types/parking";
+import { Organization, OtherObject } from "../../types/parking";
 import { itemSizes, SIZE_FACTOR } from "./constants";
 import EditorContextMenu from "./components/EditorContextMenu";
 import OriginItem from "./components/OriginItem";
 import Logo from "../../components/Logo";
 import { useEditorStore } from "../../stores/editorState";
-import { useOrigin } from "../../hooks/useOrigin";
-import { useDragDrop } from "../../hooks/useDragDrop";
+import { useOrigin } from "./hooks/useOrigin";
+import { useDragDrop } from "./hooks/useDragDrop";
 import EditorAddBar from "./components/EditorAddbar";
 import SelectedItemPropertiesSection from "./components/SelectedItemPropertiesSection";
-import { convertToRadians } from "../../utils";
 
 const ParkingEditorPage = () => {
   const {
@@ -58,15 +57,13 @@ const ParkingEditorPage = () => {
           position: item.position
             ? {
                 x:
-                  (item?.position?.x - (originPosition?.x ?? 0)) / SIZE_FACTOR +
-                  (item.isRotated ? itemSizes[category].height : itemSizes[category].width)  / 2,
+                  (item?.position?.x - (originPosition?.x ?? 0)) / SIZE_FACTOR,
                 y: 0,
                 z:
-                  (item?.position?.z - (originPosition?.z ?? 0)) / SIZE_FACTOR +
-                  itemSizes[category].height / 2,
+                  (item?.position?.z - (originPosition?.z ?? 0)) / SIZE_FACTOR,
               }
             : { x: 0, y: 0, z: 0 }, 
-          rotation: { x: 0, y: item.isRotated ? convertToRadians(90) : 0, z: 0 },
+          rotation: item.rotation ?? 0,
           color: itemSizes[category].color,
           args: [itemSizes[category].width, 0.1, itemSizes[category].height],
           ...editorItemProps,
@@ -93,6 +90,7 @@ const ParkingEditorPage = () => {
       ],
     };
 
+    console.log(originPosition);
     console.log(org.lots[0].floors);
     // TODO: Save to database and/or LocalStorage
   }
@@ -161,7 +159,8 @@ const ParkingEditorPage = () => {
             ))}
           <DragOverlay>
             {activeId ? (
-              <div className="h-full rounded-md border-2 border-[#3b82f6] p-2 text-white shadow-sm"></div>
+              <div 
+                className="h-full w-full rounded-md border-2 border-[#3b82f6] p-2 text-white shadow-sm"></div>
             ) : null}
           </DragOverlay>
         </div>
