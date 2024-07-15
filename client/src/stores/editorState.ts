@@ -23,7 +23,14 @@ interface EditorState {
   ) => void;
   updateRotation: (
     itemId: string,
-    getRotation: (rotation: number | null) => number,
+    getPositionAndRotation: (item: EditorItem) => {
+      position: {
+        x: number;
+        y: number;
+        z: number;
+      },
+      rotation: number
+    },
   ) => void;
   deleteAllItems: () => void;
   setActiveId: (id: string | null) => void;
@@ -82,11 +89,11 @@ export const useEditorStore = create<EditorState>((set) => ({
           : item,
       ),
     })),
-  updateRotation: (itemId, getRotation) => {
+  updateRotation: (itemId, getPositionAndRotation) => {
     set((state) => ({
       items: state.items.map((item) =>
         item.id === itemId
-          ? { ...item, rotation: getRotation(item.rotation ?? null) }
+          ? { ...item, ...getPositionAndRotation(item) }
           : item,
       ),
     }));
