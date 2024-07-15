@@ -6,14 +6,14 @@ import type { EditorItem, ParkingItemCategory } from "./types";
 import DraggableItem from "./components/DraggableItem";
 import EditorSidebar from "./components/EditorSidebar";
 import BackgroundGrid from "./components/BackgroundGrid";
-import { Organization, OtherObject, ParkingSpace } from "../../types/parking";
+import { Organization, OtherObject } from "../../types/parking";
 import { itemSizes, SIZE_FACTOR } from "./constants";
 import EditorContextMenu from "./components/EditorContextMenu";
 import OriginItem from "./components/OriginItem";
 import Logo from "../../components/Logo";
 import { useEditorStore } from "../../stores/editorState";
-import { useOrigin } from "../../hooks/useOrigin";
-import { useDragDrop } from "../../hooks/useDragDrop";
+import { useOrigin } from "./hooks/useOrigin";
+import { useDragDrop } from "./hooks/useDragDrop";
 import EditorAddBar from "./components/EditorAddbar";
 import SelectedItemPropertiesSection from "./components/SelectedItemPropertiesSection";
 import { convertToRadians } from "../../utils";
@@ -42,26 +42,40 @@ const ParkingEditorPage = () => {
       items: EditorItem[],
       category: ParkingItemCategory,
     ) {
+      let editorItemProps: Partial<
+        Partial<EditorItem> & { occupied: boolean }
+      > = {};
+      if (category === "space") {
+        editorItemProps = {
+          occupied: false,
+          category: "space",
+          spaceType: "standard",
+        };
+      }
+
       return items
         .filter((item) => item.category === category)
-        .map<OtherObject>((item) => ({
-          id: item.id,
-          position: item.position
-            ? {
-                x:
-                  (item?.position?.x - (originPosition?.x ?? 0)) / SIZE_FACTOR +
-                  itemSizes[category].width / 2,
-                y: 0,
-                z:
-                  (item?.position?.z - (originPosition?.z ?? 0)) / SIZE_FACTOR +
-                  itemSizes[category].height / 2,
-              }
-            : { x: 0, y: 0, z: 0 }, 
-          rotation: { x: 0, y: item.isRotated ? convertToRadians(90) : 0, z: 0 },
-          color: itemSizes[category].color,
-          args: [itemSizes[category].width, 0.1, itemSizes[category].height],
-        }));
-        // TODO: Rotation is a bit messed up on render
+        .map<OtherObject | EditorItem>((item) => {
+          const x = ((item?.position?.x ?? 0) - (originPosition?.x ?? 0)) / SIZE_FACTOR;
+          const y = ((item?.position?.z ?? 0) - (originPosition?.z ?? 0)) / SIZE_FACTOR;
+          const isVerticallyRotated = Math.abs(item.rotation ?? 0) === 90 || Math.abs(item.rotation ?? 0) === 270;
+
+
+          return {
+            id: item.id,
+            position: item.position
+              ? {
+                  x: x + (isVerticallyRotated ? itemSizes[category].height : itemSizes[category].width) / 2,
+                  y: 0,
+                  z: y + (isVerticallyRotated ? itemSizes[category].width : itemSizes[category].height) / 2,
+                }
+              : { x: 0, y: 0, z: 0 },
+            rotation: convertToRadians(item.rotation ?? 0),
+            color: itemSizes[category].color,
+            args: [itemSizes[category].width, 0.1, itemSizes[category].height],
+            ...editorItemProps,
+          };
+        });
     }
 
     const org: Organization = {
@@ -71,44 +85,26 @@ const ParkingEditorPage = () => {
           floors: [
             {
               floorPrefix: "A",
-              spaces: items
-                .filter((item) => item.category === "space")
-                .map<ParkingSpace>((item) => ({
-                  ...item,
-                  type: "standard",
-                  position: item.position
-                    ? {
-                        x:
-                          (item?.position?.x - (originPosition?.x ?? 0)) /
-                            SIZE_FACTOR +
-                          itemSizes["space"].width / 2,
-                        y: 0,
-                        z:
-                          (item?.position?.z - (originPosition?.z ?? 0)) /
-                            SIZE_FACTOR +
-                          itemSizes["space"].height / 2,
-                      }
-                    : { x: 0, y: 0, z: 0 },
-                  rotation: { x: 0, y: item.isRotated ? convertToRadians(90) : 0, z: 0 },
-                  occupied: false,
-                  args: [
-                    itemSizes["space"].width,
-                    0.1,
-                    itemSizes["space"].height,
-                  ],
-                })),
+              spaces: _generateCompatibleDataForOtherObjects(items, "space"),
               entrances: _generateCompatibleDataForOtherObjects(
                 items,
                 "entrance",
-              ),
-              exits: _generateCompatibleDataForOtherObjects(items, "exit"),
-              offices: _generateCompatibleDataForOtherObjects(items, "office"),
+              ) as OtherObject[],
+              exits: _generateCompatibleDataForOtherObjects(
+                items,
+                "exit",
+              ) as OtherObject[],
+              offices: _generateCompatibleDataForOtherObjects(
+                items,
+                "office",
+              ) as OtherObject[],
             },
           ],
         },
       ],
     };
 
+    console.log(originPosition);
     console.log(org.lots[0].floors);
     // TODO: Save to database and/or LocalStorage
   }
@@ -119,7 +115,9 @@ const ParkingEditorPage = () => {
 
   return (
     <div className="relative flex h-screen w-screen items-center justify-center overflow-hidden">
-      <span className="absolute right-2 top-2 z-20 font-semibold font-mono text-xs">Created with ❤️ by saphalpdyl</span>
+      <span className="absolute right-2 top-2 z-20 font-mono text-xs font-semibold">
+        Created with ❤️ by saphalpdyl
+      </span>
       <BackgroundGrid gridSize={SIZE_FACTOR} />
       <EditorSidebar onSave={handleSave} onCenterOrigin={handleCenterOrigin} />
       <EditorAddBar />
@@ -146,7 +144,7 @@ const ParkingEditorPage = () => {
           }}
           className="relative ms-20 h-full w-[calc(100%-5rem)] bg-transparent p-4"
         >
-          {selectedItem && <EditorContextMenu/>}
+          {selectedItem && <EditorContextMenu />}
           {originPosition && <OriginItem position={originPosition} />}
           {Array.isArray(items) &&
             items.map((item) => (
@@ -177,7 +175,7 @@ const ParkingEditorPage = () => {
             ))}
           <DragOverlay>
             {activeId ? (
-              <div className="h-full rounded-md border-2 border-[#3b82f6] p-2 text-white shadow-sm"></div>
+              <div className="h-full w-full rounded-md border-2 border-[#3b82f6] p-2 text-white shadow-sm"></div>
             ) : null}
           </DragOverlay>
         </div>

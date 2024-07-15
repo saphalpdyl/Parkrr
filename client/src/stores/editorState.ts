@@ -21,7 +21,17 @@ interface EditorState {
       z: number;
     },
   ) => void;
-  toggleRotation: (itemId: string) => void;
+  updateRotation: (
+    itemId: string,
+    getPositionAndRotation: (item: EditorItem) => {
+      position: {
+        x: number;
+        y: number;
+        z: number;
+      },
+      rotation: number
+    },
+  ) => void;
   deleteAllItems: () => void;
   setActiveId: (id: string | null) => void;
   setSelectedItem: (
@@ -35,26 +45,7 @@ interface EditorState {
 }
 
 export const useEditorStore = create<EditorState>((set) => ({
-  items: [
-    {
-      category: "space",
-      id: Math.random().toString(36).slice(2),
-      spaceType: "standard",
-    },
-    {
-      category: "space",
-      id: Math.random().toString(36).slice(2),
-      spaceType: "standard",
-    },
-    {
-      category: "space",
-      id: Math.random().toString(36).slice(2),
-      spaceType: "standard",
-    },
-    { category: "exit", id: Math.random().toString(36).slice(2) },
-    { category: "entrance", id: Math.random().toString(36).slice(2) },
-    { category: "office", id: Math.random().toString(36).slice(2) },
-  ],
+  items: [],
   activeId: null,
   collidingId: null,
   selectedItem: null,
@@ -64,7 +55,8 @@ export const useEditorStore = create<EditorState>((set) => ({
   deleteItem: (itemId) =>
     set((state) => ({
       items: state.items.filter((item) => item.id !== itemId),
-      selectedItem: itemId === state.selectedItem?.item.id ? null : state.selectedItem,
+      selectedItem:
+        itemId === state.selectedItem?.item.id ? null : state.selectedItem,
     })),
   deleteAllItems: () => set({ items: [], selectedItem: null }),
   updateItemPosition: (itemId, getPosition) =>
@@ -78,12 +70,15 @@ export const useEditorStore = create<EditorState>((set) => ({
           : item,
       ),
     })),
-  toggleRotation: (itemId) =>
+  updateRotation: (itemId, getPositionAndRotation) => {
     set((state) => ({
       items: state.items.map((item) =>
-        item.id === itemId ? { ...item, isRotated: !item.isRotated } : item,
+        item.id === itemId
+          ? { ...item, ...getPositionAndRotation(item) }
+          : item,
       ),
-    })),
+    }));
+  },
   setActiveId: (activeId) => set({ activeId }),
   setSelectedItem: (selectedItem) => set({ selectedItem }),
   setCollidingId: (collidingId) => set({ collidingId }),

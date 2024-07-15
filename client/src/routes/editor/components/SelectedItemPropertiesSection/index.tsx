@@ -39,7 +39,7 @@ function SelectedItemPropertiesSection({
 
   return (
     <div
-      className={`rounded-y-lg absolute right-0 z-20 flex h-72 w-52 flex-col gap-3 rounded-l-lg border-y-2 border-l-2 border-slate-600 bg-gray-100 p-3 shadow-md transition-all 
+      className={`rounded-y-lg absolute right-0 z-20 flex h-72 w-52 flex-col gap-3 rounded-l-lg border-y-2 border-l-2 border-slate-600 bg-gray-100 p-3 shadow-md transition-all transform-gpu
         ${isHidden ? "translate-x-52" : "translate-x-0"} 
         ${isHidden ? "opacity-0" : "opacity-100"} 
       `}

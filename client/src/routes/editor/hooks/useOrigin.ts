@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import { useEditorStore } from "../stores/editorState";
-import { calculateCenterPosition } from "../routes/editor/utils";
+import { useEditorStore } from "../../../stores/editorState";
+import { calculateCenterPosition } from "../utils";
 
 export function useOrigin() {
   const dndContextRef = useRef<HTMLDivElement>(null);

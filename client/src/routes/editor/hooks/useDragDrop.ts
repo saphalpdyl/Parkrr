@@ -1,8 +1,8 @@
 import { DragEndEvent, DragStartEvent, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
-import { useEditorStore } from "../stores/editorState";
+import { useEditorStore } from "../../../stores/editorState";
 import { createSnapModifier } from "@dnd-kit/modifiers";
-import { Position } from "../routes/editor/types";
-import { SIZE_FACTOR } from "../routes/editor/constants";
+import { Position } from "../types";
+import { SIZE_FACTOR } from "../constants";
 
 export function useDragDrop() {
   const {

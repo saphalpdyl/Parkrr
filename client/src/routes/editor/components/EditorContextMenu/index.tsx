@@ -1,9 +1,11 @@
-import { RotateCwIcon, Trash2 } from "lucide-react";
+import { RotateCcwIcon, RotateCwIcon, Trash2 } from "lucide-react";
 import { useEditorStore } from "../../../../stores/editorState";
 import EditorContextMenuButton from "./EditorContextMenuButton";
+import { useRotation } from "../../hooks/useRotation";
 
 const EditorContextMenu = () => {
-  const { toggleRotation, deleteItem, selectedItem, items } = useEditorStore();
+  const { deleteItem, selectedItem, items } = useEditorStore();
+  const { rotateItem } = useRotation();
 
   if ( !selectedItem ) return null;
   
@@ -36,9 +38,15 @@ const EditorContextMenu = () => {
       <div className="flex flex-1 items-center gap-1 mt-2">
         <EditorContextMenuButton 
           icon={RotateCwIcon}
-          onClick={() => toggleRotation(selectedItem.item.id)}
+          onClick={() => rotateItem(selectedItem.item.id, "cw")}
           twColor="bg-blue-500"
-          tooltipTitle="Rotate"
+          tooltipTitle="Rotate CW"
+        />
+        <EditorContextMenuButton 
+          icon={RotateCcwIcon}
+          onClick={() => rotateItem(selectedItem.item.id, "ccw")}
+          twColor="bg-blue-500"
+          tooltipTitle="Rotate CCW"
         />
         <EditorContextMenuButton 
           icon={Trash2}

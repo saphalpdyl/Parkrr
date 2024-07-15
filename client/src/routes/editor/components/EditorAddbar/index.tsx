@@ -2,6 +2,7 @@ import { ChevronDown, ChevronUp, Plus, Settings, UserCircle } from "lucide-react
 import EditorAddbarParkingSpaceList from "./EditorAddbarParkingSpaceList";
 import EditorAddbarItem from "./EditorAddbarItem";
 import { useEditorStore } from "../../../../stores/editorState";
+import { itemSizes } from "../../constants";
 
 function EditorAddBar() {
   const { addNewItem, originPosition } = useEditorStore();
@@ -11,6 +12,7 @@ function EditorAddBar() {
       category: "office",
       position: {...originPosition!, y: 0},
       id: Math.random().toString(36).slice(2),
+      args: [itemSizes["office"].width, 0, itemSizes["office"].height]
     });
   }
 
@@ -19,6 +21,7 @@ function EditorAddBar() {
       category: "entrance",
       position: {...originPosition!, y: 0},
       id: Math.random().toString(36).slice(2),
+      args: [itemSizes["entrance"].width, 0, itemSizes["entrance"].height]
     });
   }
 
@@ -27,6 +30,7 @@ function EditorAddBar() {
       category: "exit",
       position: {...originPosition!, y: 0},
       id: Math.random().toString(36).slice(2),
+      args: [itemSizes["exit"].width, 0, itemSizes["exit"].height]
     });
   }
 

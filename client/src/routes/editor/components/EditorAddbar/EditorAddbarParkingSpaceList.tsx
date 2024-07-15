@@ -1,5 +1,6 @@
 import { useEditorStore } from "../../../../stores/editorState";
 import { ParkingSpaceType } from "../../../../types/parking";
+import { itemSizes } from "../../constants";
 import EditorAddbarItem from "./EditorAddbarItem";
 
 const bottomNavigationBarParkingSpaces: {
@@ -40,6 +41,7 @@ function EditorAddbarParkingSpaceList() {
               spaceType: item.spaceType,
               position: {...originPosition!, y: 0},
               id: Math.random().toString(36).slice(2),
+              args:[itemSizes["space"].width, 0, itemSizes["space"].height]
             })
           }}
           title={item.spaceType}
