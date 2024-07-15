@@ -1,6 +1,5 @@
 import type { EditorItem, Position } from "../types";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
-import { CSS } from "@dnd-kit/utilities";
 import { itemSizes, SIZE_FACTOR } from "../constants";
 
 export interface DraggableItemProps {
