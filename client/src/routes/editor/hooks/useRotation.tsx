@@ -41,19 +41,18 @@ export function useRotation() {
           }
         } else {
           // Counterclockwise rotation
-          console.log(rotation % 360);
-          if ( Math.abs(previousRotation) === 0 ) {
+          if ( (360 - Math.abs(rotation)) === 270 ) {
             // Going from 0 to 270
             // x -> x
             // y -> y - (w-h)
             y -= deltaDistance;
-          } else if ( Math.abs(previousRotation) === 270 ) {
+          } else if ( (360 - Math.abs(rotation)) === 180 ) {
             // Going from 270 to 180
             // x -> x - (w-h)
             // y - (w-h) -> y
             x -= deltaDistance;
             y += deltaDistance;
-          } else if ( Math.abs(previousRotation) === 180 ) {
+          } else if ( (360 - Math.abs(rotation)) === 90 ) {
             // Going from 180 to 90
             // x - (w-h) -> x
             // y -> y
