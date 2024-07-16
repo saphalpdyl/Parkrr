@@ -13,7 +13,7 @@ export namespace AuthService {
     username: string;
   }
   
-  export async function createUser(userData: UserRegisterData) : Promise<IUser> {
+  export async function createUser(userData: UserRegisterData) : Promise<Omit<IUser, "password">> {
     // Search if the same username exists
     const userWithSameName = await User.find({
       username: userData.username,
@@ -30,7 +30,7 @@ export namespace AuthService {
     user.password = hashedPassword;
     const newUser = await user.save();
 
-    return newUser as IUser;
+    return prepareUserData(newUser);
   }
 
   export async function loginUser(username: string, password: string) {
@@ -50,6 +50,15 @@ export namespace AuthService {
       iat: Date.now(),
     }, process.env.JWT_SECRET!);
 
-    return jwtToken;
+    return {jwtToken, user: prepareUserData(user)};
+  }
+
+  export function prepareUserData(user: IUser) {
+    return {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      middleName: user.middleName,
+      username: user.username,
+    }
   }
 }

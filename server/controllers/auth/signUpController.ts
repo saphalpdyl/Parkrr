@@ -17,9 +17,8 @@ export default async function signUpController(c : Context) {
     }
   
     c.status(500);
-    c.json({
+    return c.json({
       message: "An unknown error occured",
     });
-    return;
   }
 }
