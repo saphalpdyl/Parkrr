@@ -1,12 +1,13 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import ParkingSpaceEditorPage from "./routes/editor/ParkingSpaceEditorPage";
+import ParkingSpaceRendererPage from "./routes/renderer/ParkingSpaceRendererPage";
 
 const App = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <div>Renderer</div>,
+      element: <ParkingSpaceRendererPage />,
     },
     {
       path: "/editor",

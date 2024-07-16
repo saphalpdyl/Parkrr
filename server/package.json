@@ -1,0 +1,14 @@
+{
+  "name": "server",
+  "scripts": {
+    "start": "vercel dev",
+    "deploy": "vercel"
+  },
+  "dependencies": {
+    "hono": "^4.4.13",
+    "mongoose": "^8.5.1"
+  },
+  "devDependencies": {
+    "vercel": "^32.4.1"
+  }
+}
