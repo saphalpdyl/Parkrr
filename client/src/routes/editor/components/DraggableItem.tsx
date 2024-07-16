@@ -2,7 +2,8 @@ import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { twMerge } from "tailwind-merge";
 
 import type { EditorItem, Position } from "../types";
-import { itemSizes, SIZE_FACTOR } from "../constants";
+import { itemSizes, parkingSpacesProperties, SIZE_FACTOR } from "../constants";
+import { selectMatchingContrastColor } from "../utils";
 
 export interface DraggableItemProps {
   item: EditorItem;
@@ -38,6 +39,7 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
   const width = `${itemSizes[item.category].width * SIZE_FACTOR}px`;
   
   const isVerticallyRotated = Math.abs(item.rotation ?? 0) === 90 || Math.abs(item.rotation ?? 0) === 270;
+  const backgroundColor = item.category === "space" ? parkingSpacesProperties.find(space => space.spaceType === item.spaceType)!.color : itemSizes[item.category].color;
   
   return (
     <div
@@ -52,7 +54,8 @@ const DraggableItem: React.FC<DraggableItemProps> = ({
         top: position.z,
         height: isVerticallyRotated ? width : height,
         width: isVerticallyRotated ? height : width,
-        backgroundColor: itemSizes[item.category].color,
+        backgroundColor,
+        color: selectMatchingContrastColor(backgroundColor) as typeof backgroundColor,
       }}
       {...listeners}
       {...attributes}

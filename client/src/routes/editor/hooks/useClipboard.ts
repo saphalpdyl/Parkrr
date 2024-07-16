@@ -21,7 +21,7 @@ export function useClipboard() {
       if ( !item ) return;
 
       addNewItem({
-        ...item,
+        ...item, 
         id: uuid(),
         position: {
           x: (item.position?.x ?? 0) + Math.round((Math.random() * 6) - 3) * SIZE_FACTOR, 
