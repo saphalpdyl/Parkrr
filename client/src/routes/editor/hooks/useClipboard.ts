@@ -14,7 +14,7 @@ export function useClipboard() {
     }
   }, [selectedItem])
 
-  const pasteItem = useCallback(() => {
+  const pasteItem = () => {
     void async function() {
       const item = await tryGetItemFromClipboard();
       
@@ -30,7 +30,7 @@ export function useClipboard() {
         }
       });
     }();
-  }, [selectedItem])
+  }
   
   return { copyItem, pasteItem };
 }
