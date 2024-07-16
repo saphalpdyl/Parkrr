@@ -2,8 +2,7 @@ import { verify, decode, sign } from 'hono/jwt';
 import { HydratedDocument } from 'mongoose';
 import User, { IUser } from '../models/auth/user';
 import { ErrorCode } from '../constants/enum';
-import { AuthError } from '../errors/error';
-import { compare, genSalt, hash } from 'bcrypt'
+import { AuthError } from '../../server/errors/error';
 
 export namespace AuthService {
   interface UserRegisterData {
@@ -14,23 +13,25 @@ export namespace AuthService {
     username: string;
   }
   
-  export async function createUser(userData: UserRegisterData) : Promise<void | AuthError> {
+  export async function createUser(userData: UserRegisterData) : Promise<IUser | AuthError> {
     // Search if the same username exists
     const userWithSameName = await User.find({
       username: userData.username,
     });
     
-    if ( !userWithSameName.length ) throw new AuthError("Error creating error", ErrorCode.USER_ALREADY_EXISTS);
+    console.log(userWithSameName)
+    if ( userWithSameName.length ) throw new AuthError("Error creating error", ErrorCode.USER_ALREADY_EXISTS);
 
     const user = new User(userData); 
     
     // Create a password hash
     const { password } = userData;
-    const passwordSalt = await genSalt(10);
-    const hashedPassword = await hash(password, passwordSalt);
+    const hashedPassword = await Bun.password.hash(password);
 
     user.password = hashedPassword;
-    await user.save();
+    const newUser = await user.save();
+
+    return user as IUser;
   }
 
   export async function loginUser(username: string, password: string) {
@@ -41,7 +42,7 @@ export namespace AuthService {
     
     // Check if password is valid
     const storedPassword = user.password;
-    const isPasswordMatch = await compare(password, storedPassword);
+    const isPasswordMatch = await Bun.password.verify(password, storedPassword);
 
     if ( !isPasswordMatch ) throw new AuthError("Password incorrect", ErrorCode.USER_PASSWORD_INCORRECT);
 

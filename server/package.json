@@ -1,18 +1,13 @@
 {
   "name": "server",
   "scripts": {
-    "start": "vercel dev",
-    "deploy": "vercel"
+    "dev": "bun run --hot src/index.ts"
   },
   "dependencies": {
-    "@types/bcrypt": "^5.0.2",
-    "bcrypt": "^5.1.1",
-    "fs": "^0.0.1-security",
     "hono": "^4.4.13",
-    "mongoose": "^8.5.1",
-    "path": "^0.12.7"
+    "mongoose": "^8.5.1"
   },
   "devDependencies": {
-    "vercel": "^32.4.1"
+    "@types/bun": "latest"
   }
 }

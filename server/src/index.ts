@@ -1,14 +1,10 @@
-import { Hono } from 'hono';
-import { handle } from 'hono/vercel';
+import { Hono } from 'hono'
+
+import mongoose from "mongoose";
 import { AuthService } from '../services/authService';
 import { AuthError } from '../errors/error';
-import mongoose from 'mongoose';
 
-export const config = {
-  runtime: 'edge'
-}
-
-const app = new Hono().basePath('/api/v1')
+const app = new Hono();
 
 run();
 
@@ -19,7 +15,8 @@ async function run() {
     const body = await c.req.json();
   
     try {
-      await AuthService.createUser(body);
+      const user = await AuthService.createUser(body);
+      return c.json({ user });
     } catch(e: any) {
       if ( e instanceof AuthError ) {
         return c.json(e.toJSON())
@@ -28,5 +25,4 @@ async function run() {
   })
 }
 
-
-export default handle(app)
+export default app
