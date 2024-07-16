@@ -5,7 +5,7 @@ import { ErrorCode } from '../constants/enum';
 import { AuthError } from '../../server/errors/error';
 
 export namespace AuthService {
-  interface UserRegisterData {
+  export interface UserRegisterData {
     firstName: string;
     lastName: string;
     middleName?: string;
@@ -13,14 +13,13 @@ export namespace AuthService {
     username: string;
   }
   
-  export async function createUser(userData: UserRegisterData) : Promise<IUser | AuthError> {
+  export async function createUser(userData: UserRegisterData) : Promise<IUser> {
     // Search if the same username exists
     const userWithSameName = await User.find({
       username: userData.username,
     });
     
-    console.log(userWithSameName)
-    if ( userWithSameName.length ) throw new AuthError("Error creating error", ErrorCode.USER_ALREADY_EXISTS);
+    if ( userWithSameName.length ) throw new AuthError("User already exists", ErrorCode.USER_ALREADY_EXISTS);
 
     const user = new User(userData); 
     
@@ -31,7 +30,7 @@ export namespace AuthService {
     user.password = hashedPassword;
     const newUser = await user.save();
 
-    return user as IUser;
+    return newUser as IUser;
   }
 
   export async function loginUser(username: string, password: string) {

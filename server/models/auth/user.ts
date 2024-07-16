@@ -9,6 +9,7 @@ export interface IUser {
   password: string;
   passwordResetToken?: string;
   username: string;
+  lastLogin?: number;
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -35,6 +36,10 @@ const userSchema = new mongoose.Schema<IUser>({
     required: true,
   },
   passwordResetToken: String,
+  lastLogin: {
+    type: Date,
+    default: Date.now,
+  }
 });
 
 const User = mongoose.model('User', userSchema);
