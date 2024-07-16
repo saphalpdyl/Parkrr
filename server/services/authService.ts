@@ -45,6 +45,9 @@ export namespace AuthService {
 
     if ( !isPasswordMatch ) throw new AuthError("Password incorrect", ErrorCode.USER_PASSWORD_INCORRECT);
 
+    user.lastLogin = Date.now();
+    await user.save();
+
     const jwtToken = await sign({
       username: user.username,
       iat: Date.now(),
