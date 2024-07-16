@@ -1,5 +1,4 @@
 import { verify, decode, sign } from 'hono/jwt';
-import { HydratedDocument } from 'mongoose';
 import User, { IUser } from '../models/auth/user';
 import { ErrorCode } from '../constants/enum';
 import { AuthError } from '../../server/errors/error';
@@ -50,7 +49,7 @@ export namespace AuthService {
 
     const jwtToken = await sign({
       username: user.username,
-      iat: Date.now(),
+      iat: Math.floor(Date.now() / 1000),
     }, process.env.JWT_SECRET!);
 
     return {jwtToken, user: prepareUserData(user)};
@@ -62,6 +61,17 @@ export namespace AuthService {
       lastName: user.lastName,
       middleName: user.middleName,
       username: user.username,
+    }
+  }
+
+  export async function verifyToken(token: string) {
+    try {
+      const payload = await verify(token, process.env.JWT_SECRET!);
+
+      return payload;
+    } catch (e) {
+      console.error(e);
+      throw new AuthError("JWT malformed", ErrorCode.USER_JWT_MALFORMED);
     }
   }
 }
