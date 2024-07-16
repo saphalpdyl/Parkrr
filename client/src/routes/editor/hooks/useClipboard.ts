@@ -14,14 +14,14 @@ export function useClipboard() {
     }
   }, [selectedItem])
 
-  const pasteItem = useCallback(() => {
+  const pasteItem = () => {
     void async function() {
       const item = await tryGetItemFromClipboard();
       
       if ( !item ) return;
 
       addNewItem({
-        ...item,
+        ...item, 
         id: uuid(),
         position: {
           x: (item.position?.x ?? 0) + Math.round((Math.random() * 6) - 3) * SIZE_FACTOR, 
@@ -30,7 +30,7 @@ export function useClipboard() {
         }
       });
     }();
-  }, [selectedItem])
+  }
   
   return { copyItem, pasteItem };
 }

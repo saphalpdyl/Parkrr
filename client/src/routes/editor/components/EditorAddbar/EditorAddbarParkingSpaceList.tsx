@@ -2,40 +2,15 @@ import { v4 as uuid } from "uuid";
 
 
 import { useEditorStore } from "../../../../stores/editorState";
-import { ParkingSpaceType } from "../../../../types/parking";
-import { itemSizes } from "../../constants";
+import { itemSizes, parkingSpacesProperties } from "../../constants";
 import EditorAddbarItem from "./EditorAddbarItem";
-
-const bottomNavigationBarParkingSpaces: {
-  spaceType: ParkingSpaceType;
-  color: string;
-  border?: boolean;
-}[] = [
-  {
-    spaceType: "standard",
-    color: "#fff",
-    border: true,
-  },
-  {
-    spaceType: "electric",
-    color: "#00917c",
-  },
-  {
-    spaceType: "handicap",
-    color: "#1d63dc",
-  },
-  {
-    spaceType: "vip",
-    color: "#ab2330",
-  },
-];
 
 function EditorAddbarParkingSpaceList() {
   const { addNewItem, originPosition } = useEditorStore();
   
   return (
     <>
-      {bottomNavigationBarParkingSpaces.map((item) => (
+      {parkingSpacesProperties.map((item) => (
         <EditorAddbarItem 
           key={item.spaceType}
           onClick={() => {
