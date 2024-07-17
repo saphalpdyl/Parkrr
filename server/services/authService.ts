@@ -2,6 +2,7 @@ import { verify, decode, sign } from 'hono/jwt';
 import User, { IUser } from '../models/auth/user';
 import { ErrorCode } from '../constants/enum';
 import { AuthError } from '../../server/errors/error';
+import { JWTPayload } from 'hono/utils/jwt/types';
 
 export namespace AuthService {
   export interface UserRegisterData {
@@ -47,10 +48,13 @@ export namespace AuthService {
     user.lastLogin = Date.now();
     await user.save();
 
-    const jwtToken = await sign({
-      username: user.username,
+    const payload : JWTPayload = {
       iat: Math.floor(Date.now() / 1000),
-    }, process.env.JWT_SECRET!);
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 5,
+      username: user.username,
+    }
+    
+    const jwtToken = await sign(payload, process.env.JWT_SECRET!);
 
     return {jwtToken, user: prepareUserData(user)};
   }
