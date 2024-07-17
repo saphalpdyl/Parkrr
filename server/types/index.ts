@@ -1,4 +1,4 @@
-interface WorldObject {
+interface IWorldObject {
   position: {
     x: number;
     y: number;
@@ -11,34 +11,34 @@ interface WorldObject {
   args: [number, number, number];
 }
 
-export interface OtherObject extends WorldObject {
+export interface IOtherObject extends IWorldObject {
   color: String;
 }
 
 export type ParkingSpaceType = "standard" | "handicap" | "vip" | "electric";
 
-export interface ParkingSpace extends WorldObject {
+export interface IParkingSpace extends IWorldObject {
   occupied: boolean;
   type: ParkingSpaceType;
 }
 
-export interface ParkingFloor {
+export interface IParkingFloor {
   floorPrefix: String;
   floorNumber: number;
-  spaces: ParkingSpace[];
-  entrances?: OtherObject[];
-  exits?: OtherObject[];
-  offices?: OtherObject[];
+  spaces: IParkingSpace[];
+  entrances?: IOtherObject[];
+  exits?: IOtherObject[];
+  offices?: IOtherObject[];
 }
 
-export interface ParkingLot {
+export interface IParkingLot {
   notes ?: String;
-  floors: ParkingFloor[];
+  floors: IParkingFloor[];
   lat?: number;
   lon?: number;
 }
 
-export interface Organization {
+export interface IOrganization {
   name: String;
-  lots: ParkingLot[];
+  lots: IParkingLot[];
 }
