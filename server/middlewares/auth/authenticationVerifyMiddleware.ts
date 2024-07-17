@@ -2,6 +2,7 @@ import { AuthError } from "../../errors/error";
 import { AuthService } from "../../services/authService";
 import { ErrorCode } from "../../constants/enum";
 import { createMiddleware } from 'hono/factory';
+import User, { IUser } from "../../models/auth/user";
 
 const authenticate = createMiddleware(async (c, next) => {
   try {
@@ -10,7 +11,15 @@ const authenticate = createMiddleware(async (c, next) => {
     if ( !bearerToken ) throw new AuthError("Missing bearer token", ErrorCode.USER_JWT_MISSING);
     
     const payload = await AuthService.verifyToken(bearerToken.split(" ")[1]);
-    c.set("currentUser", payload);
+    
+    // Get the corresponding user
+    const username = payload.username as string;
+    const user = await User.findOne({ username, });
+    
+    c.set("currentUser", {
+      tokenDetails: payload,
+      ...AuthService.prepareUserData(user!),
+    });
     
     return next();
   } catch(e) {

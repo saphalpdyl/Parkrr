@@ -65,6 +65,8 @@ export namespace AuthService {
       lastName: user.lastName,
       middleName: user.middleName,
       username: user.username,
+      isActive: user.isActive,
+      lastLogin: user.lastLogin,
     }
   }
 
