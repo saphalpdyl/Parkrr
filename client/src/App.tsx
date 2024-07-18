@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ParkingSpaceEditorPage from "./routes/editor/ParkingSpaceEditorPage";
 import ParkingSpaceRendererPage from "./routes/renderer/ParkingSpaceRendererPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import LoginPage from "./routes/login/LoginPage";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -20,7 +21,11 @@ const App = () => {
               <ParkingSpaceEditorPage />
           ),
         },
-      ]
+        {
+          path: "/login",
+          element: <LoginPage />
+        },
+      ],
     }
   ]);
 
