@@ -1,18 +1,28 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import Logo from "../../components/Logo";
 import BackgroundGrid from "../editor/components/BackgroundGrid";
 import Input from "../../components/Input";
 import { Link } from "react-router-dom";
 import Button from "../../components/Button";
+import useAuth from "../../hooks/useAuth";
 
 function LoginPage() {
   const [ username, setUsername ] = useState("");
   const [ password, setPassword ] = useState("");
+
+  const { login } = useAuth();
+
+  async function handleLogin(e: FormEvent) {
+    e.preventDefault();
+    login(username, password);
+  }
   
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center gap-10 font-inter">
       <BackgroundGrid gridSize={30} />
-      <form className="z-10 flex h-[30rem] w-96 flex-col rounded-xl border-4 border-gray-500 bg-white px-4 py-6 shadow-lg gap-3">
+      <form 
+        onSubmit={handleLogin}
+        className="z-10 flex h-[30rem] w-96 flex-col rounded-xl border-4 border-gray-500 bg-white px-4 py-6 shadow-lg gap-3">
         <div className="flex items-center justify-between">
           <div>
             <Logo />
