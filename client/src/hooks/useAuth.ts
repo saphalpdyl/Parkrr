@@ -18,24 +18,24 @@ export default function useAuth() {
 
   useEffect(() => {
     if ( token ) {
-      console.log("Token Recieve: ", token)
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
     } else {
       delete axios.defaults.headers.common["Authorization"]
     }
   }, [token]);
 
+  const _handleError = (errMessage: string) => {
+    clearUserAndToken();
+    setError(errMessage);
+    setLoading(false);
+  }
+  
   const _handleUserResponse = (response: AxiosResponse<any,any>) => {
-    if ( response.status !== 200 ) {
-      // Do Something about the error
-      clearUserAndToken();
-      setError(response.data.message);
-      return;
-    }
-
     const {token, user } = response.data;
     setUserAndToken(user!, token!);
     localStorage.setItem("token", token);
+
+    setError(null);
     setLoading(false);
   }
   
@@ -46,14 +46,16 @@ export default function useAuth() {
       password
     };
     
-    const response = await axios.post("http://localhost:3000/api/v1/auth/login/", payload);
-    _handleUserResponse(response);    
+    const response = await axios.post("http://localhost:3000/api/v1/auth/login/", payload).catch(res => _handleError(res.response.data.message));
+
+    if ( response ) _handleUserResponse(response);    
   }
   
   const signUp = async (payload: SignUpData) => {
     setLoading(true);
-    const response = await axios.post("http://localhost:3000/api/v1/auth/signup/", payload);
-    _handleUserResponse(response); 
+    const response = await axios.post("http://localhost:3000/api/v1/auth/signup/", payload).catch(res => _handleError(res.response.data.message));
+
+    if ( response ) _handleUserResponse(response); 
   }
   
   return {
