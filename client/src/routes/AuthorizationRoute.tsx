@@ -2,16 +2,16 @@ import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth';
 
-function ProtectedRoute() {
+function AuthorizationRoute() {
   const { token } = useAuth();
   const navigate = useNavigate();
   
   useEffect(() => {
-    if ( !token ) {
-      navigate("/auth/login");
+    if ( token ) {
+      navigate("/app/editor");
     }
   }, [token]);
   
   return <Outlet />;
 }
-export default ProtectedRoute
+export default AuthorizationRoute

@@ -4,28 +4,35 @@ import ParkingSpaceEditorPage from "./routes/editor/ParkingSpaceEditorPage";
 import ParkingSpaceRendererPage from "./routes/renderer/ParkingSpaceRendererPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import LoginPage from "./routes/login/LoginPage";
+import AuthorizationRoute from "./routes/AuthorizationRoute";
 
 const App = () => {
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: "/app/",
       element: <ProtectedRoute />,
       children: [
         {
-          path: "/",
+          path: "",
           element: <ParkingSpaceRendererPage />,
         },
         {
-          path: "/editor",
+          path: "editor/",
           element: (
               <ParkingSpaceEditorPage />
           ),
         },
+      ],
+    },
+    {
+      path: "/auth/",
+      element: <AuthorizationRoute />,
+      children: [
         {
-          path: "/login",
+          path: "login/",
           element: <LoginPage />
         },
-      ],
+      ]
     }
   ]);
 
