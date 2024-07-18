@@ -5,25 +5,16 @@ import Input from "../../components/Input";
 import { Link } from "react-router-dom";
 import Button from "../../components/Button";
 import useAuth from "../../hooks/useAuth";
-import toast from "react-hot-toast";
 
 function LoginPage() {
   const [ username, setUsername ] = useState("");
   const [ password, setPassword ] = useState("");
 
-  const { login, error } = useAuth();
+  const { login } = useAuth();
 
   async function handleLogin(e: FormEvent) {
     e.preventDefault();
-    toast.loading("Logging in", {
-      id: "loginToast"
-    });
     await login(username, password);
-    if ( error ) {
-      toast.error(error, { id: "loginToast"})
-    } else {
-      toast.success("Logged in", {id: "loginToast"});
-    }
   }
   
   return (

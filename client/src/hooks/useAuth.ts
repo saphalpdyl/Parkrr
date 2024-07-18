@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useAuthStore from "../stores/authState";
 import axios, { AxiosResponse } from "axios";
+import toast from "react-hot-toast";
 
 export interface SignUpData {
   firstName: string;
@@ -25,22 +26,25 @@ export default function useAuth() {
   }, [token]);
 
   const _handleError = (errMessage: string) => {
-    clearUserAndToken();
     setError(errMessage);
+    clearUserAndToken();
     setLoading(false);
+    toast.error(errMessage, {id: "auth"})
   }
   
   const _handleUserResponse = (response: AxiosResponse<any,any>) => {
+    setError(null);
+    setLoading(false);
+
     const {token, user } = response.data;
     setUserAndToken(user!, token!);
     localStorage.setItem("token", token);
-
-    setError(null);
-    setLoading(false);
+    toast.success("Signed in!", {id: "auth"})
   }
   
   const login = async (username: string, password: string) => {
     setLoading(true);
+    toast.loading("Signing in!", {id: "auth"})
     const payload = {
       username,
       password
@@ -57,6 +61,11 @@ export default function useAuth() {
 
     if ( response ) _handleUserResponse(response); 
   }
+
+  const logout = () => {
+    clearUserAndToken();
+    localStorage.removeItem("token");
+  }
   
   return {
     user,
@@ -65,5 +74,6 @@ export default function useAuth() {
     error,
     login,
     signUp,
+    logout,
   }
 }
