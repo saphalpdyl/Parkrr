@@ -7,9 +7,9 @@ export default async function signUpController(c : Context) {
   
   try {
     const { firstName, lastName, username } = await AuthService.createUser(body);
-    const jwtToken = await AuthService.loginUser(body.username, body.username);
+    const responseData = await AuthService.loginUser(body.username, body.password);
     
-    return c.json({ firstName, lastName, username, token: jwtToken });
+    return c.json(responseData);
   } catch(e: any) {
     if ( e instanceof AuthError ) {
       c.status(400);

@@ -37,7 +37,7 @@ export namespace AuthService {
     // Check if user exists
     const user = await User.findOne({ username: username });
 
-    if ( !user ) throw new Error("User with that username doesn't exists ")
+    if ( !user ) throw new AuthError("User with that username doesn't exists ", ErrorCode.USER_DOES_NOT_EXISTS)
     
     // Check if password is valid
     const storedPassword = user.password;
