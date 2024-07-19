@@ -5,6 +5,7 @@ import ParkingSpaceRendererPage from "./routes/renderer/ParkingSpaceRendererPage
 import ProtectedRoute from "./routes/ProtectedRoute";
 import LoginPage from "./routes/login/LoginPage";
 import AuthorizationRoute from "./routes/AuthorizationRoute";
+import SignupPage from "./routes/signup/SignupPage";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -31,6 +32,10 @@ const App = () => {
         {
           path: "login/",
           element: <LoginPage />
+        },
+        {
+          path: "signup/",
+          element: <SignupPage />
         },
       ]
     },

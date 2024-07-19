@@ -38,7 +38,7 @@ function LoginPage() {
        <Button title="Sign in" onClick={() => {}} />
         <span className="text-center text-lg text-gray-400">Or</span>
         <span className="text-center text-md text-neutral-700">
-          Join the Community. <Link to="/register" className="text-rose-500 font-bold hover:underline">Register now!</Link> 
+          Join the Community. <Link to="/auth/signup" className="text-rose-500 font-bold hover:underline">Sign up now!</Link> 
         </span>
       </form>
     </div>
