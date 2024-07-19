@@ -8,7 +8,7 @@ function AuthorizationRoute() {
   
   useEffect(() => {
     if ( token ) {
-      navigate("/app/editor");
+      navigate("/editor");
     }
   }, [token]);
   

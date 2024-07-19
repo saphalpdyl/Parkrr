@@ -50,14 +50,14 @@ export default function useAuth() {
       password
     };
     
-    const response = await axios.post("http://localhost:3000/api/v1/auth/login/", payload).catch(res => _handleError(res.response.data.message));
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/login/`, payload).catch(res => _handleError(res.response.data.message));
 
     if ( response ) _handleUserResponse(response);    
   }
   
   const signUp = async (payload: SignUpData) => {
     setLoading(true);
-    const response = await axios.post("http://localhost:3000/api/v1/auth/signup/", payload).catch(res => _handleError(res.response.data.message));
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/signup/`, payload).catch(res => _handleError(res.response.data.message));
 
     if ( response ) _handleUserResponse(response); 
   }
@@ -65,6 +65,7 @@ export default function useAuth() {
   const logout = () => {
     clearUserAndToken();
     localStorage.removeItem("token");
+    toast.success("Logged out");
   }
   
   return {

@@ -9,11 +9,11 @@ import AuthorizationRoute from "./routes/AuthorizationRoute";
 const App = () => {
   const router = createBrowserRouter([
     {
-      path: "/app/",
+      path: "/",
       element: <ProtectedRoute />,
       children: [
         {
-          path: "",
+          path: "/",
           element: <ParkingSpaceRendererPage />,
         },
         {
@@ -33,7 +33,7 @@ const App = () => {
           element: <LoginPage />
         },
       ]
-    }
+    },
   ]);
 
   return <RouterProvider router={router} />;
