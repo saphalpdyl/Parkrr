@@ -17,6 +17,19 @@ export default function useAuth() {
 
   const { user, token, clearUserAndToken, setUserAndToken } = useAuthStore(); 
 
+  const _verifyToken = async (token: string) => {
+    setLoading(true);
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/verify/`);
+      setUserAndToken(response.data, token);
+    } catch (e) {
+      clearUserAndToken();
+      localStorage.removeItem("token");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     if ( token ) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
@@ -24,8 +37,16 @@ export default function useAuth() {
       delete axios.defaults.headers.common["Authorization"]
     }
   }, [token]);
+  
+  useEffect(() => {
+    if ( token ) {
+      _verifyToken(token);
+    }
+  }, []);
+
 
   const _handleError = (errMessage: string) => {
+    console.error(errMessage);
     setError(errMessage);
     clearUserAndToken();
     setLoading(false);
@@ -50,6 +71,7 @@ export default function useAuth() {
       password
     };
     
+    console.log(payload);
     const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/login/`, payload).catch(res => _handleError(res.response.data.message));
 
     if ( response ) _handleUserResponse(response);    
