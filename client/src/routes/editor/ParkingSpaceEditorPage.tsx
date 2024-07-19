@@ -88,6 +88,7 @@ const ParkingEditorPage = () => {
           floors: [
             {
               floorPrefix: "A",
+              // @ts-ignore
               spaces: _generateCompatibleDataForOtherObjects(items, "space"),
               entrances: _generateCompatibleDataForOtherObjects(
                 items,

@@ -4,7 +4,7 @@ type BackgroundGridProps = {
 
 function BackgroundGrid({ gridSize }: BackgroundGridProps) {
   return (
-    <div className="pointer-events-none absolute left-0 top-0 z-10 h-screen w-screen bg-[#f0f0f0]">
+    <div className="pointer-events-none absolute left-0 top-0 z-0 h-screen w-screen bg-[#f0f0f0]">
       <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern
