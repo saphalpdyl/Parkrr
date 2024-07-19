@@ -70,7 +70,7 @@ export default function useAuth() {
       password
     };
 
-    await new Promise((resolve, _) => setTimeout(() => resolve("asdad"),2000));
+    await new Promise((resolve, _) => setTimeout(() => resolve("asdad"), 1000));
     
     const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/login/`, payload).catch(error => _handleError(error.response?.data?.message || 'An unknown error occurred'));
     if (response) _handleUserResponse(response);
@@ -78,6 +78,7 @@ export default function useAuth() {
   
   const signUp = async (payload: SignUpData) => {
     setLoading(true);
+    await new Promise((resolve, _) => setTimeout(() => resolve("asdad"), 1000));
     const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/signup/`, payload).catch(res => _handleError(res.response.data.message));
 
     if ( response ) _handleUserResponse(response); 
