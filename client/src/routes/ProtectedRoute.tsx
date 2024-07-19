@@ -12,6 +12,9 @@ function ProtectedRoute() {
     }
   }, [token]);
   
-  return <Outlet />;
+  return <>
+    <Outlet />
+    
+  </>;
 }
 export default ProtectedRoute

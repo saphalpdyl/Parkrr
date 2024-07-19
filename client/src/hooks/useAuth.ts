@@ -12,10 +12,9 @@ export interface SignUpData {
 }
 
 export default function useAuth() {
-  const [ loading, setLoading ] = useState(false);
   const [ error, setError ] = useState<string | null>(null);
 
-  const { user, token, clearUserAndToken, setUserAndToken } = useAuthStore(); 
+  const { user, token, clearUserAndToken, setUserAndToken, loading, setLoading } = useAuthStore(); 
 
   const _verifyToken = async (token: string) => {
     setLoading(true);
@@ -46,17 +45,16 @@ export default function useAuth() {
 
 
   const _handleError = (errMessage: string) => {
+    setLoading(false);
     console.error(errMessage);
     setError(errMessage);
     clearUserAndToken();
-    setLoading(false);
     toast.error(errMessage, {id: "auth"})
   }
   
   const _handleUserResponse = (response: AxiosResponse<any,any>) => {
-    setError(null);
     setLoading(false);
-
+    setError(null);
     const {token, user } = response.data;
     setUserAndToken(user!, token!);
     localStorage.setItem("token", token);
@@ -65,16 +63,17 @@ export default function useAuth() {
   
   const login = async (username: string, password: string) => {
     setLoading(true);
+
     toast.loading("Signing in!", {id: "auth"})
     const payload = {
       username,
       password
     };
-    
-    console.log(payload);
-    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/login/`, payload).catch(res => _handleError(res.response.data.message));
 
-    if ( response ) _handleUserResponse(response);    
+    await new Promise((resolve, _) => setTimeout(() => resolve("asdad"),2000));
+    
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/login/`, payload).catch(error => _handleError(error.response?.data?.message || 'An unknown error occurred'));
+    if (response) _handleUserResponse(response);
   }
   
   const signUp = async (payload: SignUpData) => {
