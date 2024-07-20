@@ -13,7 +13,7 @@ export namespace AuthService {
     username: string;
   }
   
-  export async function createUser(userData: UserRegisterData) : Promise<Omit<IUser, "password">> {
+  export async function createUser(userData: UserRegisterData) : Promise<Omit<IUser, "password" | "parkingLots">> {
     // Search if the same username exists
     const userWithSameName = await User.find({
       username: userData.username,
@@ -30,7 +30,6 @@ export namespace AuthService {
     user.password = hashedPassword;
     const newUser = await user.save();
 
-    // @ts-expect-error
     return prepareUserData(newUser);
   }
 

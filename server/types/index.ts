@@ -1,3 +1,7 @@
+import { JWTPayload } from "hono/utils/jwt/types";
+import { IUser } from "../models/auth/user";
+import { Context } from "hono";
+
 interface IWorldObject {
   position: {
     x: number;
@@ -37,3 +41,11 @@ export interface IParkingLot {
   lat?: number;
   lon?: number;
 }
+
+export interface CurrentUserInterface {
+  tokenDetails: JWTPayload,
+  id: string,
+  user: IUser,
+}
+
+export type AuthenticatedRouteContext = Context<{ Variables: { currentUser: CurrentUserInterface }}>;

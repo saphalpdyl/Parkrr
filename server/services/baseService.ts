@@ -7,7 +7,7 @@ import { IParkingLot } from "../types";
 
 export namespace BaseService {
   async function _getUserById(userId: string) {
-    const user = await User.findById({ userId });
+    const user = await User.findById(userId);
   
     if ( !user ) throw new ServiceError("Couldn't find user", ErrorCode.SYSTEM_ITEM_NOT_FOUND);
 

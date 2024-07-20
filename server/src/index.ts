@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import signUpController from '../controllers/auth/signUpController';
 import loginController from '../controllers/auth/loginController';
 import authenticate from '../middlewares/auth/authenticationVerifyMiddleware';
+import createNewParkingLotController from '../controllers/base/createNewParkingLotController';
 
 const app = new Hono().basePath("/api/v1");
 app.use('*', cors({
@@ -16,6 +17,10 @@ app.use('*', cors({
 }));
 
 mongoose.connect(process.env.MONGODB_URL!);
+
+app.use("/app/*", authenticate);
+
+app.post("/app/new/", createNewParkingLotController);
 
 // Authentication
 app.post("/auth/signup/", signUpController);
