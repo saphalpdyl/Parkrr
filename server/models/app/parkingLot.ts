@@ -1,15 +1,12 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 import { IParkingLot } from "../../types";
+import { parkingFloorSchema } from "../../schemas/parkingFloor";
 
 const parkingLotSchema = new mongoose.Schema<IParkingLot>({
   notes: String,
   lat: Number,
   lon: Number,
-  floors: [{
-    default: [],
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'ParkingFloor'
-  }]
+  floors: [parkingFloorSchema],
 });
 
 const ParkingLot = mongoose.model('ParkingLot', parkingLotSchema);

@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import { IParkingSpace } from "../../types";
+import { IParkingSpace } from "../types";
 import { positionSchema } from "./shared";
 
-const parkingSpaceSchema = new mongoose.Schema<IParkingSpace>({
+export const parkingSpaceSchema = new mongoose.Schema<IParkingSpace>({
   occupied: {
     default: false,
     type: Boolean,
@@ -29,7 +29,3 @@ const parkingSpaceSchema = new mongoose.Schema<IParkingSpace>({
     required: true,
   }
 });
-
-const ParkingSpace = mongoose.model("ParkingSpace", parkingSpaceSchema);
-
-export default ParkingSpace;

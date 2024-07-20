@@ -37,8 +37,3 @@ export interface IParkingLot {
   lat?: number;
   lon?: number;
 }
-
-export interface IOrganization {
-  name: String;
-  lots: IParkingLot[];
-}
