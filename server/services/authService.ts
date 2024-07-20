@@ -30,6 +30,7 @@ export namespace AuthService {
     user.password = hashedPassword;
     const newUser = await user.save();
 
+    // @ts-expect-error
     return prepareUserData(newUser);
   }
 

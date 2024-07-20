@@ -21,7 +21,6 @@ mongoose.connect(process.env.MONGODB_URL!);
 app.post("/auth/signup/", signUpController);
 app.post("/auth/login/", loginController);
 app.post("/auth/verify/", authenticate, c => {
-  console.log(c.get("currentUser" as any));
   return c.json(c.get("currentUser" as any));
 });
 

@@ -17,4 +17,6 @@ class ApiError extends Error {
   }
 }
 
+export class ServiceError extends ApiError {}
+
 export class AuthError extends ApiError {}

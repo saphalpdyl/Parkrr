@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { IParkingLot } from "../../types";
 
 export interface IUser {
   firstName: string;
@@ -11,7 +10,7 @@ export interface IUser {
   passwordResetToken?: string;
   username: string;
   lastLogin?: number;
-  parkingLots?: IParkingLot[];
+  parkingLots: mongoose.Types.ObjectId[];
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -43,7 +42,7 @@ const userSchema = new mongoose.Schema<IUser>({
     default: Date.now,
   },
   parkingLots: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: [mongoose.Schema.Types.ObjectId],
     ref: 'ParkingLot',
     default: []
   },
