@@ -10,6 +10,7 @@ export interface IUser {
   passwordResetToken?: string;
   username: string;
   lastLogin?: number;
+  parkingLots: mongoose.Types.ObjectId[];
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -39,7 +40,12 @@ const userSchema = new mongoose.Schema<IUser>({
   lastLogin: {
     type: Date,
     default: Date.now,
-  }
+  },
+  parkingLots: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'ParkingLot',
+    default: []
+  },
 });
 
 const User = mongoose.model('User', userSchema);
