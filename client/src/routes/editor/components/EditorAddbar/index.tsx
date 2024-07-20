@@ -1,16 +1,15 @@
 import { v4 as uuid } from "uuid";
 
 
-import { ChevronDown, ChevronUp, Plus, Settings, UserCircle } from "lucide-react";
+import { ChevronDown, ChevronUp, Plus, Settings } from "lucide-react";
 import EditorAddbarParkingSpaceList from "./EditorAddbarParkingSpaceList";
 import EditorAddbarItem from "./EditorAddbarItem";
 import { useEditorStore } from "../../../../stores/editorState";
 import { itemSizes } from "../../constants";
-import useAuth from "../../../../hooks/useAuth";
+import UserProfile from "../../../../components/UserProfile";
 
 function EditorAddBar() {
   const { addNewItem, originPosition } = useEditorStore();
-  const { logout } = useAuth();
   
   function handleAddOffice() {
     addNewItem({
@@ -65,9 +64,7 @@ function EditorAddBar() {
           </EditorAddbarItem>
         </div> 
         <div className="flex-1 flex justify-end items-center gap-2">
-          <div onClick={logout} className="rounded-full p-2 hover:bg-gray-100 cursor-pointer">
-            <UserCircle color="black"/>
-          </div>
+          <UserProfile />
           <div className="p-2 hover:bg-gray-100 rounded-full cursor-pointer">
             <Settings />  
           </div>
