@@ -27,5 +27,9 @@ export const parkingSpaceSchema = new mongoose.Schema<IParkingSpace>({
   args: {
     type: [Number, Number, Number],
     required: true,
+  },
+  editorData: {
+    type: Object,
+    required: true,
   }
 });

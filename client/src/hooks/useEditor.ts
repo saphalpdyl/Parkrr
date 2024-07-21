@@ -5,6 +5,7 @@ import { useEditorStore } from "../stores/editorState";
 import { OtherObject, ParkingLot } from "../types/parking";
 import { convertToRadians } from "../utils";
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function useEditor() {
   const { 
@@ -50,7 +51,7 @@ export default function useEditor() {
     if ( currentEditorId ) {
       loadEditor();
     }
-  }, [currentEditorId])
+  }, [currentEditorId]);
   
   function _generateCompatibleDataForOtherObjects(
     items: EditorItem[],
@@ -96,7 +97,7 @@ export default function useEditor() {
       });
   }
 
-  function handleSave() {
+  async function handleSave() {
     const parkingLot: ParkingLot = {
       floors: [
         {
@@ -119,9 +120,14 @@ export default function useEditor() {
       ],
 
     };
-    console.log("p",parkingLot);
 
     // Fetching to the backend
+    toast.loading("Saving", {id: "save"})
+    await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/update/`, {
+      updatedParkingLot: parkingLot,
+      parkingLotId: parkingLot._id || currentEditorId,
+    });
+    toast.success("Saved", {id: "save"})
   }
 
   return { handleSave, loadEditor, editorLoading, changeEditor, currentEditorId, getAllEditorInformation, removeCurrentEditor };

@@ -23,5 +23,9 @@ export const otherObjectSchema = new mongoose.Schema<IOtherObject>({
   color: {
     type: String,
     required: true,
+  },
+  editorData: {
+    type: Object,
+    required: true,
   }
 });

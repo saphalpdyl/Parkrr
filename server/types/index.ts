@@ -11,12 +11,13 @@ interface IWorldObject {
 
   rotation: number;
 
-  id : String;
+  id : string;
   args: [number, number, number];
+  editorData: object;
 }
 
 export interface IOtherObject extends IWorldObject {
-  color: String;
+  color: string;
 }
 
 export type ParkingSpaceType = "standard" | "handicap" | "vip" | "electric";
@@ -27,7 +28,7 @@ export interface IParkingSpace extends IWorldObject {
 }
 
 export interface IParkingFloor {
-  floorPrefix: String;
+  floorPrefix: string;
   floorNumber: number;
   spaces: IParkingSpace[];
   entrances?: IOtherObject[];
@@ -36,7 +37,7 @@ export interface IParkingFloor {
 }
 
 export interface IParkingLot {
-  notes ?: String;
+  notes ?: string;
   floors: IParkingFloor[];
   lat?: number;
   lon?: number;
