@@ -34,11 +34,16 @@ export default function useEditor() {
 
   async function changeEditor(id: string) {
     setCurrentEditorId(id);
+    setEditorLoading(false);
   }
 
   async function getAllEditorInformation() {
     const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/`);
     return response.data as {_id: string, name?: string}[];
+  }
+  async function removeCurrentEditor() {
+    setEditorLoading(true);
+    setCurrentEditorId(null);
   }
 
   useEffect(() => {
@@ -119,5 +124,5 @@ export default function useEditor() {
     // Fetching to the backend
   }
 
-  return { handleSave, loadEditor, editorLoading, changeEditor, currentEditorId, getAllEditorInformation };
+  return { handleSave, loadEditor, editorLoading, changeEditor, currentEditorId, getAllEditorInformation, removeCurrentEditor };
 }
