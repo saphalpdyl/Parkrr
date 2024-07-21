@@ -25,7 +25,7 @@ app.use("/app/*", authenticate);
 
 app.post("/app/lots/new/", createNewParkingLotController);
 app.post("/app/lots/update/", updateParkingLotController);
-app.get("/app/lots/:id/", getParkingLotController);
+app.get("/app/lots/:id", getParkingLotController);
 app.get("/app/lots/", getAllParkingLotsController);
 
 // Authentication

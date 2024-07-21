@@ -15,22 +15,24 @@ export default function useEditor() {
     let editorItemProps: Partial<
       Partial<EditorItem> & { occupied: boolean }
     > = {};
-    if (category === "space") {
-      editorItemProps = {
-        occupied: false,
-        category: "space",
-        spaceType: "standard",
-      };
-    }
-
+    
+    // TODO: Since recalculating from exported metrics to editor matrix 
+    // will be difficult save an instance of editor matrix in another key
+    // for editing or loading purposes
     return items
       .filter((item) => item.category === category)
       .map<OtherObject | EditorItem>((item) => {
         const x = ((item?.position?.x ?? 0) - (originPosition?.x ?? 0)) / SIZE_FACTOR;
         const y = ((item?.position?.z ?? 0) - (originPosition?.z ?? 0)) / SIZE_FACTOR;
         const isVerticallyRotated = Math.abs(item.rotation ?? 0) === 90 || Math.abs(item.rotation ?? 0) === 270;
-
-
+        
+        if (item.category === "space") {
+          editorItemProps = {
+            occupied: false,
+            spaceType: item.spaceType,
+          };
+        }
+        
         return {
           id: item.id,
           position: item.position
@@ -43,7 +45,9 @@ export default function useEditor() {
           rotation: convertToRadians(item.rotation ?? 0),
           color: itemSizes[category].color,
           args: [itemSizes[category].width, 0.1, itemSizes[category].height],
+          category: item.category,
           ...editorItemProps,
+          editorData: item,
         };
       });
   }
@@ -69,7 +73,9 @@ export default function useEditor() {
           ) as OtherObject[],
         },
       ],
+
     };
+    console.log("p",parkingLot);
 
     // Fetching to the backend
   }
