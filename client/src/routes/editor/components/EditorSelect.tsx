@@ -9,7 +9,7 @@ function EditorSelect() {
   const { getAllEditorInformation, currentEditorId, changeEditor } = useEditor();
   const { token } = useAuth();
 
-  function handleDeleteEditor(e: React.MouseEvent<HTMLDivElement>, id: string) {
+  function handleDeleteEditor(e: React.MouseEvent<HTMLDivElement>, _id: string) {
     e.stopPropagation();
   }
 
