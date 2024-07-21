@@ -7,6 +7,7 @@ import { convertToRadians } from "../utils";
 export default function useEditor() {
   const { originPosition, items, currentEditorId, setCurrentEditorId } = useEditorStore();
 
+  
   function _generateCompatibleDataForOtherObjects(
     items: EditorItem[],
     category: ParkingItemCategory,

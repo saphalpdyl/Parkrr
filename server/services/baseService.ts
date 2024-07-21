@@ -13,6 +13,20 @@ export namespace BaseService {
 
     return user;
   }
+
+  export async function getParkingLot(userId: string, parkingLotId: string) {
+    const user = await _getUserById(userId);
+
+    const parkingLot = await ParkingLot.findById(parkingLotId);
+
+    if ( !parkingLot ) throw new ServiceError("Couldn't find corresponding parking lot", ErrorCode.SYSTEM_ITEM_NOT_FOUND);
+
+    // Check if parking lot belongs to the user
+    const isParkingLotOfUser = user.parkingLots.includes(new mongoose.Types.ObjectId(parkingLotId));
+    if ( !isParkingLotOfUser ) throw new ServiceError("Not Authorized", ErrorCode.SYSTEM_USER_NOT_AUTHORIZED);
+
+    return parkingLot;
+  }
   
   export async function createParkingLot(userId: string) {
     const user = await _getUserById(userId);
