@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import useEditor from "../../../hooks/useEditor";
 import { Trash2 } from "lucide-react";
 import useAuth from "../../../hooks/useAuth";
+import UserProfile from "../../../components/UserProfile";
 
 function EditorSelect() {
   const [editors, setEditors] = useState<{_id: string, name?: string}[]>([]);
@@ -37,7 +38,10 @@ function EditorSelect() {
       p-5
       text-slate-700
     ">
-      <span className="text-3xl font-semibold mb-2">Saved Instances</span>
+      <div className="flex justify-between">
+        <span className="text-3xl font-semibold mb-2">Saved Instances</span>
+        <UserProfile menuPosition="bottom" />
+      </div>
       <span className="font-light text-sm text-slate-600 mb-4">Load previously saved <strong>Parkr</strong> instances and continue where you left off on planning.</span>
       <div className="border-t-2 mb-4"></div>
       <div className="flex-1 overflow-auto flex flex-col gap-3">

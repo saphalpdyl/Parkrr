@@ -6,6 +6,7 @@ import { OtherObject, ParkingLot } from "../types/parking";
 import { convertToRadians } from "../utils";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import useAuth from "./useAuth";
 
 export default function useEditor() {
   const { 
@@ -18,25 +19,33 @@ export default function useEditor() {
     setEditorLoading,
   } = useEditorStore();
 
+  const { user } = useAuth();
+
   async function loadEditor() {
     setEditorLoading(true);
     if ( !currentEditorId ) return;
 
-    const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${currentEditorId}`);
-    const floor = response.data.floors[0];
-    const resItems = [
-      ...floor.spaces.map((e:{ editorData: EditorItem}) => e.editorData),
-      ...floor.offices.map((e:{ editorData: EditorItem}) => e.editorData),
-      ...floor.entrances.map((e:{ editorData: EditorItem}) => e.editorData),
-      ...floor.exits.map((e:{ editorData: EditorItem}) => e.editorData),
-    ];
-    
-    setItems(resItems);
-    setEditorLoading(false);
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${currentEditorId}`);
+      const floor = response.data.floors[0];
+      const resItems = [
+        ...floor.spaces.map((e:{ editorData: EditorItem}) => e.editorData),
+        ...floor.offices.map((e:{ editorData: EditorItem}) => e.editorData),
+        ...floor.entrances.map((e:{ editorData: EditorItem}) => e.editorData),
+        ...floor.exits.map((e:{ editorData: EditorItem}) => e.editorData),
+      ];
+      
+      setItems(resItems);
+      setEditorLoading(false);
+    } catch(e) {
+      setCurrentEditorId(null);
+      localStorage.removeItem("recentEditorId");
+    }
   }
 
   async function changeEditor(id: string) {
     setCurrentEditorId(id);
+    localStorage.setItem("recentEditorId", id);
     setEditorLoading(false);
   }
 
@@ -44,16 +53,21 @@ export default function useEditor() {
     const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/`);
     return response.data as {_id: string, name?: string}[];
   }
+  
   async function removeCurrentEditor() {
     setEditorLoading(true);
     setCurrentEditorId(null);
   }
 
   useEffect(() => {
-    if ( currentEditorId ) {
+    if ( currentEditorId && user ) {
       loadEditor();
     }
   }, [currentEditorId]);
+
+  useEffect(() => {
+    if ( user === null ) setEditorLoading(false);
+  }, [user])
   
   function _generateCompatibleDataForOtherObjects(
     items: EditorItem[],
