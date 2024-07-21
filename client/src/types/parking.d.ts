@@ -36,9 +36,5 @@ export interface ParkingLot {
   floors: ParkingFloor[];
   lat?: number;
   lon?: number;
-}
-
-export interface Organization {
-  name: String;
-  lots: ParkingLot[];
+  _id?: string;
 }
