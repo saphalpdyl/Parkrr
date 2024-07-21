@@ -4,6 +4,8 @@ import { EditorItem, Position } from "../routes/editor/types";
 interface EditorState {
   items: EditorItem[];
   activeId: string | null;
+  editorLoading: boolean;
+  setEditorLoading: (value: boolean) => void;
   selectedItem: {
     item: EditorItem;
     clickPosition: Position;
@@ -53,6 +55,8 @@ export const useEditorStore = create<EditorState>((set) => ({
   selectedItem: null,
   originPosition: null,
   currentEditorId: localStorage.getItem("recentEditorId"),
+  editorLoading: true,
+  setEditorLoading: (value) => set({ editorLoading: value }),
   setCurrentEditorId: (value) => set({ currentEditorId: value }),
   setItems: (items) => set({ items }),
   addNewItem: (item) => set((state) => ({ items: [...state.items, item] })),

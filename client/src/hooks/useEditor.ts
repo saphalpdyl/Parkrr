@@ -1,12 +1,46 @@
+import axios from "axios";
 import { itemSizes, SIZE_FACTOR } from "../routes/editor/constants";
 import { EditorItem, ParkingItemCategory } from "../routes/editor/types";
 import { useEditorStore } from "../stores/editorState";
 import { OtherObject, ParkingLot } from "../types/parking";
 import { convertToRadians } from "../utils";
+import { useEffect } from "react";
 
 export default function useEditor() {
-  const { originPosition, items, currentEditorId, setCurrentEditorId } = useEditorStore();
+  const { 
+    originPosition,
+    items,
+    currentEditorId,
+    setCurrentEditorId,
+    setItems,
+    editorLoading,
+    setEditorLoading,
+  } = useEditorStore();
 
+  async function loadEditor() {
+    setEditorLoading(true);
+    const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${currentEditorId}`);
+    const floor = response.data.floors[0];
+    const resItems = [
+      ...floor.spaces.map((e:{ editorData: EditorItem}) => e.editorData),
+      ...floor.offices.map((e:{ editorData: EditorItem}) => e.editorData),
+      ...floor.entrances.map((e:{ editorData: EditorItem}) => e.editorData),
+      ...floor.exits.map((e:{ editorData: EditorItem}) => e.editorData),
+    ];
+    
+    setItems(resItems);
+    setEditorLoading(false);
+  }
+
+  async function changeEditor(id: string) {
+    setCurrentEditorId(id);
+  }
+
+  useEffect(() => {
+    if ( currentEditorId ) {
+      loadEditor();
+    }
+  }, [currentEditorId])
   
   function _generateCompatibleDataForOtherObjects(
     items: EditorItem[],
@@ -80,5 +114,5 @@ export default function useEditor() {
     // Fetching to the backend
   }
 
-  return { handleSave };
+  return { handleSave, loadEditor, editorLoading, changeEditor };
 }

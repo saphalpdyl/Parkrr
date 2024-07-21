@@ -16,8 +16,6 @@ import EditorAddBar from "./components/EditorAddbar";
 import SelectedItemPropertiesSection from "./components/SelectedItemPropertiesSection";
 import { useClipboard } from "./hooks/useClipboard";
 import useEditor from "../../hooks/useEditor";
-import axios from "axios";
-import { EditorItem } from "./types";
 
 const ParkingEditorPage = () => {
   const {
@@ -27,7 +25,6 @@ const ParkingEditorPage = () => {
     collidingId,
     originPosition,
     setSelectedItem,
-    setItems,
   } = useEditorStore();
 
   const { handleCenterOrigin, dndContextRef } = useOrigin();
@@ -40,23 +37,11 @@ const ParkingEditorPage = () => {
   } = useDragDrop();
 
   const { copyItem, pasteItem } = useClipboard();
-  const { handleSave } = useEditor();
+  const { handleSave, loadEditor } = useEditor();
 
   useEffect(() => {
     handleCenterOrigin();
-
-    void async function() {
-      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${"669d2731fc79107a1780354c"}`);
-      const floor = response.data.floors[0];
-      const resItems = [
-        ...floor.spaces.map((e:{ editorData: EditorItem}) => e.editorData),
-        ...floor.offices.map((e:{ editorData: EditorItem}) => e.editorData),
-        ...floor.entrances.map((e:{ editorData: EditorItem}) => e.editorData),
-        ...floor.exits.map((e:{ editorData: EditorItem}) => e.editorData),
-      ];
-
-      setItems(resItems);
-    }();
+    loadEditor();
   }, []);
 
   return (
