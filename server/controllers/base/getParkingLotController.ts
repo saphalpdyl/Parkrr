@@ -1,8 +1,9 @@
 import { ServiceError } from "../../errors/error";
+import withErrorHandling from "../../errors/wrapper";
 import { BaseService } from "../../services/baseService";
 import { AuthenticatedRouteContext } from "../../types";
 
-export default async function getParkingLotController(c: AuthenticatedRouteContext) {
+async function getParkingLotController(c: AuthenticatedRouteContext) {
   try {
     const parkingLotId = c.req.param("id");
     const parkingLot = await BaseService.getParkingLot(c.get("currentUser").id, parkingLotId);
@@ -17,3 +18,5 @@ export default async function getParkingLotController(c: AuthenticatedRouteConte
     return c.json({ message: "Internal Server Error"});
   }
 }
+
+export default withErrorHandling(getParkingLotController);
