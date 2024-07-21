@@ -20,6 +20,8 @@ export default function useEditor() {
 
   async function loadEditor() {
     setEditorLoading(true);
+    if ( !currentEditorId ) return;
+
     const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${currentEditorId}`);
     const floor = response.data.floors[0];
     const resItems = [

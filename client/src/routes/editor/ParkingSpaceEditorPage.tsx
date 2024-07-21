@@ -38,7 +38,7 @@ const ParkingEditorPage = () => {
   } = useDragDrop();
 
   const { copyItem, pasteItem } = useClipboard();
-  const { handleSave, loadEditor, currentEditorId, editorLoading } = useEditor();
+  const { handleSave, loadEditor, currentEditorId } = useEditor();
 
   useEffect(() => {
     handleCenterOrigin();
