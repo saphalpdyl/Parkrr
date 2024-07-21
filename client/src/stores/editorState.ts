@@ -55,7 +55,7 @@ export const useEditorStore = create<EditorState>((set) => ({
   selectedItem: null,
   originPosition: null,
   currentEditorId: localStorage.getItem("recentEditorId"),
-  editorLoading: true,
+  editorLoading: false,
   setEditorLoading: (value) => set({ editorLoading: value }),
   setCurrentEditorId: (value) => set({ currentEditorId: value }),
   setItems: (items) => set({ items }),

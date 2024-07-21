@@ -36,6 +36,11 @@ export default function useEditor() {
     setCurrentEditorId(id);
   }
 
+  async function getAllEditorInformation() {
+    const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/`);
+    return response.data as {_id: string, name?: string}[];
+  }
+
   useEffect(() => {
     if ( currentEditorId ) {
       loadEditor();
@@ -114,5 +119,5 @@ export default function useEditor() {
     // Fetching to the backend
   }
 
-  return { handleSave, loadEditor, editorLoading, changeEditor };
+  return { handleSave, loadEditor, editorLoading, changeEditor, currentEditorId, getAllEditorInformation };
 }

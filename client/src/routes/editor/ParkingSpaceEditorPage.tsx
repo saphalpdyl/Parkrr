@@ -16,6 +16,7 @@ import EditorAddBar from "./components/EditorAddbar";
 import SelectedItemPropertiesSection from "./components/SelectedItemPropertiesSection";
 import { useClipboard } from "./hooks/useClipboard";
 import useEditor from "../../hooks/useEditor";
+import EditorSelect from "./components/EditorSelect";
 
 const ParkingEditorPage = () => {
   const {
@@ -37,7 +38,7 @@ const ParkingEditorPage = () => {
   } = useDragDrop();
 
   const { copyItem, pasteItem } = useClipboard();
-  const { handleSave, loadEditor } = useEditor();
+  const { handleSave, loadEditor, currentEditorId, editorLoading } = useEditor();
 
   useEffect(() => {
     handleCenterOrigin();
@@ -46,6 +47,10 @@ const ParkingEditorPage = () => {
 
   return (
     <div onCopy={copyItem} onPaste={pasteItem} className="relative flex h-screen w-screen items-center justify-center overflow-hidden">
+      {
+        !currentEditorId && <EditorSelect />
+      }
+      
       <span className="absolute right-2 top-2 z-20 font-mono text-xs font-semibold">
         Created with ❤️ by saphalpdyl
       </span>

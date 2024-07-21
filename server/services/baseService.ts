@@ -16,7 +16,11 @@ export namespace BaseService {
 
   export async function getAllParkingLotOfUser(userId: string) {
     const user = await _getUserById(userId);
-    return user.parkingLots;
+    return await ParkingLot.find({
+      '_id': {
+        $in: user.parkingLots,
+      }
+    }, 'name _id');
   }
 
   export async function getParkingLot(userId: string, parkingLotId: string) {
