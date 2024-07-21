@@ -64,6 +64,10 @@ export default function useEditor() {
       loadEditor();
     }
   }, [currentEditorId]);
+
+  useEffect(() => {
+    if ( user === null ) setEditorLoading(false);
+  }, [user])
   
   function _generateCompatibleDataForOtherObjects(
     items: EditorItem[],
