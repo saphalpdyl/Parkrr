@@ -23,7 +23,7 @@ function UserProfile({ menuPosition = "top" } : UserProfileProps) {
         <div 
           className={`
             absolute 
-            ${menuPosition === "top" ? "-translate-y-28" : "translate-y-28"}
+            ${menuPosition === "top" ? "-translate-y-28" : "translate-y-6"}
             w-40 h-28
             bg-white
             rounded-xl shadow-md

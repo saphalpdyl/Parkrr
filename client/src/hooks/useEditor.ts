@@ -25,17 +25,22 @@ export default function useEditor() {
     setEditorLoading(true);
     if ( !currentEditorId ) return;
 
-    const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${currentEditorId}`);
-    const floor = response.data.floors[0];
-    const resItems = [
-      ...floor.spaces.map((e:{ editorData: EditorItem}) => e.editorData),
-      ...floor.offices.map((e:{ editorData: EditorItem}) => e.editorData),
-      ...floor.entrances.map((e:{ editorData: EditorItem}) => e.editorData),
-      ...floor.exits.map((e:{ editorData: EditorItem}) => e.editorData),
-    ];
-    
-    setItems(resItems);
-    setEditorLoading(false);
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${currentEditorId}`);
+      const floor = response.data.floors[0];
+      const resItems = [
+        ...floor.spaces.map((e:{ editorData: EditorItem}) => e.editorData),
+        ...floor.offices.map((e:{ editorData: EditorItem}) => e.editorData),
+        ...floor.entrances.map((e:{ editorData: EditorItem}) => e.editorData),
+        ...floor.exits.map((e:{ editorData: EditorItem}) => e.editorData),
+      ];
+      
+      setItems(resItems);
+      setEditorLoading(false);
+    } catch(e) {
+      setCurrentEditorId(null);
+      localStorage.removeItem("recentEditorId");
+    }
   }
 
   async function changeEditor(id: string) {
@@ -48,9 +53,9 @@ export default function useEditor() {
     const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/`);
     return response.data as {_id: string, name?: string}[];
   }
+  
   async function removeCurrentEditor() {
     setEditorLoading(true);
-    localStorage.removeItem("recentEditorId");
     setCurrentEditorId(null);
   }
 
