@@ -6,6 +6,7 @@ import signUpController from '../controllers/auth/signUpController';
 import loginController from '../controllers/auth/loginController';
 import authenticate from '../middlewares/auth/authenticationVerifyMiddleware';
 import createNewParkingLotController from '../controllers/base/createNewParkingLotController';
+import updateParkingLotController from '../controllers/base/updateParkingLotController';
 
 const app = new Hono().basePath("/api/v1");
 app.use('*', cors({

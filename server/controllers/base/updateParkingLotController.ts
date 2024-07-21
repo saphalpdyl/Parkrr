@@ -4,5 +4,5 @@ import { AuthenticatedRouteContext } from "../../types";
 export default async function updateParkingLotController(c: AuthenticatedRouteContext) {
   const { updatedParkingLot, parkingLotId } = await c.req.json();
 
-  return await BaseService.updateParkingLot(updatedParkingLot, parkingLotId, c.get("currentUser").id);
+  return c.json(await BaseService.updateParkingLot(updatedParkingLot, parkingLotId, c.get("currentUser").id));
 }
