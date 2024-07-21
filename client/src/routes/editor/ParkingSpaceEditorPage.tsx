@@ -2,12 +2,10 @@ import { useEffect } from "react";
 import { DndContext, DragOverlay, rectIntersection } from "@dnd-kit/core";
 
 import { restrictToParentElement } from "@dnd-kit/modifiers";
-import type { EditorItem, ParkingItemCategory } from "./types";
 import DraggableItem from "./components/DraggableItem";
 import EditorSidebar from "./components/EditorSidebar";
 import BackgroundGrid from "./components/BackgroundGrid";
-import { Organization, OtherObject } from "../../types/parking";
-import { itemSizes, SIZE_FACTOR } from "./constants";
+import { SIZE_FACTOR } from "./constants";
 import EditorContextMenu from "./components/EditorContextMenu";
 import OriginItem from "./components/OriginItem";
 import Logo from "../../components/Logo";
@@ -16,8 +14,9 @@ import { useOrigin } from "./hooks/useOrigin";
 import { useDragDrop } from "./hooks/useDragDrop";
 import EditorAddBar from "./components/EditorAddbar";
 import SelectedItemPropertiesSection from "./components/SelectedItemPropertiesSection";
-import { convertToRadians } from "../../utils";
 import { useClipboard } from "./hooks/useClipboard";
+import useEditor from "../../hooks/useEditor";
+import EditorSelect from "./components/EditorSelect";
 
 const ParkingEditorPage = () => {
   const {
@@ -39,86 +38,19 @@ const ParkingEditorPage = () => {
   } = useDragDrop();
 
   const { copyItem, pasteItem } = useClipboard();
-
-  function handleSave() {
-    function _generateCompatibleDataForOtherObjects(
-      items: EditorItem[],
-      category: ParkingItemCategory,
-    ) {
-      let editorItemProps: Partial<
-        Partial<EditorItem> & { occupied: boolean }
-      > = {};
-      if (category === "space") {
-        editorItemProps = {
-          occupied: false,
-          category: "space",
-          spaceType: "standard",
-        };
-      }
-
-      return items
-        .filter((item) => item.category === category)
-        .map<OtherObject | EditorItem>((item) => {
-          const x = ((item?.position?.x ?? 0) - (originPosition?.x ?? 0)) / SIZE_FACTOR;
-          const y = ((item?.position?.z ?? 0) - (originPosition?.z ?? 0)) / SIZE_FACTOR;
-          const isVerticallyRotated = Math.abs(item.rotation ?? 0) === 90 || Math.abs(item.rotation ?? 0) === 270;
-
-
-          return {
-            id: item.id,
-            position: item.position
-              ? {
-                  x: x + (isVerticallyRotated ? itemSizes[category].height : itemSizes[category].width) / 2,
-                  y: 0,
-                  z: y + (isVerticallyRotated ? itemSizes[category].width : itemSizes[category].height) / 2,
-                }
-              : { x: 0, y: 0, z: 0 },
-            rotation: convertToRadians(item.rotation ?? 0),
-            color: itemSizes[category].color,
-            args: [itemSizes[category].width, 0.1, itemSizes[category].height],
-            ...editorItemProps,
-          };
-        });
-    }
-
-    const org: Organization = {
-      name: "Saphal Parking Pvt. Ltd.",
-      lots: [
-        {
-          floors: [
-            {
-              floorPrefix: "A",
-              // @ts-ignore
-              spaces: _generateCompatibleDataForOtherObjects(items, "space"),
-              entrances: _generateCompatibleDataForOtherObjects(
-                items,
-                "entrance",
-              ) as OtherObject[],
-              exits: _generateCompatibleDataForOtherObjects(
-                items,
-                "exit",
-              ) as OtherObject[],
-              offices: _generateCompatibleDataForOtherObjects(
-                items,
-                "office",
-              ) as OtherObject[],
-            },
-          ],
-        },
-      ],
-    };
-
-    console.log(originPosition);
-    console.log(org.lots[0].floors);
-    // TODO: Save to database and/or LocalStorage
-  }
+  const { handleSave, loadEditor, currentEditorId } = useEditor();
 
   useEffect(() => {
     handleCenterOrigin();
+    loadEditor();
   }, []);
 
   return (
     <div onCopy={copyItem} onPaste={pasteItem} className="relative flex h-screen w-screen items-center justify-center overflow-hidden">
+      {
+        !currentEditorId && <EditorSelect />
+      }
+      
       <span className="absolute right-2 top-2 z-20 font-mono text-xs font-semibold">
         Created with ❤️ by saphalpdyl
       </span>

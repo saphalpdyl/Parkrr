@@ -18,6 +18,7 @@ const authenticate = createMiddleware(async (c, next) => {
     
     c.set("currentUser", {
       tokenDetails: payload,
+      id: user!._id.toString(),
       ...AuthService.prepareUserData(user!),
     });
     
