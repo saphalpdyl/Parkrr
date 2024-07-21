@@ -6,6 +6,7 @@ import { OtherObject, ParkingLot } from "../types/parking";
 import { convertToRadians } from "../utils";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import useAuth from "./useAuth";
 
 export default function useEditor() {
   const { 
@@ -17,6 +18,8 @@ export default function useEditor() {
     editorLoading,
     setEditorLoading,
   } = useEditorStore();
+
+  const { user } = useAuth();
 
   async function loadEditor() {
     setEditorLoading(true);
@@ -37,6 +40,7 @@ export default function useEditor() {
 
   async function changeEditor(id: string) {
     setCurrentEditorId(id);
+    localStorage.setItem("recentEditorId", id);
     setEditorLoading(false);
   }
 
@@ -46,11 +50,12 @@ export default function useEditor() {
   }
   async function removeCurrentEditor() {
     setEditorLoading(true);
+    localStorage.removeItem("recentEditorId");
     setCurrentEditorId(null);
   }
 
   useEffect(() => {
-    if ( currentEditorId ) {
+    if ( currentEditorId && user ) {
       loadEditor();
     }
   }, [currentEditorId]);
