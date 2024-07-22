@@ -13,6 +13,8 @@ interface EditorState {
   collidingId: string | null;
   originPosition: Position | null;
   currentEditorId: string | null;
+  currentEditor: {name?: string} | null;
+  setCurrentEditor: (editor: {name?: string} | null) => void;
   setCurrentEditorId: (id: string | null) => void;
   setItems: (items: EditorItem[]) => void;
   addNewItem: (item: EditorItem) => void;
@@ -55,9 +57,11 @@ export const useEditorStore = create<EditorState>((set) => ({
   selectedItem: null,
   originPosition: null,
   currentEditorId: localStorage.getItem("recentEditorId"),
+  currentEditor: null,
   editorLoading: false,
   setEditorLoading: (value) => set({ editorLoading: value }),
   setCurrentEditorId: (value) => set({ currentEditorId: value }),
+  setCurrentEditor: (editor) => set({ currentEditor: editor }),
   setItems: (items) => set({ items }),
   addNewItem: (item) => set((state) => ({ items: [...state.items, item] })),
   deleteItem: (itemId) =>

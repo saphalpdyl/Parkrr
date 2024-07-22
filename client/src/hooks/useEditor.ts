@@ -17,9 +17,13 @@ export default function useEditor() {
     setItems,
     editorLoading,
     setEditorLoading,
+    currentEditor,
+    setCurrentEditor,
   } = useEditorStore();
 
   const { user } = useAuth();
+
+  // const getCurrentEditorTitle = () => 
 
   async function loadEditor() {
     setEditorLoading(true);
@@ -34,11 +38,16 @@ export default function useEditor() {
         ...floor.entrances.map((e:{ editorData: EditorItem}) => e.editorData),
         ...floor.exits.map((e:{ editorData: EditorItem}) => e.editorData),
       ];
+
+      setCurrentEditor({
+        name: response.data.name,
+      });
       
       setItems(resItems);
       setEditorLoading(false);
     } catch(e) {
       setCurrentEditorId(null);
+      setCurrentEditor(null);
       localStorage.removeItem("recentEditorId");
     }
   }
@@ -57,6 +66,7 @@ export default function useEditor() {
   async function removeCurrentEditor() {
     setEditorLoading(true);
     setCurrentEditorId(null);
+    setCurrentEditor(null);
   }
 
   useEffect(() => {
@@ -146,5 +156,5 @@ export default function useEditor() {
     toast.success("Saved", {id: "save"})
   }
 
-  return { handleSave, loadEditor, editorLoading, changeEditor, currentEditorId, getAllEditorInformation, removeCurrentEditor };
+  return { handleSave, loadEditor, editorLoading, changeEditor, currentEditorId, getAllEditorInformation, removeCurrentEditor, currentEditor };
 }
