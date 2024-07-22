@@ -9,6 +9,7 @@ import createNewParkingLotController from '../controllers/base/createNewParkingL
 import updateParkingLotController from '../controllers/base/updateParkingLotController';
 import getParkingLotController from '../controllers/base/getParkingLotController';
 import getAllParkingLotsController from '../controllers/base/getAllParkingLotsController';
+import renameParkingLotController from '../controllers/base/renameParkingLotController';
 
 const app = new Hono().basePath("/api/v1");
 app.use('*', cors({
@@ -25,6 +26,7 @@ app.use("/app/*", authenticate);
 
 app.post("/app/lots/new/", createNewParkingLotController);
 app.post("/app/lots/update/", updateParkingLotController);
+app.post("/app/lots/rename/", renameParkingLotController);
 app.get("/app/lots/:id", getParkingLotController);
 app.get("/app/lots/", getAllParkingLotsController);
 

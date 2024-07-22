@@ -17,9 +17,13 @@ export default function useEditor() {
     setItems,
     editorLoading,
     setEditorLoading,
+    currentEditor,
+    setCurrentEditor,
   } = useEditorStore();
 
   const { user } = useAuth();
+
+  // const getCurrentEditorTitle = () => 
 
   async function loadEditor() {
     setEditorLoading(true);
@@ -34,11 +38,16 @@ export default function useEditor() {
         ...floor.entrances.map((e:{ editorData: EditorItem}) => e.editorData),
         ...floor.exits.map((e:{ editorData: EditorItem}) => e.editorData),
       ];
+
+      setCurrentEditor({
+        name: response.data.name,
+      });
       
       setItems(resItems);
       setEditorLoading(false);
     } catch(e) {
       setCurrentEditorId(null);
+      setCurrentEditor(null);
       localStorage.removeItem("recentEditorId");
     }
   }
@@ -49,6 +58,15 @@ export default function useEditor() {
     setEditorLoading(false);
   }
 
+  async function renameEditor(newName: string) {
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/rename/`, {
+      parkingLotId: currentEditorId,
+      name: newName,
+    });
+
+    changeEditor(response.data._id);
+  }
+
   async function getAllEditorInformation() {
     const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/`);
     return response.data as {_id: string, name?: string}[];
@@ -57,6 +75,7 @@ export default function useEditor() {
   async function removeCurrentEditor() {
     setEditorLoading(true);
     setCurrentEditorId(null);
+    setCurrentEditor(null);
   }
 
   useEffect(() => {
@@ -146,5 +165,15 @@ export default function useEditor() {
     toast.success("Saved", {id: "save"})
   }
 
-  return { handleSave, loadEditor, editorLoading, changeEditor, currentEditorId, getAllEditorInformation, removeCurrentEditor };
+  return { 
+    handleSave,
+    loadEditor,
+    editorLoading,
+    changeEditor,
+    currentEditorId,
+    getAllEditorInformation,
+    removeCurrentEditor,
+    currentEditor,
+    renameEditor,
+  };
 }

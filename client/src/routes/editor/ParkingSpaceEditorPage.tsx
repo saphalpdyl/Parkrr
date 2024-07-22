@@ -17,6 +17,7 @@ import SelectedItemPropertiesSection from "./components/SelectedItemPropertiesSe
 import { useClipboard } from "./hooks/useClipboard";
 import useEditor from "../../hooks/useEditor";
 import EditorSelect from "./components/EditorSelect";
+import EditorNameBar from "./components/EditorNameBar";
 
 const ParkingEditorPage = () => {
   const {
@@ -57,6 +58,7 @@ const ParkingEditorPage = () => {
       <BackgroundGrid gridSize={SIZE_FACTOR} />
       <EditorSidebar onSave={handleSave} onCenterOrigin={handleCenterOrigin} />
       <EditorAddBar />
+      <EditorNameBar />
       <SelectedItemPropertiesSection isHidden={selectedItem === null} />
 
       {/* Parkrr logo on the top right */}

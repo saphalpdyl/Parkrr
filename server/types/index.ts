@@ -38,6 +38,7 @@ export interface IParkingFloor {
 
 export interface IParkingLot {
   notes ?: string;
+  name ?: string;
   floors: IParkingFloor[];
   lat?: number;
   lon?: number;
