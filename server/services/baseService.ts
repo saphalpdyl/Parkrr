@@ -59,4 +59,18 @@ export namespace BaseService {
     const parkingLot = await ParkingLot.findByIdAndUpdate(parkingLotId, parkingLotData);
     return parkingLot;
   }
+
+  export async function renameParkingLot(newName: string, parkingLotId: string, userId: string) {
+    const user = await _getUserById(userId);
+
+    if (!(parkingLotId && user.parkingLots.includes(new mongoose.Types.ObjectId(parkingLotId)))) {
+      throw new ServiceError("Couldn't find the corresponding parking lot", ErrorCode.PAYLOAD_ITEM_NOT_FOUND);
+    }
+
+    const parkingLot = await ParkingLot.findByIdAndUpdate(parkingLotId, {
+      name: newName,
+    });
+    
+    return parkingLot;
+  }
 }

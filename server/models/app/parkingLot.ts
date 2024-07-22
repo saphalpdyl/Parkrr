@@ -4,6 +4,7 @@ import { parkingFloorSchema } from "../../schemas/parkingFloor";
 
 const parkingLotSchema = new mongoose.Schema<IParkingLot>({
   notes: String,
+  name: String,
   lat: Number,
   lon: Number,
   floors: [parkingFloorSchema],
