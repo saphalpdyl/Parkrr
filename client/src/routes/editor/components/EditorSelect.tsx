@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import useEditor from "../../../hooks/useEditor";
-import { Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import useAuth from "../../../hooks/useAuth";
 import UserProfile from "../../../components/UserProfile";
 
 function EditorSelect() {
   const [editors, setEditors] = useState<{_id: string, name?: string}[]>([]);
   const [editorsLoading, setEditorsLoading] = useState(true);
-  const { getAllEditorInformation, currentEditorId, changeEditor } = useEditor();
+  const { getAllEditorInformation, currentEditorId, changeEditor, createNewEditor } = useEditor();
   const { token } = useAuth();
 
   function handleDeleteEditor(e: React.MouseEvent<HTMLDivElement>, _id: string) {
@@ -71,6 +71,14 @@ function EditorSelect() {
               </div>
             </div>
           ))
+        }
+
+        {
+          !editorsLoading && (
+            <div onClick={createNewEditor} className="rounded-lg flex items-center justify-center bg-slate-900 text-white py-3 hover:bg-slate-800 cursor-pointer">
+              <Plus />
+            </div>
+          )
         }
       </div>
     </div>

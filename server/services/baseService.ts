@@ -39,8 +39,11 @@ export namespace BaseService {
   
   export async function createParkingLot(userId: string) {
     const user = await _getUserById(userId);
-    const parkingLot = new ParkingLot();
-
+    const parkingLot = new ParkingLot({
+      floors: [],
+    });
+    
+    
     const savedParkingLot = await parkingLot.save();
 
     user.parkingLots.push(savedParkingLot._id);

@@ -7,7 +7,10 @@ const parkingLotSchema = new mongoose.Schema<IParkingLot>({
   name: String,
   lat: Number,
   lon: Number,
-  floors: [parkingFloorSchema],
+  floors: {
+    type: [parkingFloorSchema],
+    default: [],
+  },
 });
 
 const ParkingLot = mongoose.model('ParkingLot', parkingLotSchema);

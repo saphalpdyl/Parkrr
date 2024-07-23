@@ -78,6 +78,13 @@ export default function useEditor() {
     setCurrentEditor(null);
   }
 
+  async function createNewEditor() {
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/new/`);
+    if (response.data._id) setCurrentEditorId(response.data._id);
+
+    return response;
+  }
+
   useEffect(() => {
     if ( currentEditorId && user ) {
       loadEditor();
@@ -175,5 +182,6 @@ export default function useEditor() {
     removeCurrentEditor,
     currentEditor,
     renameEditor,
+    createNewEditor,
   };
 }

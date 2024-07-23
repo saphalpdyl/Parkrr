@@ -13,7 +13,6 @@ export const otherObjectSchema = new mongoose.Schema<IOtherObject>({
   },
   id: {
     type: String,
-    unique: true,
     required: true,
   },
   args: {
