@@ -112,7 +112,7 @@ export default function useEditor() {
         if (item.category === "space") {
           editorItemProps = {
             occupied: false,
-            spaceType: item.spaceType,
+            type: item.spaceType,
           };
         }
         
