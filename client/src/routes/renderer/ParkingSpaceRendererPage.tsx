@@ -8,6 +8,7 @@ import useEditor from "@/hooks/useEditor.ts";
 import useAuth from "@/hooks/useAuth.ts";
 import ParkingSpace from "@/routes/renderer/components/models/ParkingSpace.tsx";
 import ToolBar from "@/routes/renderer/components/tool_bar/ToolBar.tsx";
+import CameraController from "@/routes/renderer/components/CameraController.tsx";
 
 function ParkingSpaceRendererPage() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ function ParkingSpaceRendererPage() {
     currentParkingLotId,
     loadParkingLot,
     currentParkingLot,
+    cameraMode,
   } = useRenderer();
 
   const { token } = useAuth();
@@ -33,6 +35,7 @@ function ParkingSpaceRendererPage() {
     }();
   }, [currentParkingLotId, token]);
 
+
   return (
     <div className="h-screen w-screen bg-gray-100">
       <StatusBar />
@@ -41,11 +44,15 @@ function ParkingSpaceRendererPage() {
       <Canvas camera={{
         position: [0,30,0]
       }}>
-          <gridHelper args={[500,500, "#ddd", "#eee"]} />
-          {/*<OrbitControls minPolarAngle={Math.PI / 4} maxPolarAngle={Math.PI / 2.25}/>*/}
-          <MapControls />
-          <pointLight position={[0,10,0]} intensity={300} />
-          <ambientLight intensity={2} />
+        <gridHelper args={[500,500, "#ddd", "#eee"]} />
+        <CameraController cameraMode={cameraMode} />
+        {
+          cameraMode === "3d" ?
+            <OrbitControls minPolarAngle={Math.PI / 4} maxPolarAngle={Math.PI / 2.25}/>
+          : <MapControls enablePan enableRotate={false} />
+        }
+        <pointLight position={[0,10,0]} intensity={300} />
+        <ambientLight intensity={2} />
         {
           currentParkingLot && (
             <>

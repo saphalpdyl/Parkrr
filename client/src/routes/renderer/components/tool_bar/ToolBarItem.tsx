@@ -9,17 +9,21 @@ import { LucideIcon } from "lucide-react";
 interface ToolBarItemProps {
   tooltip: string;
   icon: LucideIcon,
+  color: "rose" | "blue" | "teal" | "neutral" | "slate" | "emerald" ,
+  onClick: () => void;
 }
 
 function ToolBarItem({
   tooltip,
   icon: Icon,
+  color,
+  onClick,
  }: ToolBarItemProps) {
   return (
     <TooltipProvider>
       <Tooltip delayDuration={200}>
         <TooltipTrigger >
-          <div className="w-10 h-10 bg-rose-500 rounded-lg text-white flex items-center justify-center">
+          <div onClick={onClick} className={`w-10 h-10 bg-${color}-500 rounded-lg text-white flex items-center justify-center`}>
             <Icon />
           </div>
         </TooltipTrigger>
