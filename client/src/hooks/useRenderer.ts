@@ -1,9 +1,9 @@
-import useRendererStore from "@/stores/rendererState.ts";
+import useRendererStore from "@/stores/rendererStore.ts";
 import { useEffect } from "react";
 import axios from "axios";
 import { ParkingLot } from "@/types/parking";
 import useAuth from "@/hooks/useAuth.ts";
-import useGlobalStore from "@/stores/globalState.ts";
+import useGlobalStore from "@/stores/globalStore.ts";
 
 export default function useRenderer() {
   const {

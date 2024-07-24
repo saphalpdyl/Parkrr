@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { v4 as uuid } from "uuid";
 
-import { useEditorStore } from "../../../stores/editorState";
+import { useEditorStore } from "../../../stores/editorStore.ts";
 import { copyItemToClipboard, tryGetItemFromClipboard } from "../utils/clipboard";
 import { SIZE_FACTOR } from "../constants";
 

@@ -9,7 +9,7 @@ import { SIZE_FACTOR } from "./constants";
 import EditorContextMenu from "./components/EditorContextMenu";
 import OriginItem from "./components/OriginItem";
 import Logo from "../../components/Logo";
-import { useEditorStore } from "@/stores/editorState.ts";
+import { useEditorStore } from "@/stores/editorStore.ts";
 import { useOrigin } from "./hooks/useOrigin";
 import { useDragDrop } from "./hooks/useDragDrop";
 import EditorAddBar from "./components/EditorAddbar";
@@ -19,7 +19,7 @@ import useEditor from "../../hooks/useEditor";
 import EditorSelect from "./components/EditorSelect";
 import EditorNameBar from "./components/EditorNameBar";
 import SwitchToRenderer from "@/routes/editor/components/SwitchToRenderer.tsx";
-import useGlobalStore from "@/stores/globalState.ts";
+import useGlobalStore from "@/stores/globalStore.ts";
 import useAuth from "@/hooks/useAuth.ts";
 
 const ParkingEditorPage = () => {

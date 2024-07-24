@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { EditorItem, Position } from "../routes/editor/types";
+import { EditorItem, Position } from "@/routes/editor/types";
 
-interface EditorState {
+interface EditorStore {
   items: EditorItem[];
   activeId: string | null;
   selectedItem: {
@@ -48,7 +48,7 @@ interface EditorState {
   setOriginPosition: (position: Position | null) => void;
 }
 
-export const useEditorStore = create<EditorState>((set) => {
+export const useEditorStore = create<EditorStore>((set) => {
   return ({
     items: [],
     activeId: null,

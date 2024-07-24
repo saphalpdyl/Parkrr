@@ -7,7 +7,7 @@ export interface User {
   username: string;
 }
 
-interface AuthState {
+interface AuthStore {
   user: User | null;
   token: string | null;
 
@@ -15,7 +15,7 @@ interface AuthState {
   clearUserAndToken: () => void;
 }
 
-const useAuthStore = create<AuthState>(set => ({
+const useAuthStore = create<AuthStore>(set => ({
   user: null,
   token: localStorage.getItem("token"),
   setUserAndToken: (user, token) => set({ user, token}),

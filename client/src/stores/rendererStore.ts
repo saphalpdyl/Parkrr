@@ -1,14 +1,14 @@
 import { create } from "zustand";
 import { ParkingLot } from "@/types/parking";
 
-interface RendererState {
+interface RendererStore {
   currentParkingLotId: string | null;
   currentParkingLot: ParkingLot | null;
   setCurrentParkingLotId: (currentParkingLotId: string | null) => void;
   setCurrentParkingLot: (currentParkingLot: ParkingLot | null) => void;
 }
 
-const useRendererStore = create<RendererState>(set => ({
+const useRendererStore = create<RendererStore>(set => ({
   currentParkingLotId: null,
   currentParkingLot: null,
   setCurrentParkingLot: parkingLot => set({ currentParkingLot: parkingLot }),

@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 
 
-import { useEditorStore } from "../../../../stores/editorState";
+import { useEditorStore } from "@/stores/editorStore.ts";
 import { itemSizes, parkingSpacesProperties } from "../../constants";
 import EditorAddbarItem from "./EditorAddbarItem";
 

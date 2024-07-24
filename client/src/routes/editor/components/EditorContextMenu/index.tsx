@@ -1,5 +1,5 @@
 import { RotateCcwIcon, RotateCwIcon, Trash2 } from "lucide-react";
-import { useEditorStore } from "../../../../stores/editorState";
+import { useEditorStore } from "@/stores/editorStore.ts";
 import EditorContextMenuButton from "./EditorContextMenuButton";
 import { useRotation } from "../../hooks/useRotation";
 

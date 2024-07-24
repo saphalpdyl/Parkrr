@@ -1,13 +1,13 @@
 import axios from "axios";
 import {itemSizes, SIZE_FACTOR} from "@/routes/editor/constants";
 import {EditorItem, ParkingItemCategory} from "@/routes/editor/types";
-import {useEditorStore} from "../stores/editorState";
+import {useEditorStore} from "../stores/editorStore.ts";
 import {OtherObject, ParkingLot} from "@/types/parking";
 import {convertToRadians} from "@/utils";
 import {useEffect} from "react";
 import toast from "react-hot-toast";
 import useAuth from "./useAuth";
-import useGlobalStore from "@/stores/globalState.ts";
+import useGlobalStore from "@/stores/globalStore.ts";
 
 export default function useEditor() {
   const { 

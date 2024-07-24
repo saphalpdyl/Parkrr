@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
 import applicationLogo from "/logo_main_t.png";
-import useGlobalStore from "@/stores/globalState.ts";
+import useGlobalStore from "@/stores/globalStore.ts";
 
 function AppLayout() {
   const { loading } = useGlobalStore();

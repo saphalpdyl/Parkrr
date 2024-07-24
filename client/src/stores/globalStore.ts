@@ -1,13 +1,13 @@
 import { create } from "zustand";
 
-interface GlobalState {
+interface GlobalStore {
   loading: boolean;
   setLoading: (value: boolean) => void;
   startLoading: () => void;
   stopLoading: () => void;
 }
 
-const useGlobalStore = create<GlobalState>(set => ({
+const useGlobalStore = create<GlobalStore>(set => ({
   loading: false,
   setLoading: (value) => set({ loading: value }),
   startLoading: () => set({ loading: true }),

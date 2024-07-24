@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 import { ChevronDown, ChevronUp, Plus, Settings } from "lucide-react";
 import EditorAddbarParkingSpaceList from "./EditorAddbarParkingSpaceList";
 import EditorAddbarItem from "./EditorAddbarItem";
-import { useEditorStore } from "../../../../stores/editorState";
+import { useEditorStore } from "@/stores/editorStore.ts";
 import { itemSizes } from "../../constants";
 import UserProfile from "../../../../components/UserProfile";
 

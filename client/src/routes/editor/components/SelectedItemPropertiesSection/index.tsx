@@ -1,5 +1,5 @@
 import IncrementButton from "../../../../components/IncrementButton";
-import { useEditorStore } from "../../../../stores/editorState";
+import { useEditorStore } from "@/stores/editorStore.ts";
 import { SIZE_FACTOR } from "../../constants";
 import { EditorItem } from "../../types";
 

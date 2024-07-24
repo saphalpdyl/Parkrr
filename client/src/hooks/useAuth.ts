@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import useAuthStore from "../stores/authState";
+import useAuthStore from "../stores/authStore.ts";
 import axios, { AxiosResponse } from "axios";
 import toast from "react-hot-toast";
-import useGlobalStore from "@/stores/globalState.ts";
+import useGlobalStore from "@/stores/globalStore.ts";
 
 export interface SignUpData {
   firstName: string;
