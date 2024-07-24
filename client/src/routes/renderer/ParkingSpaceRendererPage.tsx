@@ -7,8 +7,11 @@ import { useNavigate } from "react-router-dom";
 import useEditor from "@/hooks/useEditor.ts";
 import useAuth from "@/hooks/useAuth.ts";
 import ParkingSpace from "@/routes/renderer/components/models/ParkingSpace.tsx";
+import ToolBar from "@/routes/renderer/components/tool_bar/ToolBar.tsx";
 
 function ParkingSpaceRendererPage() {
+  const navigate = useNavigate();
+
   const {
     currentParkingLotId,
     loadParkingLot,
@@ -18,7 +21,6 @@ function ParkingSpaceRendererPage() {
   const { token } = useAuth();
   const { getAllEditorInformation } = useEditor();
 
-  const navigate = useNavigate();
 
   useEffect(() => {
     if ( !token ) return;
@@ -27,17 +29,17 @@ function ParkingSpaceRendererPage() {
       const hasEditors = (await getAllEditorInformation()).length > 0;
 
       if ( currentParkingLotId && token ) loadParkingLot(currentParkingLotId);
-      else {
-        if ( !hasEditors ) navigate("/editor");
-      }
+      else if ( !hasEditors ) navigate("/editor");
     }();
   }, [currentParkingLotId, token]);
 
   return (
     <div className="h-screen w-screen bg-gray-100">
       <StatusBar />
+      <ToolBar />
+
       <Canvas camera={{
-        position: [0,10,0]
+        position: [0,30,0]
       }}>
           <gridHelper args={[500,500, "#ddd", "#eee"]} />
           {/*<OrbitControls minPolarAngle={Math.PI / 4} maxPolarAngle={Math.PI / 2.25}/>*/}

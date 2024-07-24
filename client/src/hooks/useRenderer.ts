@@ -11,6 +11,8 @@ export default function useRenderer() {
     currentParkingLotId,
     setCurrentParkingLot,
     setCurrentParkingLotId,
+    cameraMode,
+    setCameraMode,
   } = useRendererStore();
 
   const { token } = useAuth();
@@ -47,5 +49,7 @@ export default function useRenderer() {
     currentParkingLot,
     currentParkingLotId,
     loadParkingLot,
+    cameraMode,
+    setCameraMode,
   }
 }
