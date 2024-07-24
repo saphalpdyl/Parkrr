@@ -19,6 +19,8 @@ function ParkingSpaceRendererPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if ( !token ) return;
+
     void async function() {
       const hasEditors = (await getAllEditorInformation()).length > 0;
 

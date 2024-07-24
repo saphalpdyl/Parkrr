@@ -4,9 +4,7 @@ import {EditorItem, ParkingItemCategory} from "@/routes/editor/types";
 import {useEditorStore} from "../stores/editorStore.ts";
 import {OtherObject, ParkingLot} from "@/types/parking";
 import {convertToRadians} from "@/utils";
-import {useEffect} from "react";
 import toast from "react-hot-toast";
-import useAuth from "./useAuth";
 import useGlobalStore from "@/stores/globalStore.ts";
 
 export default function useEditor() {
@@ -20,11 +18,10 @@ export default function useEditor() {
     setCurrentEditor,
   } = useEditorStore();
 
-  const { user } = useAuth();
-  const { startLoading, stopLoading } = useGlobalStore();
+  const { startEditorLoading, stopEditorLoading } = useGlobalStore();
 
   async function loadEditor() {
-    startLoading();
+    startEditorLoading();
     if ( !currentEditorId ) return;
 
     try {
@@ -43,7 +40,7 @@ export default function useEditor() {
       
       setItems(resItems);
 
-      stopLoading();
+      stopEditorLoading();
     } catch(e) {
       setCurrentEditorId(null);
       setCurrentEditor(null);
@@ -54,7 +51,7 @@ export default function useEditor() {
   async function changeEditor(id: string) {
     setCurrentEditorId(id);
     localStorage.setItem("recentEditorId", id);
-    stopLoading();
+    stopEditorLoading();
   }
 
   async function renameEditor(newName: string) {
@@ -72,7 +69,7 @@ export default function useEditor() {
   }
   
   async function removeCurrentEditor() {
-    startLoading();
+    startEditorLoading();
     setCurrentEditorId(null);
     setCurrentEditor(null);
   }
@@ -93,12 +90,6 @@ export default function useEditor() {
     await axios.delete(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${id}`);
     toast.success("Deleted", {id: "delete"});
   }
-
-  useEffect(() => {
-    if ( currentEditorId && user ) {
-      loadEditor();
-    }
-  }, [currentEditorId]);
 
   function _generateCompatibleDataForOtherObjects(
     items: EditorItem[],

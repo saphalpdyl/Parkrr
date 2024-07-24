@@ -14,10 +14,10 @@ export default function useRenderer() {
   } = useRendererStore();
 
   const { token } = useAuth();
-  const { startLoading, stopLoading } = useGlobalStore();
+  const { startRendererLoading, stopRendererLoading } = useGlobalStore();
 
   async function loadParkingLot(id: string) {
-    startLoading();
+    startRendererLoading();
 
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${id}`);
@@ -27,7 +27,7 @@ export default function useRenderer() {
       setCurrentParkingLot(null);
       setCurrentParkingLotId(null);
     } finally {
-      stopLoading();
+      stopRendererLoading();
     }
   }
 

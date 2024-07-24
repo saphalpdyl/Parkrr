@@ -43,19 +43,24 @@ const ParkingEditorPage = () => {
 
   const { copyItem, pasteItem } = useClipboard();
   const { handleSave, loadEditor, currentEditorId } = useEditor();
-  const { startLoading, stopLoading } = useGlobalStore();
-  const { token } = useAuth();
+  const { startEditorLoading, stopEditorLoading } = useGlobalStore();
+  const { token, user } = useAuth();
 
   useEffect(() => {
     handleCenterOrigin();
-    loadEditor();
   }, []);
 
   useEffect(() => {
-    startLoading();
+    if ( currentEditorId && user ) {
+      loadEditor();
+    }
+  }, [currentEditorId]);
 
-    if ( currentEditorId ) stopLoading();
-    else startLoading();
+  useEffect(() => {
+    if ( !token ) return;
+
+    if ( currentEditorId ) stopEditorLoading();
+    else startEditorLoading();
   }, [currentEditorId, token]);
 
   return (
