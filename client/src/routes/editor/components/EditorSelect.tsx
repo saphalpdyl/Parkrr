@@ -1,29 +1,43 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useEditor from "../../../hooks/useEditor";
-import { Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import useAuth from "../../../hooks/useAuth";
 import UserProfile from "../../../components/UserProfile";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 function EditorSelect() {
   const [editors, setEditors] = useState<{_id: string, name?: string}[]>([]);
   const [editorsLoading, setEditorsLoading] = useState(true);
-  const { getAllEditorInformation, currentEditorId, changeEditor } = useEditor();
+  const { getAllEditorInformation, currentEditorId, changeEditor, createNewEditor, deleteEditor } = useEditor();
   const { token } = useAuth();
 
-  function handleDeleteEditor(e: React.MouseEvent<HTMLDivElement>, _id: string) {
-    e.stopPropagation();
-  }
-
+  const handleDeleteEditor = async (id: string) => {
+    await deleteEditor(id)
+    refreshEditors();
+  };
   const handleChangeEditor = (id: string) => changeEditor(id);
   
+  async function refreshEditors() {
+    const editors = await getAllEditorInformation();
+    setEditors(editors);
+    setEditorsLoading(false);
+  }
+
   useEffect(() => {
     setEditorsLoading(true);
-    if ( token ) {
-      getAllEditorInformation().then(val => {
-        setEditors(val);
-        setEditorsLoading(false);
-      });
-    }
+    if ( token )
+      refreshEditors();
   }, [currentEditorId]);
   
   return (
@@ -53,8 +67,26 @@ function EditorSelect() {
                 <span className="text-gray-500 font-normal">.edit</span>
               </div>
               <div className="flex justify-end gap-2">
-                <div onClick={e => handleDeleteEditor(e, editor._id)} className="p-2 hover:bg-gray-300 transition-colors rounded-lg group/trash">
-                  <Trash2 size={20} className="text-slate-800/60 transition-colors group-hover/trash:text-rose-500" />
+                <div onClick={e => e.stopPropagation()}>
+                  <AlertDialog>
+                    <AlertDialogTrigger onClick={e => e.stopPropagation()}>
+                      <div  className="p-2 hover:bg-gray-300 transition-colors rounded-lg group/trash">
+                        <Trash2 size={20} className="text-slate-800/60 transition-colors group-hover/trash:text-rose-500" />
+                      </div>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently remove your parking lot from our servers.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction className="bg-rose-500 hover:bg-rose-600" onClick={() => handleDeleteEditor(editor._id)}>Delete</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </div>
             </div>
@@ -71,6 +103,14 @@ function EditorSelect() {
               </div>
             </div>
           ))
+        }
+
+        {
+          !editorsLoading && (
+            <div onClick={createNewEditor} className="rounded-lg flex items-center justify-center bg-slate-900 text-white py-3 hover:bg-slate-800 cursor-pointer">
+              <Plus />
+            </div>
+          )
         }
       </div>
     </div>

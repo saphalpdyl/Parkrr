@@ -21,7 +21,6 @@ export const parkingSpaceSchema = new mongoose.Schema<IParkingSpace>({
   },
   id: {
     type: String,
-    unique: true,
     required: true,
   },
   args: {

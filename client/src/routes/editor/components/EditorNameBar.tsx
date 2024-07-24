@@ -20,7 +20,7 @@ function EditorNameBar() {
   }
   
   return (
-    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-60 focus-within:w-80 h-10 bg-white rounded-b-md shadow-md flex justify-center items-center gap-3 z-50 transition-all overflow-hidden">
+    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-60 focus-within:w-80 h-10 bg-white rounded-b-md shadow-md flex justify-center items-center z-50 transition-all overflow-hidden">
       <input 
         value={editorName ?? "Untitled"}
         onChange={e => setEditorName(e.target.value)}

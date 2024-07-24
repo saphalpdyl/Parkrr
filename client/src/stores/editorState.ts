@@ -50,49 +50,51 @@ interface EditorState {
   setOriginPosition: (position: Position | null) => void;
 }
 
-export const useEditorStore = create<EditorState>((set) => ({
-  items: [],
-  activeId: null,
-  collidingId: null,
-  selectedItem: null,
-  originPosition: null,
-  currentEditorId: localStorage.getItem("recentEditorId"),
-  currentEditor: null,
-  editorLoading: false,
-  setEditorLoading: (value) => set({ editorLoading: value }),
-  setCurrentEditorId: (value) => set({ currentEditorId: value }),
-  setCurrentEditor: (editor) => set({ currentEditor: editor }),
-  setItems: (items) => set({ items }),
-  addNewItem: (item) => set((state) => ({ items: [...state.items, item] })),
-  deleteItem: (itemId) =>
-    set((state) => ({
-      items: state.items.filter((item) => item.id !== itemId),
-      selectedItem:
-        itemId === state.selectedItem?.item.id ? null : state.selectedItem,
-    })),
-  deleteAllItems: () => set({ items: [], selectedItem: null }),
-  updateItemPosition: (itemId, getPosition) =>
-    set((state) => ({
-      items: state.items.map((item) =>
-        item.id === itemId
-          ? {
-              ...item,
-              position: getPosition(item),
-            }
-          : item,
-      ),
-    })),
-  updateRotation: (itemId, getPositionAndRotation) => {
-    set((state) => ({
-      items: state.items.map((item) =>
-        item.id === itemId
-          ? { ...item, ...getPositionAndRotation(item) }
-          : item,
-      ),
-    }));
-  },
-  setActiveId: (activeId) => set({ activeId }),
-  setSelectedItem: (selectedItem) => set({ selectedItem }),
-  setCollidingId: (collidingId) => set({ collidingId }),
-  setOriginPosition: (originPosition) => set({ originPosition }),
-}));
+export const useEditorStore = create<EditorState>((set) => {
+  return ({
+    items: [],
+    activeId: null,
+    collidingId: null,
+    selectedItem: null,
+    originPosition: null,
+    currentEditorId: localStorage.getItem("recentEditorId"),
+    currentEditor: null,
+    editorLoading: false,
+    setEditorLoading: (value) => set({editorLoading: value}),
+    setCurrentEditorId: (value) => set({currentEditorId: value}),
+    setCurrentEditor: (editor) => set({currentEditor: editor}),
+    setItems: (items) => set({items}),
+    addNewItem: (item) => set((state) => ({items: [...state.items, item]})),
+    deleteItem: (itemId) =>
+        set((state) => ({
+          items: state.items.filter((item) => item.id !== itemId),
+          selectedItem:
+              itemId === state.selectedItem?.item.id ? null : state.selectedItem,
+        })),
+    deleteAllItems: () => set({items: [], selectedItem: null}),
+    updateItemPosition: (itemId, getPosition) =>
+        set((state) => ({
+          items: state.items.map((item) =>
+              item.id === itemId
+                  ? {
+                    ...item,
+                    position: getPosition(item),
+                  }
+                  : item,
+          ),
+        })),
+    updateRotation: (itemId, getPositionAndRotation) => {
+      set((state) => ({
+        items: state.items.map((item) =>
+            item.id === itemId
+                ? {...item, ...getPositionAndRotation(item)}
+                : item,
+        ),
+      }));
+    },
+    setActiveId: (activeId) => set({activeId}),
+    setSelectedItem: (selectedItem) => set({selectedItem}),
+    setCollidingId: (collidingId) => set({collidingId}),
+    setOriginPosition: (originPosition) => set({originPosition}),
+  });
+});

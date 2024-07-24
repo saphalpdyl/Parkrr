@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import { ErrorCode } from "../constants/enum";
-import { ServiceError } from "../errors/error";
-import { ParkingLot } from "../models/app";
+import {ErrorCode} from "../constants/enum";
+import {ServiceError} from "../errors/error";
+import {ParkingLot} from "../models/app";
 import User from "../models/auth/user";
-import { IParkingLot } from "../types";
+import {IParkingLot} from "../types";
 
 export namespace BaseService {
   async function _getUserById(userId: string) {
@@ -16,7 +16,7 @@ export namespace BaseService {
 
   export async function getAllParkingLotOfUser(userId: string) {
     const user = await _getUserById(userId);
-    return await ParkingLot.find({
+    return ParkingLot.find({
       '_id': {
         $in: user.parkingLots,
       }
@@ -39,8 +39,11 @@ export namespace BaseService {
   
   export async function createParkingLot(userId: string) {
     const user = await _getUserById(userId);
-    const parkingLot = new ParkingLot();
-
+    const parkingLot = new ParkingLot({
+      floors: [],
+    });
+    
+    
     const savedParkingLot = await parkingLot.save();
 
     user.parkingLots.push(savedParkingLot._id);
@@ -56,8 +59,7 @@ export namespace BaseService {
       throw new ServiceError("Couldn't find the corresponding parking lot", ErrorCode.PAYLOAD_ITEM_NOT_FOUND);
     }
 
-    const parkingLot = await ParkingLot.findByIdAndUpdate(parkingLotId, parkingLotData);
-    return parkingLot;
+    return ParkingLot.findByIdAndUpdate(parkingLotId, parkingLotData);
   }
 
   export async function renameParkingLot(newName: string, parkingLotId: string, userId: string) {
@@ -67,10 +69,25 @@ export namespace BaseService {
       throw new ServiceError("Couldn't find the corresponding parking lot", ErrorCode.PAYLOAD_ITEM_NOT_FOUND);
     }
 
-    const parkingLot = await ParkingLot.findByIdAndUpdate(parkingLotId, {
+    return ParkingLot.findByIdAndUpdate(parkingLotId, {
       name: newName,
     });
-    
-    return parkingLot;
+  }
+
+  export async function deleteParkingLot(parkingLotId: string, userId: string) {
+    const user = await _getUserById(userId);
+
+    await user.updateOne({
+      $pull: {
+        parkingLots: parkingLotId
+      }
+    }, { new: true });
+
+    await ParkingLot.findByIdAndDelete(parkingLotId);
+
+    return {
+      success: true,
+      id: parkingLotId,
+    }
   }
 }

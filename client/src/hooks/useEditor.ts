@@ -1,10 +1,10 @@
 import axios from "axios";
-import { itemSizes, SIZE_FACTOR } from "../routes/editor/constants";
-import { EditorItem, ParkingItemCategory } from "../routes/editor/types";
-import { useEditorStore } from "../stores/editorState";
-import { OtherObject, ParkingLot } from "../types/parking";
-import { convertToRadians } from "../utils";
-import { useEffect } from "react";
+import {itemSizes, SIZE_FACTOR} from "@/routes/editor/constants";
+import {EditorItem, ParkingItemCategory} from "@/routes/editor/types";
+import {useEditorStore} from "../stores/editorState";
+import {OtherObject, ParkingLot} from "@/types/parking";
+import {convertToRadians} from "@/utils";
+import {useEffect} from "react";
 import toast from "react-hot-toast";
 import useAuth from "./useAuth";
 
@@ -23,29 +23,30 @@ export default function useEditor() {
 
   const { user } = useAuth();
 
-  // const getCurrentEditorTitle = () => 
-
   async function loadEditor() {
     setEditorLoading(true);
     if ( !currentEditorId ) return;
 
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${currentEditorId}`);
+      console.log(response);
       const floor = response.data.floors[0];
-      const resItems = [
+      const resItems = floor ? [
         ...floor.spaces.map((e:{ editorData: EditorItem}) => e.editorData),
         ...floor.offices.map((e:{ editorData: EditorItem}) => e.editorData),
         ...floor.entrances.map((e:{ editorData: EditorItem}) => e.editorData),
         ...floor.exits.map((e:{ editorData: EditorItem}) => e.editorData),
-      ];
+      ] : [];
 
       setCurrentEditor({
         name: response.data.name,
       });
       
       setItems(resItems);
+
       setEditorLoading(false);
     } catch(e) {
+      console.log("error" , e);
       setCurrentEditorId(null);
       setCurrentEditor(null);
       localStorage.removeItem("recentEditorId");
@@ -78,16 +79,29 @@ export default function useEditor() {
     setCurrentEditor(null);
   }
 
+  async function createNewEditor() {
+    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/new/`);
+    if (response.data._id) setCurrentEditorId(response.data._id);
+
+    return response;
+  }
+
+  async function deleteEditor(id: string) {
+    // If the current editor is the one being deleted
+    if ( id === currentEditorId )
+      await removeCurrentEditor();
+
+    toast.loading("Deleting", {id: "delete"});
+    await axios.delete(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${id}`);
+    toast.success("Deleted", {id: "delete"});
+  }
+
   useEffect(() => {
     if ( currentEditorId && user ) {
       loadEditor();
     }
   }, [currentEditorId]);
 
-  useEffect(() => {
-    if ( user === null ) setEditorLoading(false);
-  }, [user])
-  
   function _generateCompatibleDataForOtherObjects(
     items: EditorItem[],
     category: ParkingItemCategory,
@@ -137,7 +151,8 @@ export default function useEditor() {
       floors: [
         {
           floorPrefix: "A",
-          // @ts-ignore
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
           spaces: _generateCompatibleDataForOtherObjects(items, "space"),
           entrances: _generateCompatibleDataForOtherObjects(
             items,
@@ -175,5 +190,7 @@ export default function useEditor() {
     removeCurrentEditor,
     currentEditor,
     renameEditor,
+    createNewEditor,
+    deleteEditor,
   };
 }
