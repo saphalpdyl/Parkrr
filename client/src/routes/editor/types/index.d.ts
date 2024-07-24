@@ -1,4 +1,4 @@
-import type { ParkingSpace, ParkingSpaceType, WorldObject } from "../../../types/parking";
+import type { IParkingSpace, ParkingSpaceType, WorldObject } from "../../../types/parking";
 
 export interface ItemSize {
   height: number;

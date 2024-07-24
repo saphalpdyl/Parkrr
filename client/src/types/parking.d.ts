@@ -17,24 +17,24 @@ export interface OtherObject extends WorldObject {
 
 export type ParkingSpaceType = "standard" | "handicap" | "vip" | "electric";
 
-export interface ParkingSpace extends WorldObject {
+export interface IParkingSpace extends WorldObject {
   occupied: boolean;
   type: ParkingSpaceType;
 }
 
-export interface ParkingFloor {
+export interface IParkingFloor {
   floorPrefix: string;
   floorNumber: number;
-  spaces: ParkingSpace[];
+  spaces: IParkingSpace[];
   entrances?: OtherObject[];
   exits?: OtherObject[];
   offices?: OtherObject[];
 }
 
-export interface ParkingLot {
+export interface IParkingLot {
   notes ?: string;
   name ?: string;
-  floors: ParkingFloor[];
+  floors: IParkingFloor[];
   lat?: number;
   lon?: number;
   _id?: string;

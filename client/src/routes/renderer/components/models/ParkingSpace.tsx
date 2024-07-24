@@ -1,4 +1,5 @@
 import { ParkingSpaceType } from "@/types/parking";
+import { parkingSpacesProperties } from "@/constants";
 
 interface ParkingSpaceProps {
   position: vec3;
@@ -18,6 +19,9 @@ function ParkingSpace({
   occupied,
 }: ParkingSpaceProps) {
 
+  console.log(parkingSpacesProperties, spaceType);
+  const color  = parkingSpacesProperties.find(space => space.spaceType === spaceType)?.color ?? "#fff";
+
   return (
     <mesh
       position={[position.x, position.y, position.z]}
@@ -25,7 +29,7 @@ function ParkingSpace({
       key={id}
     >
       <boxGeometry args={args} />
-      <meshStandardMaterial color='white' />
+      <meshStandardMaterial color={color} />
     </mesh>
   )
 }

@@ -49,7 +49,14 @@ function ParkingSpaceRendererPage() {
             <>
               {
                 ...currentParkingLot.floors[0].spaces.map(space => (
-                  <ParkingSpace position={space.position} rotation={space.rotation} spaceType={space.type} id={space.id} args={space.args} occupied={space.occupied} />
+                  <ParkingSpace
+                    position={space.position}
+                    rotation={space.rotation}
+                    spaceType={space.type}
+                    id={space.id}
+                    args={space.args}
+                    occupied={space.occupied}
+                  />
                 ))
               }
             </>

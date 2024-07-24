@@ -1,11 +1,11 @@
 import { create } from "zustand";
-import { ParkingLot } from "@/types/parking";
+import { IParkingLot } from "@/types/parking";
 
 interface RendererStore {
   currentParkingLotId: string | null;
-  currentParkingLot: ParkingLot | null;
+  currentParkingLot: IParkingLot | null;
   setCurrentParkingLotId: (currentParkingLotId: string | null) => void;
-  setCurrentParkingLot: (currentParkingLot: ParkingLot | null) => void;
+  setCurrentParkingLot: (currentParkingLot: IParkingLot | null) => void;
 }
 
 const useRendererStore = create<RendererStore>(set => ({

@@ -1,7 +1,7 @@
 import useRendererStore from "@/stores/rendererStore.ts";
 import { useEffect } from "react";
 import axios from "axios";
-import { ParkingLot } from "@/types/parking";
+import { IParkingLot } from "@/types/parking";
 import useAuth from "@/hooks/useAuth.ts";
 import useGlobalStore from "@/stores/globalStore.ts";
 
@@ -22,7 +22,7 @@ export default function useRenderer() {
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${id}`);
 
-      setCurrentParkingLot(response.data as ParkingLot);
+      setCurrentParkingLot(response.data as IParkingLot);
     } catch(e) {
       setCurrentParkingLot(null);
       setCurrentParkingLotId(null);

@@ -3,8 +3,8 @@ import { twMerge } from "tailwind-merge";
 
 import type { EditorItem, Position } from "../types";
 import { itemSizes, SIZE_FACTOR } from "../constants";
-import { selectMatchingContrastColor } from "../utils";
 import { parkingSpacesProperties} from "@/constants";
+import { selectMatchingContrastColor } from "@/utils";
 
 export interface DraggableItemProps {
   item: EditorItem;

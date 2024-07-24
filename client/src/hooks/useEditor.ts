@@ -2,7 +2,7 @@ import axios from "axios";
 import {itemSizes, SIZE_FACTOR} from "@/routes/editor/constants";
 import {EditorItem, ParkingItemCategory} from "@/routes/editor/types";
 import {useEditorStore} from "../stores/editorStore.ts";
-import {OtherObject, ParkingLot} from "@/types/parking";
+import {OtherObject, IParkingLot} from "@/types/parking";
 import {convertToRadians} from "@/utils";
 import toast from "react-hot-toast";
 import useGlobalStore from "@/stores/globalStore.ts";
@@ -136,7 +136,7 @@ export default function useEditor() {
   }
 
   async function handleSave() {
-    const parkingLot: ParkingLot = {
+    const parkingLot: IParkingLot = {
       floors: [
         {
           floorPrefix: "A",

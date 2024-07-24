@@ -2,8 +2,9 @@ import { v4 as uuid } from "uuid";
 
 
 import { useEditorStore } from "@/stores/editorStore.ts";
-import { itemSizes, parkingSpacesProperties } from "../../constants";
+import { itemSizes } from "../../constants";
 import EditorAddbarItem from "./EditorAddbarItem";
+import { parkingSpacesProperties} from "@/constants";
 
 function EditorAddbarParkingSpaceList() {
   const { addNewItem, originPosition } = useEditorStore();
