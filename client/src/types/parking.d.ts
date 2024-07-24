@@ -7,12 +7,12 @@ interface WorldObject {
 
   rotation: number;
 
-  id : String;
+  id : string;
   args: [number, number, number];
 }
 
 export interface OtherObject extends WorldObject {
-  color: String;
+  color: string;
 }
 
 export type ParkingSpaceType = "standard" | "handicap" | "vip" | "electric";
@@ -23,7 +23,7 @@ export interface ParkingSpace extends WorldObject {
 }
 
 export interface ParkingFloor {
-  floorPrefix: String;
+  floorPrefix: string;
   floorNumber: number;
   spaces: ParkingSpace[];
   entrances?: OtherObject[];
@@ -32,7 +32,8 @@ export interface ParkingFloor {
 }
 
 export interface ParkingLot {
-  notes ?: String;
+  notes ?: string;
+  name ?: string;
   floors: ParkingFloor[];
   lat?: number;
   lon?: number;
