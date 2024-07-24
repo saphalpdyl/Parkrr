@@ -28,18 +28,9 @@ const useGlobalStore = create<GlobalStore>(set => ({
   startRendererLoading: () => set({ rendererLoading: true }),
   startAuthLoading: () => set({ authLoading: true }),
 
-  stopEditorLoading: () => {
-    // console.trace();
-    set({ editorLoading: false });
-  },
-  stopRendererLoading: () => {
-    // console.trace();
-    set({ rendererLoading: false });
-  },
-  stopAuthLoading: () => {
-    // console.trace();
-    set({ authLoading: false });
-  },
+  stopEditorLoading: () => set({ editorLoading: false }),
+  stopRendererLoading: () => set({ rendererLoading: false }),
+  stopAuthLoading: () => set({ authLoading: false })
 }));
 
 export default useGlobalStore;
