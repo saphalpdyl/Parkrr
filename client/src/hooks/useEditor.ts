@@ -1,10 +1,10 @@
 import axios from "axios";
-import { itemSizes, SIZE_FACTOR } from "../routes/editor/constants";
-import { EditorItem, ParkingItemCategory } from "../routes/editor/types";
-import { useEditorStore } from "../stores/editorState";
-import { OtherObject, ParkingLot } from "../types/parking";
-import { convertToRadians } from "../utils";
-import { useEffect } from "react";
+import {itemSizes, SIZE_FACTOR} from "@/routes/editor/constants";
+import {EditorItem, ParkingItemCategory} from "@/routes/editor/types";
+import {useEditorStore} from "../stores/editorState";
+import {OtherObject, ParkingLot} from "@/types/parking";
+import {convertToRadians} from "@/utils";
+import {useEffect} from "react";
 import toast from "react-hot-toast";
 import useAuth from "./useAuth";
 
@@ -43,6 +43,7 @@ export default function useEditor() {
       });
       
       setItems(resItems);
+
       setEditorLoading(false);
     } catch(e) {
       console.log("error" , e);
@@ -91,10 +92,6 @@ export default function useEditor() {
     }
   }, [currentEditorId]);
 
-  useEffect(() => {
-    if ( user === null ) setEditorLoading(false);
-  }, [user])
-  
   function _generateCompatibleDataForOtherObjects(
     items: EditorItem[],
     category: ParkingItemCategory,
@@ -144,7 +141,8 @@ export default function useEditor() {
       floors: [
         {
           floorPrefix: "A",
-          // @ts-ignore
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
           spaces: _generateCompatibleDataForOtherObjects(items, "space"),
           entrances: _generateCompatibleDataForOtherObjects(
             items,
