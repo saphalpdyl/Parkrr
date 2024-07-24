@@ -7,7 +7,7 @@ function StatusBar() {
   const { currentParkingLot } = useRenderer();
 
   return <div className="absolute w-40 bg-white z-20 shadow-md rounded-lg text-slate-900 flex gap-2 p-2 m-3">
-    <UserProfile menuPosition="bottom"/>
+    <UserProfile menuPosition="bottom" showIcon={false}/>
     <div className="flex flex-col justify-evenly text-xs font-bold">
       <span>{ currentParkingLot?.name ?? "Untitled" }</span>
       <Link to="/editor" className="flex gap-1 items-center underline text-blue-500 hover:text-blue-600 ">

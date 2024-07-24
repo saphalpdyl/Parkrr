@@ -9,7 +9,7 @@ import { SIZE_FACTOR } from "./constants";
 import EditorContextMenu from "./components/EditorContextMenu";
 import OriginItem from "./components/OriginItem";
 import Logo from "../../components/Logo";
-import { useEditorStore } from "../../stores/editorState";
+import { useEditorStore } from "@/stores/editorState.ts";
 import { useOrigin } from "./hooks/useOrigin";
 import { useDragDrop } from "./hooks/useDragDrop";
 import EditorAddBar from "./components/EditorAddbar";

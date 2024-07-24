@@ -3,9 +3,11 @@ import useAuth from "../hooks/useAuth";
 
 interface UserProfileProps {
   menuPosition?: "top" | "bottom";
+  isRing?: boolean;
+  showIcon?: boolean;
 }
 
-function UserProfile({ menuPosition = "top" } : UserProfileProps) {
+function UserProfile({ menuPosition = "top", isRing, showIcon = true } : UserProfileProps) {
   const { logout, user } = useAuth();
   
   if (!user) return null;
@@ -47,7 +49,13 @@ function UserProfile({ menuPosition = "top" } : UserProfileProps) {
           </div>
         </div>
 
-      <UserCircle color="black"/>
+      {
+        showIcon ? (
+          <UserCircle size={28} color="black" className={isRing ? "ring-2 ring-blue-500/60 ring-offset-1 rounded-full" : ""}/>
+        ) : (
+          <div className="w-[32px] h-[32px] bg-slate-900 flex items-center justify-center lg rounded-full text-white font-semibold uppercase">{ user.username.slice(0,2) }</div>
+        )
+      }
     </div>
   );
 }
