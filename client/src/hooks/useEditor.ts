@@ -23,21 +23,20 @@ export default function useEditor() {
 
   const { user } = useAuth();
 
-  // const getCurrentEditorTitle = () => 
-
   async function loadEditor() {
     setEditorLoading(true);
     if ( !currentEditorId ) return;
 
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${currentEditorId}`);
+      console.log(response);
       const floor = response.data.floors[0];
-      const resItems = [
+      const resItems = floor ? [
         ...floor.spaces.map((e:{ editorData: EditorItem}) => e.editorData),
         ...floor.offices.map((e:{ editorData: EditorItem}) => e.editorData),
         ...floor.entrances.map((e:{ editorData: EditorItem}) => e.editorData),
         ...floor.exits.map((e:{ editorData: EditorItem}) => e.editorData),
-      ];
+      ] : [];
 
       setCurrentEditor({
         name: response.data.name,
@@ -46,6 +45,7 @@ export default function useEditor() {
       setItems(resItems);
       setEditorLoading(false);
     } catch(e) {
+      console.log("error" , e);
       setCurrentEditorId(null);
       setCurrentEditor(null);
       localStorage.removeItem("recentEditorId");
