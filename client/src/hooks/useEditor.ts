@@ -1,12 +1,11 @@
 import axios from "axios";
 import {itemSizes, SIZE_FACTOR} from "@/routes/editor/constants";
 import {EditorItem, ParkingItemCategory} from "@/routes/editor/types";
-import {useEditorStore} from "../stores/editorState";
+import {useEditorStore} from "../stores/editorStore.ts";
 import {OtherObject, ParkingLot} from "@/types/parking";
 import {convertToRadians} from "@/utils";
-import {useEffect} from "react";
 import toast from "react-hot-toast";
-import useAuth from "./useAuth";
+import useGlobalStore from "@/stores/globalStore.ts";
 
 export default function useEditor() {
   const { 
@@ -15,21 +14,18 @@ export default function useEditor() {
     currentEditorId,
     setCurrentEditorId,
     setItems,
-    editorLoading,
-    setEditorLoading,
     currentEditor,
     setCurrentEditor,
   } = useEditorStore();
 
-  const { user } = useAuth();
+  const { startEditorLoading, stopEditorLoading } = useGlobalStore();
 
   async function loadEditor() {
-    setEditorLoading(true);
+    startEditorLoading();
     if ( !currentEditorId ) return;
 
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${currentEditorId}`);
-      console.log(response);
       const floor = response.data.floors[0];
       const resItems = floor ? [
         ...floor.spaces.map((e:{ editorData: EditorItem}) => e.editorData),
@@ -44,9 +40,8 @@ export default function useEditor() {
       
       setItems(resItems);
 
-      setEditorLoading(false);
+      stopEditorLoading();
     } catch(e) {
-      console.log("error" , e);
       setCurrentEditorId(null);
       setCurrentEditor(null);
       localStorage.removeItem("recentEditorId");
@@ -56,7 +51,7 @@ export default function useEditor() {
   async function changeEditor(id: string) {
     setCurrentEditorId(id);
     localStorage.setItem("recentEditorId", id);
-    setEditorLoading(false);
+    stopEditorLoading();
   }
 
   async function renameEditor(newName: string) {
@@ -74,7 +69,7 @@ export default function useEditor() {
   }
   
   async function removeCurrentEditor() {
-    setEditorLoading(true);
+    startEditorLoading();
     setCurrentEditorId(null);
     setCurrentEditor(null);
   }
@@ -95,12 +90,6 @@ export default function useEditor() {
     await axios.delete(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${id}`);
     toast.success("Deleted", {id: "delete"});
   }
-
-  useEffect(() => {
-    if ( currentEditorId && user ) {
-      loadEditor();
-    }
-  }, [currentEditorId]);
 
   function _generateCompatibleDataForOtherObjects(
     items: EditorItem[],
@@ -183,7 +172,6 @@ export default function useEditor() {
   return { 
     handleSave,
     loadEditor,
-    editorLoading,
     changeEditor,
     currentEditorId,
     getAllEditorInformation,

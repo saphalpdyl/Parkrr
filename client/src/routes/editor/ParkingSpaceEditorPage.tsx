@@ -9,7 +9,7 @@ import { SIZE_FACTOR } from "./constants";
 import EditorContextMenu from "./components/EditorContextMenu";
 import OriginItem from "./components/OriginItem";
 import Logo from "../../components/Logo";
-import { useEditorStore } from "../../stores/editorState";
+import { useEditorStore } from "@/stores/editorStore.ts";
 import { useOrigin } from "./hooks/useOrigin";
 import { useDragDrop } from "./hooks/useDragDrop";
 import EditorAddBar from "./components/EditorAddbar";
@@ -18,6 +18,9 @@ import { useClipboard } from "./hooks/useClipboard";
 import useEditor from "../../hooks/useEditor";
 import EditorSelect from "./components/EditorSelect";
 import EditorNameBar from "./components/EditorNameBar";
+import SwitchToRenderer from "@/routes/editor/components/SwitchToRenderer.tsx";
+import useGlobalStore from "@/stores/globalStore.ts";
+import useAuth from "@/hooks/useAuth.ts";
 
 const ParkingEditorPage = () => {
   const {
@@ -40,11 +43,25 @@ const ParkingEditorPage = () => {
 
   const { copyItem, pasteItem } = useClipboard();
   const { handleSave, loadEditor, currentEditorId } = useEditor();
+  const { startEditorLoading, stopEditorLoading } = useGlobalStore();
+  const { token, user } = useAuth();
 
   useEffect(() => {
     handleCenterOrigin();
-    loadEditor();
   }, []);
+
+  useEffect(() => {
+    if ( currentEditorId && user ) {
+      loadEditor();
+    }
+  }, [currentEditorId]);
+
+  useEffect(() => {
+    if ( !token ) return;
+
+    if ( currentEditorId ) stopEditorLoading();
+    else startEditorLoading();
+  }, [currentEditorId, token]);
 
   return (
     <div onCopy={copyItem} onPaste={pasteItem} className="relative flex h-screen w-screen items-center justify-center overflow-hidden">
@@ -60,6 +77,7 @@ const ParkingEditorPage = () => {
       <EditorAddBar />
       <EditorNameBar />
       <SelectedItemPropertiesSection isHidden={selectedItem === null} />
+      <SwitchToRenderer />
 
       {/* Parkrr logo on the top right */}
       <div className="absolute left-3 top-3 z-40 opacity-70">

@@ -1,6 +1,6 @@
 import { CircleDotDashed, Eraser, FolderOpen, Save } from "lucide-react";
 import EditorSidebarButton from "./EditorSidebarButton";
-import { useEditorStore } from "../../../../stores/editorState";
+import { useEditorStore } from "@/stores/editorStore.ts";
 import useEditor from "../../../../hooks/useEditor";
 
 type EditorSidebarProps = {

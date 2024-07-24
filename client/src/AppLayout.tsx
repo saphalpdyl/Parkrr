@@ -1,18 +1,21 @@
 import { Outlet } from "react-router-dom"
 import applicationLogo from "/logo_main_t.png";
-import useAuth from "./hooks/useAuth";
-import useEditor from "./hooks/useEditor";
+import useGlobalStore from "@/stores/globalStore.ts";
+import { useEffect } from "react";
 
 function AppLayout() {
-  const { loading: authLoading } = useAuth();
-  const { editorLoading } = useEditor();
-  
+  const { authLoading, editorLoading, rendererLoading } = useGlobalStore();
+
+  useEffect(() => {
+    console.log({ authLoading, editorLoading, rendererLoading })
+  }, [authLoading, editorLoading, rendererLoading]);
+
   return <>
     <Outlet />
     <div className={`
       h-screen w-screen z-40 absolute left-0 top-0 backdrop-blur-md flex flex-col items-center justify-center transition-all
-        ${authLoading || editorLoading ? "pointer-events-auto" : "pointer-events-none"}
-        ${authLoading || editorLoading ? "opacity-100" : "opacity-0"}
+        ${authLoading || editorLoading || rendererLoading ? "pointer-events-auto" : "pointer-events-none"}
+        ${authLoading || editorLoading || rendererLoading ? "opacity-100" : "opacity-0"}
       `}>
       <img src={applicationLogo} alt="Loading Application Logo" className="opacity-75 h-40 mb-16"/>
       <span className="font-poppins text-2xl animate-pulse">Loading your instance</span>

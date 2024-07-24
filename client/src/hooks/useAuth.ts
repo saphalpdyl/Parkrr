@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import useAuthStore from "../stores/authState";
+import useAuthStore, { User } from "../stores/authStore.ts";
 import axios, { AxiosResponse } from "axios";
 import toast from "react-hot-toast";
+import useGlobalStore from "@/stores/globalStore.ts";
 
 export interface SignUpData {
   firstName: string;
@@ -14,10 +15,11 @@ export interface SignUpData {
 export default function useAuth() {
   const [ error, setError ] = useState<string | null>(null);
 
-  const { user, token, clearUserAndToken, setUserAndToken, loading, setLoading } = useAuthStore(); 
+  const { user, token, clearUserAndToken, setUserAndToken } = useAuthStore();
+  const { startAuthLoading, stopAuthLoading, stopEditorLoading, stopRendererLoading} = useGlobalStore();
 
   const _verifyToken = async (token: string) => {
-    setLoading(true);
+    startAuthLoading();
     try {
       const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/verify/`);
       setUserAndToken(response.data, token);
@@ -25,7 +27,8 @@ export default function useAuth() {
       clearUserAndToken();
       localStorage.removeItem("token");
     } finally {
-      setLoading(false);
+      // Other routes will stop Loading by themselves
+      stopAuthLoading();
     }
   }
 
@@ -45,24 +48,24 @@ export default function useAuth() {
 
 
   const _handleError = (errMessage: string) => {
-    setLoading(false);
+    stopAuthLoading();
     console.error(errMessage);
     setError(errMessage);
     clearUserAndToken();
     toast.error(errMessage, {id: "auth"})
   }
   
-  const _handleUserResponse = (response: AxiosResponse<any,any>) => {
-    setLoading(false);
+  const _handleUserResponse = (response: AxiosResponse<{token: string, user: User}, never>) => {
+    stopAuthLoading();
     setError(null);
-    const {token, user } = response.data;
+    const { token, user }  = response.data;
     setUserAndToken(user!, token!);
     localStorage.setItem("token", token);
     toast.success("Signed in!", {id: "auth"})
   }
   
   const login = async (username: string, password: string) => {
-    setLoading(true);
+    startAuthLoading();
 
     toast.loading("Signing in!", {id: "auth"})
     const payload = {
@@ -73,18 +76,22 @@ export default function useAuth() {
     await new Promise((resolve, _) => setTimeout(() => resolve("asdad"), 1000));
     
     const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/login/`, payload).catch(error => _handleError(error.response?.data?.message || 'An unknown error occurred'));
-    if (response) _handleUserResponse(response);
+    if (response) _handleUserResponse(response as never);
   }
   
   const signUp = async (payload: SignUpData) => {
-    setLoading(true);
+    startAuthLoading();
     await new Promise((resolve, _) => setTimeout(() => resolve("asdad"), 1000));
     const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/signup/`, payload).catch(res => _handleError(res.response.data.message));
 
-    if ( response ) _handleUserResponse(response); 
+    if ( response ) _handleUserResponse(response as never);
   }
 
   const logout = () => {
+    stopAuthLoading();
+    stopRendererLoading();
+    stopEditorLoading();
+
     clearUserAndToken();
     localStorage.removeItem("token");
     toast.success("Logged out");
@@ -93,7 +100,6 @@ export default function useAuth() {
   return {
     user,
     token,
-    loading,
     error,
     login,
     signUp,

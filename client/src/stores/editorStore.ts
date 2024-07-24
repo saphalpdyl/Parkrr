@@ -1,11 +1,9 @@
 import { create } from "zustand";
-import { EditorItem, Position } from "../routes/editor/types";
+import { EditorItem, Position } from "@/routes/editor/types";
 
-interface EditorState {
+interface EditorStore {
   items: EditorItem[];
   activeId: string | null;
-  editorLoading: boolean;
-  setEditorLoading: (value: boolean) => void;
   selectedItem: {
     item: EditorItem;
     clickPosition: Position;
@@ -50,7 +48,7 @@ interface EditorState {
   setOriginPosition: (position: Position | null) => void;
 }
 
-export const useEditorStore = create<EditorState>((set) => {
+export const useEditorStore = create<EditorStore>((set) => {
   return ({
     items: [],
     activeId: null,
@@ -59,8 +57,6 @@ export const useEditorStore = create<EditorState>((set) => {
     originPosition: null,
     currentEditorId: localStorage.getItem("recentEditorId"),
     currentEditor: null,
-    editorLoading: false,
-    setEditorLoading: (value) => set({editorLoading: value}),
     setCurrentEditorId: (value) => set({currentEditorId: value}),
     setCurrentEditor: (editor) => set({currentEditor: editor}),
     setItems: (items) => set({items}),

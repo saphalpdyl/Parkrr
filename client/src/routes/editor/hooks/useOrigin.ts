@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useEditorStore } from "../../../stores/editorState";
+import { useEditorStore } from "@/stores/editorStore.ts";
 import { calculateCenterPosition } from "../utils";
 
 export function useOrigin() {

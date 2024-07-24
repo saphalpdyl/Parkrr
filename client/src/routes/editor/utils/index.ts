@@ -11,7 +11,7 @@ export const calculateCenterPosition = (height: number, width: number) => {
 }
 
 function hexToRGB(hex: string) {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? {
     r: parseInt(result[1], 16),
     g: parseInt(result[2], 16),
@@ -24,6 +24,6 @@ export function selectMatchingContrastColor(hex: string, darkColor = "#000000", 
   if ( !rgb ) return null;
 
   const { r, g, b } = rgb;
-  var yiq = (r * 299 + g * 587 + b * 114) / 1000;
+  const yiq = (r * 299 + g * 587 + b * 114) / 1000;
   return (yiq >= 128) ? darkColor : lightColor;
 }
