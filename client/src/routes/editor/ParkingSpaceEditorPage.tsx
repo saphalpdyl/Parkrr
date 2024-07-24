@@ -18,6 +18,7 @@ import { useClipboard } from "./hooks/useClipboard";
 import useEditor from "../../hooks/useEditor";
 import EditorSelect from "./components/EditorSelect";
 import EditorNameBar from "./components/EditorNameBar";
+import useRenderer from "@/hooks/useRenderer.ts";
 
 const ParkingEditorPage = () => {
   const {
@@ -40,6 +41,12 @@ const ParkingEditorPage = () => {
 
   const { copyItem, pasteItem } = useClipboard();
   const { handleSave, loadEditor, currentEditorId } = useEditor();
+
+  const { setRendererLoading } = useRenderer();
+
+  useEffect(() => {
+    setRendererLoading(false); // Disable loading since rendererLoading is always true
+  }, []);
 
   useEffect(() => {
     handleCenterOrigin();

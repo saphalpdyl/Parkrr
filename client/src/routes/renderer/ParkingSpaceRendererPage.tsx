@@ -1,14 +1,19 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import useRenderer from "@/hooks/useRenderer.ts";
-import useAuth from "@/hooks/useAuth.ts";
 import StatusBar from "@/routes/renderer/components/StatusBar.tsx";
+import { useEffect } from "react";
 
 function ParkingSpaceRendererPage() {
-  const { currentParkingLot } = useRenderer();
-  const { user } = useAuth();
+  const {
+    currentParkingLotId,
+    loadParkingLot,
+  } = useRenderer();
 
-  //TODO: was making auser profile in the top left
+  useEffect(() => {
+    if ( currentParkingLotId )  loadParkingLot(currentParkingLotId);
+  }, [currentParkingLotId]);
+
   return (
     <div className="h-screen w-screen bg-gray-100">
       <StatusBar />
