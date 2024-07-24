@@ -59,8 +59,7 @@ export namespace BaseService {
       throw new ServiceError("Couldn't find the corresponding parking lot", ErrorCode.PAYLOAD_ITEM_NOT_FOUND);
     }
 
-    const parkingLot = await ParkingLot.findByIdAndUpdate(parkingLotId, parkingLotData);
-    return parkingLot;
+    return ParkingLot.findByIdAndUpdate(parkingLotId, parkingLotData);
   }
 
   export async function renameParkingLot(newName: string, parkingLotId: string, userId: string) {

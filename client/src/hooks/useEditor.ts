@@ -86,6 +86,16 @@ export default function useEditor() {
     return response;
   }
 
+  async function deleteEditor(id: string) {
+    // If the current editor is the one being deleted
+    if ( id === currentEditorId )
+      await removeCurrentEditor();
+
+    toast.loading("Deleting", {id: "delete"});
+    await axios.delete(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${id}`);
+    toast.success("Deleted", {id: "delete"});
+  }
+
   useEffect(() => {
     if ( currentEditorId && user ) {
       loadEditor();
@@ -181,5 +191,6 @@ export default function useEditor() {
     currentEditor,
     renameEditor,
     createNewEditor,
+    deleteEditor,
   };
 }

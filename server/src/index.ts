@@ -14,7 +14,7 @@ import deleteParkingLotController from "../controllers/base/deleteParkingLotCont
 
 const app = new Hono().basePath("/api/v1");
 app.use('*', cors({
-  origin: (origin, c) => origin,
+  origin: (origin, _) => origin,
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Include all methods your API uses
   allowHeaders: ['Content-Type', 'Authorization'], // Include headers your app sends
   maxAge: 600,
@@ -30,7 +30,7 @@ app.post("/app/lots/update/", updateParkingLotController);
 app.post("/app/lots/rename/", renameParkingLotController);
 app.get("/app/lots/:id", getParkingLotController);
 app.get("/app/lots/", getAllParkingLotsController);
-app.delete("/app/lots/", deleteParkingLotController);
+app.delete("/app/lots/:id", deleteParkingLotController);
 
 // Authentication
 app.post("/auth/signup/", signUpController);

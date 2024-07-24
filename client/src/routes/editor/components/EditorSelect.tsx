@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useEditor from "../../../hooks/useEditor";
 import { Plus, Trash2 } from "lucide-react";
 import useAuth from "../../../hooks/useAuth";
@@ -19,22 +19,25 @@ import {
 function EditorSelect() {
   const [editors, setEditors] = useState<{_id: string, name?: string}[]>([]);
   const [editorsLoading, setEditorsLoading] = useState(true);
-  const { getAllEditorInformation, currentEditorId, changeEditor, createNewEditor } = useEditor();
+  const { getAllEditorInformation, currentEditorId, changeEditor, createNewEditor, deleteEditor } = useEditor();
   const { token } = useAuth();
 
-  function handleDeleteEditor(_id: string) {
-  }
-
+  const handleDeleteEditor = async (id: string) => {
+    await deleteEditor(id)
+    refreshEditors();
+  };
   const handleChangeEditor = (id: string) => changeEditor(id);
   
+  async function refreshEditors() {
+    const editors = await getAllEditorInformation();
+    setEditors(editors);
+    setEditorsLoading(false);
+  }
+
   useEffect(() => {
     setEditorsLoading(true);
-    if ( token ) {
-      getAllEditorInformation().then(val => {
-        setEditors(val);
-        setEditorsLoading(false);
-      });
-    }
+    if ( token )
+      refreshEditors();
   }, [currentEditorId]);
   
   return (
