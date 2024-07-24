@@ -3,6 +3,7 @@ import { OrbitControls } from "@react-three/drei";
 import useRenderer from "@/hooks/useRenderer.ts";
 import StatusBar from "@/routes/renderer/components/StatusBar.tsx";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function ParkingSpaceRendererPage() {
   const {
@@ -10,8 +11,11 @@ function ParkingSpaceRendererPage() {
     loadParkingLot,
   } = useRenderer();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     if ( currentParkingLotId )  loadParkingLot(currentParkingLotId);
+    else navigate("/editor");
   }, [currentParkingLotId]);
 
   return (

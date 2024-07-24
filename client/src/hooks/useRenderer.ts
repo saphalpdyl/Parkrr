@@ -26,6 +26,7 @@ export default function useRenderer() {
     } catch(e) {
       setCurrentParkingLot(null);
       setCurrentParkingLotId(null);
+      console.log(e);
       toast.error("Something went wrong");
     } finally {
       setRendererLoading(false);
@@ -36,6 +37,9 @@ export default function useRenderer() {
     void async function() {
       if ( token ) {
         const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/`);
+
+        if (!response.data.length) return;
+
         setCurrentParkingLotId(response.data[0]._id || null);
       }
     }();
