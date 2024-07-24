@@ -19,6 +19,7 @@ import useEditor from "../../hooks/useEditor";
 import EditorSelect from "./components/EditorSelect";
 import EditorNameBar from "./components/EditorNameBar";
 import useRenderer from "@/hooks/useRenderer.ts";
+import SwitchToRenderer from "@/routes/editor/components/SwitchToRenderer.tsx";
 
 const ParkingEditorPage = () => {
   const {
@@ -67,6 +68,7 @@ const ParkingEditorPage = () => {
       <EditorAddBar />
       <EditorNameBar />
       <SelectedItemPropertiesSection isHidden={selectedItem === null} />
+      <SwitchToRenderer />
 
       {/* Parkrr logo on the top right */}
       <div className="absolute left-3 top-3 z-40 opacity-70">
