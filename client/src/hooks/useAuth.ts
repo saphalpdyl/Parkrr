@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useAuthStore from "../stores/authState";
 import axios, { AxiosResponse } from "axios";
 import toast from "react-hot-toast";
+import useGlobalStore from "@/stores/globalState.ts";
 
 export interface SignUpData {
   firstName: string;
@@ -14,10 +15,11 @@ export interface SignUpData {
 export default function useAuth() {
   const [ error, setError ] = useState<string | null>(null);
 
-  const { user, token, clearUserAndToken, setUserAndToken, loading, setLoading } = useAuthStore(); 
+  const { user, token, clearUserAndToken, setUserAndToken } = useAuthStore();
+  const { loading, startLoading, stopLoading} = useGlobalStore();
 
   const _verifyToken = async (token: string) => {
-    setLoading(true);
+    startLoading();
     try {
       const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/verify/`);
       setUserAndToken(response.data, token);
@@ -25,7 +27,8 @@ export default function useAuth() {
       clearUserAndToken();
       localStorage.removeItem("token");
     } finally {
-      setLoading(false);
+      // Other routes will stop Loading by themselves
+      // stopLoading();
     }
   }
 
@@ -45,15 +48,15 @@ export default function useAuth() {
 
 
   const _handleError = (errMessage: string) => {
-    setLoading(false);
+    stopLoading();
     console.error(errMessage);
     setError(errMessage);
     clearUserAndToken();
     toast.error(errMessage, {id: "auth"})
   }
   
-  const _handleUserResponse = (response: AxiosResponse<any,any>) => {
-    setLoading(false);
+  const _handleUserResponse = (response: AxiosResponse<any, any>) => {
+    stopLoading();
     setError(null);
     const { token, user } = response.data;
     setUserAndToken(user!, token!);
@@ -62,7 +65,7 @@ export default function useAuth() {
   }
   
   const login = async (username: string, password: string) => {
-    setLoading(true);
+    startLoading();
 
     toast.loading("Signing in!", {id: "auth"})
     const payload = {
@@ -77,7 +80,7 @@ export default function useAuth() {
   }
   
   const signUp = async (payload: SignUpData) => {
-    setLoading(true);
+    startLoading();
     await new Promise((resolve, _) => setTimeout(() => resolve("asdad"), 1000));
     const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/auth/signup/`, payload).catch(res => _handleError(res.response.data.message));
 

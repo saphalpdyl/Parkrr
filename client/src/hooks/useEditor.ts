@@ -7,6 +7,7 @@ import {convertToRadians} from "@/utils";
 import {useEffect} from "react";
 import toast from "react-hot-toast";
 import useAuth from "./useAuth";
+import useGlobalStore from "@/stores/globalState.ts";
 
 export default function useEditor() {
   const { 
@@ -15,21 +16,19 @@ export default function useEditor() {
     currentEditorId,
     setCurrentEditorId,
     setItems,
-    editorLoading,
-    setEditorLoading,
     currentEditor,
     setCurrentEditor,
   } = useEditorStore();
 
   const { user } = useAuth();
+  const { startLoading, stopLoading } = useGlobalStore();
 
   async function loadEditor() {
-    setEditorLoading(true);
+    startLoading();
     if ( !currentEditorId ) return;
 
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${currentEditorId}`);
-      console.log(response);
       const floor = response.data.floors[0];
       const resItems = floor ? [
         ...floor.spaces.map((e:{ editorData: EditorItem}) => e.editorData),
@@ -44,9 +43,8 @@ export default function useEditor() {
       
       setItems(resItems);
 
-      setEditorLoading(false);
+      stopLoading();
     } catch(e) {
-      console.log("error" , e);
       setCurrentEditorId(null);
       setCurrentEditor(null);
       localStorage.removeItem("recentEditorId");
@@ -56,7 +54,7 @@ export default function useEditor() {
   async function changeEditor(id: string) {
     setCurrentEditorId(id);
     localStorage.setItem("recentEditorId", id);
-    setEditorLoading(false);
+    stopLoading();
   }
 
   async function renameEditor(newName: string) {
@@ -74,7 +72,7 @@ export default function useEditor() {
   }
   
   async function removeCurrentEditor() {
-    setEditorLoading(true);
+    startLoading();
     setCurrentEditorId(null);
     setCurrentEditor(null);
   }
@@ -183,7 +181,6 @@ export default function useEditor() {
   return { 
     handleSave,
     loadEditor,
-    editorLoading,
     changeEditor,
     currentEditorId,
     getAllEditorInformation,

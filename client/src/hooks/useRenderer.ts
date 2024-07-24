@@ -1,9 +1,9 @@
-import useRendererState from "@/stores/rendererState.ts";
+import useRendererStore from "@/stores/rendererState.ts";
 import { useEffect } from "react";
 import axios from "axios";
 import { ParkingLot } from "@/types/parking";
-import toast from "react-hot-toast";
 import useAuth from "@/hooks/useAuth.ts";
+import useGlobalStore from "@/stores/globalState.ts";
 
 export default function useRenderer() {
   const {
@@ -11,14 +11,14 @@ export default function useRenderer() {
     currentParkingLotId,
     setCurrentParkingLot,
     setCurrentParkingLotId,
-    setRendererLoading,
-    rendererLoading,
-  } = useRendererState();
+  } = useRendererStore();
 
   const { token } = useAuth();
+  const { startLoading, stopLoading } = useGlobalStore();
 
   async function loadParkingLot(id: string) {
-    setRendererLoading(true);
+    startLoading();
+
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${id}`);
 
@@ -26,10 +26,8 @@ export default function useRenderer() {
     } catch(e) {
       setCurrentParkingLot(null);
       setCurrentParkingLotId(null);
-      console.log(e);
-      toast.error("Something went wrong");
     } finally {
-      setRendererLoading(false);
+      stopLoading();
     }
   }
 
@@ -49,7 +47,5 @@ export default function useRenderer() {
     currentParkingLot,
     currentParkingLotId,
     loadParkingLot,
-    rendererLoading,
-    setRendererLoading,
   }
 }

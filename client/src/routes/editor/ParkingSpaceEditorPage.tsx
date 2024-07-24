@@ -18,8 +18,9 @@ import { useClipboard } from "./hooks/useClipboard";
 import useEditor from "../../hooks/useEditor";
 import EditorSelect from "./components/EditorSelect";
 import EditorNameBar from "./components/EditorNameBar";
-import useRenderer from "@/hooks/useRenderer.ts";
 import SwitchToRenderer from "@/routes/editor/components/SwitchToRenderer.tsx";
+import useGlobalStore from "@/stores/globalState.ts";
+import useAuth from "@/hooks/useAuth.ts";
 
 const ParkingEditorPage = () => {
   const {
@@ -42,17 +43,20 @@ const ParkingEditorPage = () => {
 
   const { copyItem, pasteItem } = useClipboard();
   const { handleSave, loadEditor, currentEditorId } = useEditor();
-
-  const { setRendererLoading } = useRenderer();
-
-  useEffect(() => {
-    setRendererLoading(false); // Disable loading since rendererLoading is always true
-  }, []);
+  const { startLoading, stopLoading } = useGlobalStore();
+  const { token } = useAuth();
 
   useEffect(() => {
     handleCenterOrigin();
     loadEditor();
   }, []);
+
+  useEffect(() => {
+    startLoading();
+
+    if ( currentEditorId ) stopLoading();
+    else startLoading();
+  }, [currentEditorId, token]);
 
   return (
     <div onCopy={copyItem} onPaste={pasteItem} className="relative flex h-screen w-screen items-center justify-center overflow-hidden">

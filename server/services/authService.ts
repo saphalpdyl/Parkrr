@@ -1,8 +1,8 @@
-import { verify, decode, sign } from 'hono/jwt';
-import User, { IUser } from '../models/auth/user';
-import { ErrorCode } from '../constants/enum';
-import { AuthError } from '../../server/errors/error';
-import { JWTPayload } from 'hono/utils/jwt/types';
+import { sign, verify } from "hono/jwt";
+import User, { IUser } from "../models/auth/user";
+import { ErrorCode } from "../constants/enum";
+import { AuthError } from "../errors/error";
+import { JWTPayload } from "hono/utils/jwt/types";
 
 export namespace AuthService {
   export interface UserRegisterData {
@@ -25,9 +25,7 @@ export namespace AuthService {
     
     // Create a password hash
     const { password } = userData;
-    const hashedPassword = await Bun.password.hash(password);
-
-    user.password = hashedPassword;
+    user.password = await Bun.password.hash(password);
     const newUser = await user.save();
 
     return prepareUserData(newUser);
@@ -72,9 +70,7 @@ export namespace AuthService {
 
   export async function verifyToken(token: string) {
     try {
-      const payload = await verify(token, process.env.JWT_SECRET!);
-
-      return payload;
+      return await verify(token, process.env.JWT_SECRET!);
     } catch (e) {
       console.error(e);
       throw new AuthError("JWT malformed", ErrorCode.USER_JWT_MALFORMED);

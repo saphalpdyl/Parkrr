@@ -1,30 +1,16 @@
 import { Outlet } from "react-router-dom"
 import applicationLogo from "/logo_main_t.png";
-import useAuth from "./hooks/useAuth";
-import useEditor from "./hooks/useEditor";
-import useRenderer from "@/hooks/useRenderer.ts";
-import { useEditorStore } from "@/stores/editorState.ts";
-import { useEffect } from "react";
+import useGlobalStore from "@/stores/globalState.ts";
 
 function AppLayout() {
-  const { loading: authLoading, token } = useAuth();
-  const { editorLoading } = useEditor();
-  const { rendererLoading, setRendererLoading } = useRenderer();
-  const { setEditorLoading } = useEditorStore();
+  const { loading } = useGlobalStore();
 
-  useEffect(() => {
-    if ( token === null ) {
-      setEditorLoading(false);
-      setRendererLoading(false);
-    }
-  }, [token]);
-  
   return <>
     <Outlet />
     <div className={`
       h-screen w-screen z-40 absolute left-0 top-0 backdrop-blur-md flex flex-col items-center justify-center transition-all
-        ${authLoading || editorLoading || rendererLoading ? "pointer-events-auto" : "pointer-events-none"}
-        ${authLoading || editorLoading || rendererLoading ? "opacity-100" : "opacity-0"}
+        ${loading ? "pointer-events-auto" : "pointer-events-none"}
+        ${loading ? "opacity-100" : "opacity-0"}
       `}>
       <img src={applicationLogo} alt="Loading Application Logo" className="opacity-75 h-40 mb-16"/>
       <span className="font-poppins text-2xl animate-pulse">Loading your instance</span>
