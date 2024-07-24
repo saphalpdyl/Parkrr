@@ -19,16 +19,14 @@ export default function useRenderer() {
 
   async function loadParkingLot(id: string) {
     setRendererLoading(true);
-    toast.loading("Loading", {id: "loading"});
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${id}`);
 
       setCurrentParkingLot(response.data as ParkingLot);
-      toast.success("Loaded", {id: "loading"});
     } catch(e) {
       setCurrentParkingLot(null);
       setCurrentParkingLotId(null);
-      toast.error("Something went wrong", {id: "loading"});
+      toast.error("Something went wrong");
     } finally {
       setRendererLoading(false);
     }
