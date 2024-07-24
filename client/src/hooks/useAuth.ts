@@ -55,7 +55,7 @@ export default function useAuth() {
   const _handleUserResponse = (response: AxiosResponse<any,any>) => {
     setLoading(false);
     setError(null);
-    const {token, user } = response.data;
+    const { token, user } = response.data;
     setUserAndToken(user!, token!);
     localStorage.setItem("token", token);
     toast.success("Signed in!", {id: "auth"})

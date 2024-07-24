@@ -56,7 +56,7 @@ export namespace AuthService {
     
     const jwtToken = await sign(payload, process.env.JWT_SECRET!);
 
-    return {jwtToken, user: prepareUserData(user)};
+    return {jwtToken, userId: user._id, user: prepareUserData(user)};
   }
 
   export function prepareUserData(user: IUser) {

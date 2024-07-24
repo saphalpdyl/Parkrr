@@ -2,5 +2,7 @@
 <project version="4">
   <component name="JavaScriptLibraryMappings">
     <includedPredefinedLibrary name="Node.js Core" />
+    <excludedPredefinedLibrary name="49-parking_management_system/client/node_modules" />
+    <excludedPredefinedLibrary name="49-parking_management_system/server/node_modules" />
   </component>
 </project>

@@ -3,11 +3,21 @@ import applicationLogo from "/logo_main_t.png";
 import useAuth from "./hooks/useAuth";
 import useEditor from "./hooks/useEditor";
 import useRenderer from "@/hooks/useRenderer.ts";
+import { useEditorStore } from "@/stores/editorState.ts";
+import { useEffect } from "react";
 
 function AppLayout() {
-  const { loading: authLoading } = useAuth();
+  const { loading: authLoading, token } = useAuth();
   const { editorLoading } = useEditor();
-  const { rendererLoading } = useRenderer();
+  const { rendererLoading, setRendererLoading } = useRenderer();
+  const { setEditorLoading } = useEditorStore();
+
+  useEffect(() => {
+    if ( token === null ) {
+      setEditorLoading(false);
+      setRendererLoading(false);
+    }
+  }, [token]);
   
   return <>
     <Outlet />
