@@ -6,9 +6,10 @@ interface UserProfileProps {
   menuPosition?: "top" | "bottom";
   isRing?: boolean;
   showIcon?: boolean;
+  disabledShadow?: boolean;
 }
 
-function UserProfile({ menuPosition = "top", isRing, showIcon = true } : UserProfileProps) {
+function UserProfile({ menuPosition = "top", isRing, showIcon = true, disabledShadow } : UserProfileProps) {
   const { logout, user } = useAuth();
   
   if (!user) return null;
@@ -18,7 +19,7 @@ function UserProfile({ menuPosition = "top", isRing, showIcon = true } : UserPro
       onClick={() => {}} 
       className={`
         rounded-full p-2
-        hover:bg-gray-100
+        ${!disabledShadow && "hover:bg-gray-100"}
         cursor-pointer
         relative
         group/usermenu
