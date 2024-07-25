@@ -38,7 +38,7 @@ function ParkingSpaceRendererPage() {
 
 
   return (
-    <div className="h-screen w-screen bg-gray-100">
+    <div className="h-screen w-screen bg-gray-100 cursor-none">
       <StatusBar />
       <ToolBar />
 
