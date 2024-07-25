@@ -19,7 +19,6 @@ function ParkingSpace({
   occupied,
 }: ParkingSpaceProps) {
 
-  console.log(parkingSpacesProperties, spaceType);
   const color  = parkingSpacesProperties.find(space => space.spaceType === spaceType)?.color ?? "#fff";
 
   return (

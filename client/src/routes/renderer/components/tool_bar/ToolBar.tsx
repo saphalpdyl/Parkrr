@@ -4,6 +4,8 @@ import Logo from "@/components/Logo.tsx";
 import useRenderer from "@/hooks/useRenderer.ts";
 import { useNavigate } from "react-router-dom";
 
+import ToolBarReports from "./components/ToolBarReports";
+
 function ToolBar() {
   const { setCameraMode, cameraMode } = useRenderer();
   const navigate = useNavigate();
@@ -21,6 +23,8 @@ function ToolBar() {
     <Logo sizeInRem={1.5} />
     <ToolBarItem tooltip="Switch to 2D/3D" icon={Box} color="rose" onClick={handleToggleCameraMode}/>
     <ToolBarItem tooltip="Switch to editor" icon={Pencil} color="blue" onClick={handleSwitchToEditor}/>
+    <ToolBarReports />
+
   </div>
 }
 
