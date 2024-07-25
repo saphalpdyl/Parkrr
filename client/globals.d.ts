@@ -8,3 +8,8 @@ declare interface vec3 {
   y: number;
   z: number;
 }
+
+declare interface vec2 {
+  x: number;
+  y: number;
+}

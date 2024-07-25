@@ -18,6 +18,7 @@ function ParkingSpaceRendererPage() {
     loadParkingLot,
     currentParkingLot,
     cameraMode,
+    pinging,
   } = useRenderer();
 
   const { token } = useAuth();
@@ -37,7 +38,7 @@ function ParkingSpaceRendererPage() {
 
 
   return (
-    <div className="h-screen w-screen bg-gray-100">
+    <div className="h-screen w-screen bg-gray-100 cursor-none">
       <StatusBar />
       <ToolBar />
 
@@ -65,6 +66,7 @@ function ParkingSpaceRendererPage() {
                     id={space.id}
                     args={space.args}
                     occupied={space.occupied}
+                    pinged={pinging && !space.occupied}
                   />
                 ))
               }
