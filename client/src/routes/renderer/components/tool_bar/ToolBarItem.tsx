@@ -9,8 +9,19 @@ import { LucideIcon } from "lucide-react";
 interface ToolBarItemProps {
   tooltip: string;
   icon: LucideIcon,
-  color: "rose" | "blue" | "teal" | "orange" | "gray",
+  color: "rose" | "blue" | "teal" | "orange" | "gray" | "slate" | "neutral" | "pink",
   onClick: () => void;
+}
+
+const mapColorsToClassNames = {
+  "rose": "bg-rose-500",
+  "blue": "bg-blue-500",
+  "teal": "bg-teal-500",
+  "orange": "bg-orange-500",
+  "gray": "bg-gray-500",
+  "pink": "bg-pink-500",
+  "neutral": "bg-neutral-900",
+  "slate": "bg-slate-900",
 }
 
 function ToolBarItem({
@@ -23,7 +34,7 @@ function ToolBarItem({
     <TooltipProvider>
       <Tooltip delayDuration={200}>
         <TooltipTrigger >
-          <div onClick={onClick} className={`w-10 h-10 bg-${color}-500 rounded-lg text-white flex items-center justify-center`}>
+          <div onClick={onClick} className={`w-10 h-10 ${mapColorsToClassNames[color]} rounded-lg text-white flex items-center justify-center`}>
             <Icon size={20} />
           </div>
         </TooltipTrigger>

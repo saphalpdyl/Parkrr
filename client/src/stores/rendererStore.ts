@@ -10,6 +10,8 @@ interface RendererStore {
   setCurrentParkingLot: (currentParkingLot: IParkingLot | null) => void;
   cameraMode: CameraMode;
   setCameraMode: (mode: CameraMode) => void;
+  pinging: boolean;
+  setPinging: (val: boolean) => void;
 }
 
 const useRendererStore = create<RendererStore>(set => ({
@@ -19,6 +21,8 @@ const useRendererStore = create<RendererStore>(set => ({
   setCurrentParkingLotId: parkingLotId => set({ currentParkingLotId: parkingLotId }),
   cameraMode: "3d",
   setCameraMode: (mode) => set({ cameraMode: mode }),
+  pinging: false,
+  setPinging: value => set({ pinging: value }),
 }));
 
 export default useRendererStore;

@@ -18,6 +18,7 @@ function ParkingSpaceRendererPage() {
     loadParkingLot,
     currentParkingLot,
     cameraMode,
+    pinging,
   } = useRenderer();
 
   const { token } = useAuth();
@@ -65,6 +66,7 @@ function ParkingSpaceRendererPage() {
                     id={space.id}
                     args={space.args}
                     occupied={space.occupied}
+                    pinged={pinging && !space.occupied}
                   />
                 ))
               }

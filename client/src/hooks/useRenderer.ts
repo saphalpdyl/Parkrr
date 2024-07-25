@@ -13,6 +13,8 @@ export default function useRenderer() {
     setCurrentParkingLotId,
     cameraMode,
     setCameraMode,
+    pinging,
+    setPinging,
   } = useRendererStore();
 
   const { token } = useAuth();
@@ -45,11 +47,26 @@ export default function useRenderer() {
     }();
   }, [token]);
 
+  useEffect(() => {
+    let timeout = undefined;
+    if ( pinging ) {
+      timeout = setTimeout(() => {
+        setPinging(false);
+      }, 200)
+    }
+
+    return () => {
+      clearTimeout(timeout);
+    }
+  }, [pinging]);
+
   return {
     currentParkingLot,
     currentParkingLotId,
     loadParkingLot,
     cameraMode,
     setCameraMode,
+    pinging,
+    setPinging,
   }
 }
