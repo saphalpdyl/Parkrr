@@ -17,7 +17,7 @@ const useRendererStore = create<RendererStore>(set => ({
   currentParkingLot: null,
   setCurrentParkingLot: parkingLot => set({ currentParkingLot: parkingLot }),
   setCurrentParkingLotId: parkingLotId => set({ currentParkingLotId: parkingLotId }),
-  cameraMode: "2d",
+  cameraMode: "3d",
   setCameraMode: (mode) => set({ cameraMode: mode }),
 }));
 
