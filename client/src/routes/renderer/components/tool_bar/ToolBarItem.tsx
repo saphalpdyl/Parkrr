@@ -18,13 +18,13 @@ function ToolBarItem({
   icon: Icon,
   color,
   onClick,
- }: ToolBarItemProps) {
+}: ToolBarItemProps) {
   return (
     <TooltipProvider>
       <Tooltip delayDuration={200}>
         <TooltipTrigger >
           <div onClick={onClick} className={`w-10 h-10 bg-${color}-500 rounded-lg text-white flex items-center justify-center`}>
-            <Icon />
+            <Icon size={20} />
           </div>
         </TooltipTrigger>
         <TooltipContent className="bg-slate-900 text-white font-semibold rounded-lg border-none shadow-lg">
