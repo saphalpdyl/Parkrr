@@ -5,6 +5,7 @@ import useRenderer from "@/hooks/useRenderer.ts";
 import { useNavigate } from "react-router-dom";
 
 import ToolBarReports from "./components/ToolBarReports";
+import ToolBarAboutTheProject from "./components/ToolBarAboutTheProject";
 
 function ToolBar() {
   const { setCameraMode, cameraMode } = useRenderer();
@@ -21,8 +22,9 @@ function ToolBar() {
 
   return <div className="absolute flex flex-row-reverse gap-2 right-3 top-3 z-20 items-center">
     <Logo sizeInRem={1.5} />
-    <ToolBarItem tooltip="Switch to 2D/3D" icon={Box} color="rose" onClick={handleToggleCameraMode}/>
+    <ToolBarAboutTheProject />
     <ToolBarItem tooltip="Switch to editor" icon={Pencil} color="blue" onClick={handleSwitchToEditor}/>
+    <ToolBarItem tooltip="Switch to 2D/3D" icon={Box} color="rose" onClick={handleToggleCameraMode}/>
     <ToolBarReports />
 
   </div>

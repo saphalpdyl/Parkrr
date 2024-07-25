@@ -26,6 +26,8 @@ function ToolBarReports() {
   const { currentParkingLot } = useRenderer();
 
   const parkingLotSpaces = currentParkingLot?.floors[0].spaces;
+
+  if ( !parkingLotSpaces ) return;
   
   const parkingLotSpacesRows = [];
   const groupedSpaces = Object.groupBy(parkingLotSpaces, (item: IParkingSpace) => item.type); 

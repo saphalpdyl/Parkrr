@@ -9,7 +9,7 @@ import { LucideIcon } from "lucide-react";
 interface ToolBarItemProps {
   tooltip: string;
   icon: LucideIcon,
-  color: "rose" | "blue" | "teal" | "neutral" | "slate" | "emerald" ,
+  color: "rose" | "blue" | "teal" | "orange" | "gray",
   onClick: () => void;
 }
 
