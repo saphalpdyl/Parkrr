@@ -48,7 +48,7 @@ function ToolBarReports() {
   }
 
   return (
-    <Dialog open>
+    <Dialog>
       <DialogTrigger>
         <ToolBarItem tooltip="View Reports" icon={SquareKanban} color="teal" onClick={() => {}}/>
       </DialogTrigger>
