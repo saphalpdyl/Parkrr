@@ -18,7 +18,6 @@ function ParkingSpace({
   spaceType,
   id,
   args,
-  occupied,
   pinged,
 }: ParkingSpaceProps) {
 

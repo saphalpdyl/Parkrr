@@ -112,6 +112,7 @@ export default function useEditor() {
         if (item.category === "space") {
           editorItemProps = {
             occupied: false,
+            // @ts-ignore
             type: item.spaceType,
           };
         }
