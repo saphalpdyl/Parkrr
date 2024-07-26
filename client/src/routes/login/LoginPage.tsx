@@ -22,7 +22,7 @@ function LoginPage() {
       <BackgroundGrid gridSize={30} />
       <form 
         onSubmit={handleLogin}
-        className="z-10 flex h-[30rem] w-96 flex-col rounded-xl border-4 border-gray-500 bg-white px-4 py-6 shadow-lg gap-3">
+        className="z-10 flex h-[30rem] w-96 flex-col rounded-xl border-4 border-gray-500 bg-white px-4 py-6 shadow-lg gap-3 relative">
         <div className="flex items-center justify-between">
           <div>
             <Logo />
@@ -40,6 +40,18 @@ function LoginPage() {
         <span className="text-center text-md text-neutral-700">
           Join the Community. <Link to="/auth/signup" className="text-rose-500 font-bold hover:underline">Sign up now!</Link> 
         </span>
+
+        <div className="font-light text-xs flex flex-col text-gray-500 absolute -right-40 top-0 bg-white p-3 rounded-lg shadow-lg">
+          <span className="font-semibold">
+            Test login credentials
+          </span>
+          <span>
+            Username: jamey123
+          </span>
+          <span>
+            Password: test@123
+          </span>
+        </div>
       </form>
     </div>
   );

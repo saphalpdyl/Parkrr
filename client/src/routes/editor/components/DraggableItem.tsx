@@ -2,8 +2,9 @@ import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { twMerge } from "tailwind-merge";
 
 import type { EditorItem, Position } from "../types";
-import { itemSizes, parkingSpacesProperties, SIZE_FACTOR } from "../constants";
-import { selectMatchingContrastColor } from "../utils";
+import { itemSizes, SIZE_FACTOR } from "../constants";
+import { parkingSpacesProperties} from "@/constants";
+import { selectMatchingContrastColor } from "@/utils";
 
 export interface DraggableItemProps {
   item: EditorItem;

@@ -1,7 +1,7 @@
 import useRendererStore from "@/stores/rendererStore.ts";
 import { useEffect } from "react";
 import axios from "axios";
-import { ParkingLot } from "@/types/parking";
+import { IParkingLot } from "@/types/parking";
 import useAuth from "@/hooks/useAuth.ts";
 import useGlobalStore from "@/stores/globalStore.ts";
 
@@ -11,6 +11,10 @@ export default function useRenderer() {
     currentParkingLotId,
     setCurrentParkingLot,
     setCurrentParkingLotId,
+    cameraMode,
+    setCameraMode,
+    pinging,
+    setPinging,
   } = useRendererStore();
 
   const { token } = useAuth();
@@ -22,7 +26,7 @@ export default function useRenderer() {
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/${id}`);
 
-      setCurrentParkingLot(response.data as ParkingLot);
+      setCurrentParkingLot(response.data as IParkingLot);
     } catch(e) {
       setCurrentParkingLot(null);
       setCurrentParkingLotId(null);
@@ -43,9 +47,26 @@ export default function useRenderer() {
     }();
   }, [token]);
 
+  useEffect(() => {
+    let timeout = undefined;
+    if ( pinging ) {
+      timeout = setTimeout(() => {
+        setPinging(false);
+      }, 200)
+    }
+
+    return () => {
+      clearTimeout(timeout);
+    }
+  }, [pinging]);
+
   return {
     currentParkingLot,
     currentParkingLotId,
     loadParkingLot,
+    cameraMode,
+    setCameraMode,
+    pinging,
+    setPinging,
   }
 }

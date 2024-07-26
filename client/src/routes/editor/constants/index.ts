@@ -1,4 +1,3 @@
-import { ParkingSpaceType } from "../../../types/parking";
 import { ItemSize, ParkingItemCategory } from "../types";
 
 export const SIZE_FACTOR = 20;
@@ -25,27 +24,3 @@ export const itemSizes : Record<ParkingItemCategory, ItemSize> = {
     color: "#fff0"
   }
 }
-
-export const parkingSpacesProperties : {
-  spaceType: ParkingSpaceType,
-  color: string,
-  border ?: boolean,
-}[] = [
-  {
-    spaceType: "standard",
-    color: "#fff",
-    border: true,
-  },
-  {
-    spaceType: "electric",
-    color: "#00917c",
-  },
-  {
-    spaceType: "handicap",
-    color: "#1d63dc",
-  },
-  {
-    spaceType: "vip",
-    color: "#ab2330",
-  },
-];

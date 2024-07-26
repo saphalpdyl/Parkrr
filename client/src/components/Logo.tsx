@@ -1,7 +1,15 @@
 import applicationLogo from "/logo_main_t.png";
 
-export default function Logo() {
+interface LogoProps {
+  sizeInRem?: number;
+}
+
+export default function Logo({ sizeInRem = 2.5 } : LogoProps) {
   return (
-    <img className="z-40 h-10 pointer-events-none" src={applicationLogo} alt="Parkrr Logo" />
+    <img
+      style={{
+        height: `${sizeInRem}rem`
+      }}
+      className="z-40 pointer-events-none" src={applicationLogo} alt="Parkrr Logo" />
   )
 }
