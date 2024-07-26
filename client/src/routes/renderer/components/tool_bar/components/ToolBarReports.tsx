@@ -30,6 +30,7 @@ function ToolBarReports() {
   if ( !parkingLotSpaces ) return;
   
   const parkingLotSpacesRows = [];
+  // @ts-ignore
   const groupedSpaces = Object.groupBy(parkingLotSpaces, (item: IParkingSpace) => item.type); 
   for( const space in groupedSpaces ) {
     const occupiedSpaces = groupedSpaces[space].filter((item: IParkingSpace) => item.occupied).length;
