@@ -42,7 +42,7 @@ const ParkingEditorPage = () => {
   } = useDragDrop();
 
   const { copyItem, pasteItem } = useClipboard();
-  const { handleSave, loadEditor, currentEditorId } = useEditor();
+  const { handleSave, loadEditor, currentEditorId, currentEditor } = useEditor();
   const { startEditorLoading, stopEditorLoading } = useGlobalStore();
   const { token, user } = useAuth();
 
@@ -58,10 +58,12 @@ const ParkingEditorPage = () => {
 
   useEffect(() => {
     if ( !token ) return;
-
-    if ( currentEditorId ) stopEditorLoading();
-    else startEditorLoading();
   }, [currentEditorId, token]);
+
+  useEffect(() => {
+    if ( !currentEditor ) startEditorLoading();
+    else stopEditorLoading();
+  }, [currentEditor]);
 
   return (
     <div onCopy={copyItem} onPaste={pasteItem} className="relative flex h-screen w-screen items-center justify-center overflow-hidden">

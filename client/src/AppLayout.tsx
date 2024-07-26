@@ -1,14 +1,9 @@
 import { Outlet } from "react-router-dom"
 import applicationLogo from "/logo_main_t.png";
 import useGlobalStore from "@/stores/globalStore.ts";
-import { useEffect } from "react";
 
 function AppLayout() {
   const { authLoading, editorLoading, rendererLoading } = useGlobalStore();
-
-  useEffect(() => {
-    console.log({ authLoading, editorLoading, rendererLoading })
-  }, [authLoading, editorLoading, rendererLoading]);
 
   return <>
     <Outlet />

@@ -9,6 +9,7 @@ import useAuth from "@/hooks/useAuth.ts";
 import ParkingSpace from "@/routes/renderer/components/models/ParkingSpace.tsx";
 import ToolBar from "@/routes/renderer/components/tool_bar/ToolBar.tsx";
 import CameraController from "@/routes/renderer/components/CameraController.tsx";
+import useGlobalStore from "@/stores/globalStore.ts";
 
 function ParkingSpaceRendererPage() {
   const navigate = useNavigate();
@@ -24,6 +25,12 @@ function ParkingSpaceRendererPage() {
   const { token } = useAuth();
   const { getAllEditorInformation } = useEditor();
 
+  const { startRendererLoading, stopRendererLoading } = useGlobalStore();
+
+  useEffect(() => {
+    if ( !currentParkingLot ) startRendererLoading();
+    else stopRendererLoading();
+  }, [currentParkingLot]);
 
   useEffect(() => {
     if ( !token ) return;
