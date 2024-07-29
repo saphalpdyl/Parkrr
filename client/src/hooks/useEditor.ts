@@ -5,7 +5,6 @@ import {useEditorStore} from "../stores/editorStore.ts";
 import {OtherObject, IParkingLot} from "@/types/parking";
 import {convertToRadians} from "@/utils";
 import toast from "react-hot-toast";
-import { toast as sonnertoast } from "sonner";
 import useGlobalStore from "@/stores/globalStore.ts";
 
 export default function useEditor() {
