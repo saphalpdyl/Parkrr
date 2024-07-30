@@ -1,12 +1,12 @@
 import useHover from "@/routes/renderer/hooks/useHover.ts";
-import { calculateDistance } from "@/utils";
+import calculateAndReturnNearestEntrance from "@/routes/renderer/helpers/calculateAndReturnNearestEntrance.ts";
+import useRenderer from "@/hooks/useRenderer.ts";
 
 function HoveringObjectInfoCard() {
   const { hovering } = useHover();
+  const { currentParkingLot } = useRenderer();
 
-  const objectDistance = hovering && calculateDistance(hovering.position, {
-    x: 0, y: 0, z: 0,
-  }).toFixed(2);
+  const nearestEntranceData = hovering && "type" in hovering && calculateAndReturnNearestEntrance(hovering.position, currentParkingLot!.floors[0]!.entrances!);
 
   return (
     <div className={`
@@ -21,7 +21,12 @@ function HoveringObjectInfoCard() {
             <span className="text-xs text-gray-500 font-semibold">Currently hovering</span>
             <span className="text-sm text-gray-700 font-bold capitalize mt-1">{ "type" in hovering ? `${hovering.type} Parking Space` : "" }</span>
             <span className="text-[7px] text-gray-400 font-bold">{hovering.id}</span>
-            <span className="text-xs text-emerald-600 font-regular">{objectDistance} units away from origin</span>
+            {
+              nearestEntranceData && (
+                <span className="text-[9px] mt-2 text-emerald-600 font-regular">{nearestEntranceData.shortestDistance.toFixed(1)} units away from the nearest entrance</span>
+
+              )
+            }
 
           </>
         )
