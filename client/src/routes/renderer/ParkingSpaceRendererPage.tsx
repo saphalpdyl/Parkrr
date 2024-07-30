@@ -11,6 +11,7 @@ import ToolBar from "@/routes/renderer/components/tool_bar/ToolBar.tsx";
 import CameraController from "@/routes/renderer/components/CameraController.tsx";
 import useGlobalStore from "@/stores/globalStore.ts";
 import { Selection, EffectComposer, Outline } from "@react-three/postprocessing";
+import useHover from "@/routes/renderer/hooks/useHover.ts";
 
 function ParkingSpaceRendererPage() {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ function ParkingSpaceRendererPage() {
 
   const { token } = useAuth();
   const { getAllEditorInformation } = useEditor();
+  const { hovering, setHovering } = useHover();
 
   const { startRendererLoading, stopRendererLoading } = useGlobalStore();
 
@@ -81,6 +83,8 @@ function ParkingSpaceRendererPage() {
                       args={space.args}
                       occupied={space.occupied}
                       pinged={pinging && !space.occupied}
+                      hovering={!!(hovering && hovering.id == space.id)}
+                      onHoverHandler={() => setHovering(space)}
                     />
                   ))
                 }
