@@ -2,6 +2,7 @@ import { ParkingSpaceType } from "@/types/parking";
 import { parkingSpacesProperties } from "@/constants";
 import { useSpring, animated } from "@react-spring/three";
 import { useState } from "react";
+import { Select } from "@react-three/postprocessing";
 
 interface ParkingSpaceProps {
   position: vec3;
@@ -35,18 +36,20 @@ function ParkingSpace({
   });
 
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    <animated.mesh
-      onPointerOver={() => setHovering(true)}
-      onPointerOut={() => setHovering(false)}
-      {...meshSpring}
-      rotation={[0, rotation, 0]}
-      key={id}
-    >
-      <boxGeometry args={args} />
-      <animated.meshStandardMaterial {...materialSpring} color={color} transparent/>
-    </animated.mesh>
+    <Select enabled={hovering}>
+    {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
+    {/* @ts-expect-error*/}
+      <animated.mesh
+        onPointerOver={() => setHovering(true)}
+        onPointerOut={() => setHovering(false)}
+        {...meshSpring}
+        rotation={[0, rotation, 0]}
+        key={id}
+      >
+        <boxGeometry args={args} />
+        <animated.meshStandardMaterial {...materialSpring} color={color} transparent/>
+      </animated.mesh>
+    </Select>
   )
 }
 

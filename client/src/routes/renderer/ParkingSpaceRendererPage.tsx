@@ -10,6 +10,7 @@ import ParkingSpace from "@/routes/renderer/components/models/ParkingSpace.tsx";
 import ToolBar from "@/routes/renderer/components/tool_bar/ToolBar.tsx";
 import CameraController from "@/routes/renderer/components/CameraController.tsx";
 import useGlobalStore from "@/stores/globalStore.ts";
+import { Selection, EffectComposer, Outline } from "@react-three/postprocessing";
 
 function ParkingSpaceRendererPage() {
   const navigate = useNavigate();
@@ -61,25 +62,32 @@ function ParkingSpaceRendererPage() {
         }
         <pointLight position={[0,10,0]} intensity={300} />
         <ambientLight intensity={2} />
-        {
-          currentParkingLot && (
-            <>
-              {
-                ...currentParkingLot.floors[0].spaces.map(space => (
-                  <ParkingSpace
-                    position={space.position}
-                    rotation={space.rotation}
-                    spaceType={space.type}
-                    id={space.id}
-                    args={space.args}
-                    occupied={space.occupied}
-                    pinged={pinging && !space.occupied}
-                  />
-                ))
-              }
-            </>
-          )
-        }
+        <Selection>
+          <EffectComposer autoClear={false}>
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+            {/* @ts-expect-error */}
+            <Outline blur edgeStrength={800} width={2000} visibleEdgeColor="green" />
+          </EffectComposer>
+          {
+            currentParkingLot && (
+              <>
+                {
+                  ...currentParkingLot.floors[0].spaces.map(space => (
+                    <ParkingSpace
+                      position={space.position}
+                      rotation={space.rotation}
+                      spaceType={space.type}
+                      id={space.id}
+                      args={space.args}
+                      occupied={space.occupied}
+                      pinged={pinging && !space.occupied}
+                    />
+                  ))
+                }
+              </>
+            )
+          }
+        </Selection>
       </Canvas>
     </div>
   );
