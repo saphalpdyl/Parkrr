@@ -12,6 +12,7 @@ import CameraController from "@/routes/renderer/components/CameraController.tsx"
 import useGlobalStore from "@/stores/globalStore.ts";
 import { Selection, EffectComposer, Outline } from "@react-three/postprocessing";
 import useHover from "@/routes/renderer/hooks/useHover.ts";
+import HoveringObjectInfoCard from "@/routes/renderer/components/HoveringObjectInfoCard.tsx";
 
 function ParkingSpaceRendererPage() {
   const navigate = useNavigate();
@@ -51,6 +52,7 @@ function ParkingSpaceRendererPage() {
     <div className="h-screen w-screen bg-gray-100">
       <StatusBar />
       <ToolBar />
+      <HoveringObjectInfoCard />
 
       <Canvas camera={{
         position: [0,30,0]

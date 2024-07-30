@@ -1,9 +1,5 @@
 interface WorldObject {
-  position: {
-    x: number;
-    y: number;
-    z: number;
-  };
+  position: vec3;
 
   rotation: number;
 
