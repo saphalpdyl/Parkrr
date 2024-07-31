@@ -1,5 +1,5 @@
 import useHover from "@/routes/renderer/hooks/useHover.ts";
-import calculateAndReturnNearestEntrance from "@/routes/renderer/helpers/calculateAndReturnNearestEntrance.ts";
+import calculateAndReturnNearestObject from "@/routes/renderer/helpers/calculateAndReturnNearestObject.ts";
 import useRenderer from "@/hooks/useRenderer.ts";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -7,7 +7,7 @@ function HoveringObjectInfoCard() {
   const { hovering } = useHover();
   const { currentParkingLot } = useRenderer();
 
-  const nearestEntranceData = hovering && "type" in hovering && calculateAndReturnNearestEntrance(hovering.position, currentParkingLot!.floors[0]!.entrances!);
+  const nearestEntranceData = hovering && "type" in hovering && calculateAndReturnNearestObject(hovering.position, currentParkingLot!.floors[0]!.entrances!);
 
   return (
     <div className={`

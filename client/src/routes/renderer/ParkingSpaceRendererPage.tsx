@@ -13,6 +13,7 @@ import useGlobalStore from "@/stores/globalStore.ts";
 import { Selection, EffectComposer, Outline } from "@react-three/postprocessing";
 import useHover from "@/routes/renderer/hooks/useHover.ts";
 import HoveringObjectInfoCard from "@/routes/renderer/components/HoveringObjectInfoCard.tsx";
+import HoveringArc from "@/routes/renderer/components/HoveringArc.tsx";
 
 function ParkingSpaceRendererPage() {
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ function ParkingSpaceRendererPage() {
       <Canvas camera={{
         position: [0,30,0]
       }}>
+        <HoveringArc />
         <gridHelper args={[500,500, "#ddd", "#eee"]} />
         <CameraController cameraMode={cameraMode} />
         {
