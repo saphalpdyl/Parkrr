@@ -2,12 +2,14 @@ import useHover from "@/routes/renderer/hooks/useHover.ts";
 import calculateAndReturnNearestObject from "@/routes/renderer/helpers/calculateAndReturnNearestObject.ts";
 import useRenderer from "@/hooks/useRenderer.ts";
 import Arc from "@/routes/renderer/components/Arc.tsx";
+import useRendererStore from "@/stores/rendererStore.ts";
 
 function HoveringArc() {
   const { currentParkingLot } = useRenderer();
   const { hovering} = useHover();
+  const { showGuidingLines } = useRendererStore();
 
-  if (!hovering) return;
+  if (!hovering || !showGuidingLines) return;
 
   const nearestEntranceData = "type" in hovering && calculateAndReturnNearestObject(hovering.position, currentParkingLot!.floors[0]!.entrances!);
   const nearestExitData = "type" in hovering && calculateAndReturnNearestObject(hovering.position, currentParkingLot!.floors[0]!.exits!);

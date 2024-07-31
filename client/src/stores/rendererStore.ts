@@ -26,6 +26,8 @@ const useRendererStore = create<RendererStore>(set => ({
   pinging: false,
   setPinging: value => set({ pinging: value }),
   hovering: null,
+  showGuidingLines: true,
+  setShowGuidingLines: value => set({ showGuidingLines: value }),
   setHovering: (hover) => set({ hovering: hover, }),
 }));
 
