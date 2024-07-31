@@ -30,7 +30,7 @@ function ParkingSpaceRendererPage() {
   const { token } = useAuth();
   const { getAllEditorInformation } = useEditor();
   const { hovering, setHovering } = useHover();
-  const { setSelectedObject } = useSelect();
+  const { setSelectedObject, clearSelectedObject, selectedObject } = useSelect();
 
   const { startRendererLoading, stopRendererLoading } = useGlobalStore();
 
@@ -51,15 +51,22 @@ function ParkingSpaceRendererPage() {
   }, [currentParkingLotId, token]);
 
 
+  function handleEmptyAreaClicked() {
+    clearSelectedObject();
+  }
+
   return (
     <div className="h-screen w-screen bg-gray-100">
       <StatusBar />
       <ToolBar />
       <HoveringObjectInfoCard />
 
-      <Canvas camera={{
-        position: [0,30,0]
-      }}>
+      <Canvas
+        camera={{
+          position: [0,30,0]
+        }}
+        onPointerMissed={handleEmptyAreaClicked}
+      >
         <HoveringArc />
         <gridHelper args={[500,500, "#ddd", "#eee"]} />
         <CameraController cameraMode={cameraMode} />
@@ -90,6 +97,7 @@ function ParkingSpaceRendererPage() {
                       occupied={space.occupied}
                       pinged={pinging && !space.occupied}
                       hovering={!!(hovering && hovering.id == space.id)}
+                      selected={!!(selectedObject && selectedObject.id == space.id)}
                       onHoverHandler={() => setHovering(space)}
                       onSelectHandler={() => setSelectedObject(space)}
                     />

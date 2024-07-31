@@ -12,6 +12,7 @@ interface ParkingSpaceProps {
   args: [number,number,number];
   occupied: boolean;
   pinged ?: boolean;
+  selected : boolean;
   hovering: boolean;
   onHoverHandler: () => void;
   onSelectHandler: () => void;
@@ -25,6 +26,7 @@ function ParkingSpace({
   args,
   pinged,
   hovering,
+  selected,
   onHoverHandler,
   onSelectHandler,
 }: ParkingSpaceProps) {
@@ -43,7 +45,7 @@ function ParkingSpace({
   });
 
   return (
-    <Select enabled={hovering}>
+    <Select enabled={hovering || selected}>
     {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
     {/* @ts-expect-error*/}
       <animated.mesh

@@ -13,8 +13,9 @@ function HoveringObjectInfoCard() {
     <div className={`
       absolute z-10 top-28 left-3 w-52 bg-white rounded-lg shadow-lg p-3
       transition-all
+      duration-500
       flex flex-col
-      ${hovering ? "opacity-100" : "opacity-0 delay-75"}
+      ${hovering ? "opacity-100" : "opacity-0 delay-500"}
       `}>
       {
         hovering != null ? (
