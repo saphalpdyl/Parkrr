@@ -25,3 +25,11 @@ export function selectMatchingContrastColor(hex: string, darkColor = "#000000", 
   const yiq = (r * 299 + g * 587 + b * 114) / 1000;
   return (yiq >= 128) ? darkColor : lightColor;
 }
+
+export function calculateDistance(pointA: vec3, pointB: vec3) {
+  const dx = pointA.x - pointB.x;
+  const dy = pointA.y - pointB.y;
+  const dz = pointA.z - pointB.z;
+
+  return Math.sqrt(dx * dx + dy * dy + dz * dz);
+}

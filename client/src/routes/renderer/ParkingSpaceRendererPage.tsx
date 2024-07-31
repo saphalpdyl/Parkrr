@@ -10,6 +10,11 @@ import ParkingSpace from "@/routes/renderer/components/models/ParkingSpace.tsx";
 import ToolBar from "@/routes/renderer/components/tool_bar/ToolBar.tsx";
 import CameraController from "@/routes/renderer/components/CameraController.tsx";
 import useGlobalStore from "@/stores/globalStore.ts";
+import { Selection, EffectComposer, Outline } from "@react-three/postprocessing";
+import useHover from "@/routes/renderer/hooks/useHover.ts";
+import HoveringObjectInfoCard from "@/routes/renderer/components/HoveringObjectInfoCard.tsx";
+import HoveringArc from "@/routes/renderer/components/HoveringArc.tsx";
+import useSelect from "@/routes/renderer/hooks/useSelect.ts";
 
 function ParkingSpaceRendererPage() {
   const navigate = useNavigate();
@@ -24,6 +29,8 @@ function ParkingSpaceRendererPage() {
 
   const { token } = useAuth();
   const { getAllEditorInformation } = useEditor();
+  const { hovering, setHovering } = useHover();
+  const { setSelectedObject, clearSelectedObject, selectedObject } = useSelect();
 
   const { startRendererLoading, stopRendererLoading } = useGlobalStore();
 
@@ -44,14 +51,23 @@ function ParkingSpaceRendererPage() {
   }, [currentParkingLotId, token]);
 
 
+  function handleEmptyAreaClicked() {
+    clearSelectedObject();
+  }
+
   return (
     <div className="h-screen w-screen bg-gray-100">
       <StatusBar />
       <ToolBar />
+      <HoveringObjectInfoCard />
 
-      <Canvas camera={{
-        position: [0,30,0]
-      }}>
+      <Canvas
+        camera={{
+          position: [0,30,0]
+        }}
+        onPointerMissed={handleEmptyAreaClicked}
+      >
+        <HoveringArc />
         <gridHelper args={[500,500, "#ddd", "#eee"]} />
         <CameraController cameraMode={cameraMode} />
         {
@@ -61,25 +77,36 @@ function ParkingSpaceRendererPage() {
         }
         <pointLight position={[0,10,0]} intensity={300} />
         <ambientLight intensity={2} />
-        {
-          currentParkingLot && (
-            <>
-              {
-                ...currentParkingLot.floors[0].spaces.map(space => (
-                  <ParkingSpace
-                    position={space.position}
-                    rotation={space.rotation}
-                    spaceType={space.type}
-                    id={space.id}
-                    args={space.args}
-                    occupied={space.occupied}
-                    pinged={pinging && !space.occupied}
-                  />
-                ))
-              }
-            </>
-          )
-        }
+        <Selection>
+          <EffectComposer autoClear={false}>
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+            {/* @ts-expect-error */}
+            <Outline blur edgeStrength={800} width={2000} visibleEdgeColor="green" />
+          </EffectComposer>
+          {
+            currentParkingLot && (
+              <>
+                {
+                  ...currentParkingLot.floors[0].spaces.map(space => (
+                    <ParkingSpace
+                      position={space.position}
+                      rotation={space.rotation}
+                      spaceType={space.type}
+                      id={space.id}
+                      args={space.args}
+                      occupied={space.occupied}
+                      pinged={pinging && !space.occupied}
+                      hovering={!!(hovering && hovering.id == space.id)}
+                      selected={!!(selectedObject && selectedObject.id == space.id)}
+                      onHoverHandler={() => setHovering(space)}
+                      onSelectHandler={() => setSelectedObject(space)}
+                    />
+                  ))
+                }
+              </>
+            )
+          }
+        </Selection>
       </Canvas>
     </div>
   );

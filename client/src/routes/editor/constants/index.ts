@@ -11,12 +11,12 @@ export const itemSizes : Record<ParkingItemCategory, ItemSize> = {
   "entrance" : {
     height: 1,
     width: 3,
-    color: "#ffa500"
+    color: "#03c04a"
   },
   "exit" : {
     height: 1,
     width: 3,
-    color: "#03c04a"
+    color: "#ffa500"
   },
   "office" : {
     height: 5,
