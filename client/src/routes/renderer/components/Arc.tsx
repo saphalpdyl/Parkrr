@@ -45,6 +45,7 @@ function Arc({
   });
 
   return (
+    <>
       <Line
         ref={lineRef}
         points={points}
@@ -54,6 +55,11 @@ function Arc({
         dashSize={0.2}
         gapSize={0.5}
       />
+      <mesh position={[end.x,end.y,end.z]}>
+        <boxGeometry args={[0.2,0.2,0.2]} />
+        <meshStandardMaterial color={color} />
+      </mesh>
+    </>
   );
 }
 

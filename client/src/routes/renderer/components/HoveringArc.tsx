@@ -14,10 +14,10 @@ function HoveringArc() {
 
   return <>
     {
-      nearestEntranceData && <Arc start={hovering.position} end={nearestEntranceData.nearestObject!.position} color="#1d63dc" height={7}/>
+      nearestEntranceData && <Arc start={hovering.position} end={nearestEntranceData.nearestObject!.position} color="#03c04a" height={7}/>
     }
     {
-      nearestExitData && <Arc start={hovering.position} end={nearestExitData.nearestObject!.position} color="#ab2330"  height={7}/>
+      nearestExitData && <Arc start={hovering.position} end={nearestExitData.nearestObject!.position} color="#ffa500"  height={7}/>
     }
   </>
 
