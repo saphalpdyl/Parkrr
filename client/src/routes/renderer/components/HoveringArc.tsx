@@ -7,19 +7,23 @@ import useRendererStore from "@/stores/rendererStore.ts";
 function HoveringArc() {
   const { currentParkingLot } = useRenderer();
   const { hovering} = useHover();
-  const { showGuidingLines } = useRendererStore();
+  const { showGuidingLines, selectedObject } = useRendererStore();
 
-  if (!hovering || !showGuidingLines) return;
+  if ( !(hovering || selectedObject) || !showGuidingLines) return;
 
-  const nearestEntranceData = "type" in hovering && calculateAndReturnNearestObject(hovering.position, currentParkingLot!.floors[0]!.entrances!);
-  const nearestExitData = "type" in hovering && calculateAndReturnNearestObject(hovering.position, currentParkingLot!.floors[0]!.exits!);
+  const targetObject = selectedObject || hovering;
+
+  if ( !targetObject ) return;
+
+  const nearestEntranceData = "type" in targetObject && calculateAndReturnNearestObject(targetObject.position, currentParkingLot!.floors[0]!.entrances!);
+  const nearestExitData = "type" in targetObject && calculateAndReturnNearestObject(targetObject.position, currentParkingLot!.floors[0]!.exits!);
 
   return <>
     {
-      nearestEntranceData && <Arc start={hovering.position} end={nearestEntranceData.nearestObject!.position} color="#03c04a" height={7}/>
+      nearestEntranceData && <Arc start={targetObject.position} end={nearestEntranceData.nearestObject!.position} color="#03c04a" height={7}/>
     }
     {
-      nearestExitData && <Arc start={hovering.position} end={nearestExitData.nearestObject!.position} color="#ffa500"  height={7}/>
+      nearestExitData && <Arc start={targetObject.position} end={nearestExitData.nearestObject!.position} color="#ffa500"  height={7}/>
     }
   </>
 

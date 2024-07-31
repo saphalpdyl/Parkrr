@@ -14,6 +14,7 @@ interface ParkingSpaceProps {
   pinged ?: boolean;
   hovering: boolean;
   onHoverHandler: () => void;
+  onSelectHandler: () => void;
 }
 
 function ParkingSpace({
@@ -25,6 +26,7 @@ function ParkingSpace({
   pinged,
   hovering,
   onHoverHandler,
+  onSelectHandler,
 }: ParkingSpaceProps) {
   const { clearHovering } = useHover();
 
@@ -45,6 +47,7 @@ function ParkingSpace({
     {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
     {/* @ts-expect-error*/}
       <animated.mesh
+        onClick={onSelectHandler}
         onPointerOver={onHoverHandler}
         onPointerOut={clearHovering}
         {...meshSpring}

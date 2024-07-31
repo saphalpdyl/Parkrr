@@ -14,6 +14,10 @@ interface RendererStore {
   setPinging: (val: boolean) => void;
   hovering: IParkingSpace | OtherObject | null;
   setHovering: (val: IParkingSpace | OtherObject | null) => void;
+  showGuidingLines: boolean;
+  setShowGuidingLines: (val: boolean) => void;
+  selectedObject: IParkingSpace | OtherObject | null;
+  setSelectedObject: (val: IParkingSpace | OtherObject | null) => void;
 }
 
 const useRendererStore = create<RendererStore>(set => ({
@@ -29,6 +33,8 @@ const useRendererStore = create<RendererStore>(set => ({
   showGuidingLines: true,
   setShowGuidingLines: value => set({ showGuidingLines: value }),
   setHovering: (hover) => set({ hovering: hover, }),
+  selectedObject: null,
+  setSelectedObject: (object) => set({ selectedObject: object, }),
 }));
 
 export default useRendererStore;

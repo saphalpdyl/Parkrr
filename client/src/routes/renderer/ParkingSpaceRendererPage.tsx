@@ -14,6 +14,7 @@ import { Selection, EffectComposer, Outline } from "@react-three/postprocessing"
 import useHover from "@/routes/renderer/hooks/useHover.ts";
 import HoveringObjectInfoCard from "@/routes/renderer/components/HoveringObjectInfoCard.tsx";
 import HoveringArc from "@/routes/renderer/components/HoveringArc.tsx";
+import useSelect from "@/routes/renderer/hooks/useSelect.ts";
 
 function ParkingSpaceRendererPage() {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ function ParkingSpaceRendererPage() {
   const { token } = useAuth();
   const { getAllEditorInformation } = useEditor();
   const { hovering, setHovering } = useHover();
+  const { setSelectedObject } = useSelect();
 
   const { startRendererLoading, stopRendererLoading } = useGlobalStore();
 
@@ -89,6 +91,7 @@ function ParkingSpaceRendererPage() {
                       pinged={pinging && !space.occupied}
                       hovering={!!(hovering && hovering.id == space.id)}
                       onHoverHandler={() => setHovering(space)}
+                      onSelectHandler={() => setSelectedObject(space)}
                     />
                   ))
                 }
