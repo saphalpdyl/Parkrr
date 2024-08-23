@@ -15,6 +15,7 @@ import useHover from "@/routes/renderer/hooks/useHover.ts";
 import HoveringObjectInfoCard from "@/routes/renderer/components/HoveringObjectInfoCard.tsx";
 import HoveringArc from "@/routes/renderer/components/HoveringArc.tsx";
 import useSelect from "@/routes/renderer/hooks/useSelect.ts";
+import SelectedComponentInfoCard from "./components/SelectedComponentInfoCard";
 
 function ParkingSpaceRendererPage() {
   const navigate = useNavigate();
@@ -60,7 +61,9 @@ function ParkingSpaceRendererPage() {
       <StatusBar />
       <ToolBar />
       <HoveringObjectInfoCard />
+      { selectedObject && <SelectedComponentInfoCard /> }
 
+      
       <Canvas
         camera={{
           position: [0,30,0]
@@ -68,7 +71,7 @@ function ParkingSpaceRendererPage() {
         onPointerMissed={handleEmptyAreaClicked}
       >
         <HoveringArc />
-        <gridHelper args={[500,500, "#ddd", "#eee"]} />
+        {/* <gridHelper args={[500,500, "#ddd", "#eee"]} /> */}
         <CameraController cameraMode={cameraMode} />
         {
           cameraMode === "3d" ?
