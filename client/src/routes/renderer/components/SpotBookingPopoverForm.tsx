@@ -37,8 +37,8 @@ function SpotBookingPopoverForm() {
         <hr />
         <div className="grid grid-cols-2 items-center gap-y-3">
           <Label>Parking type</Label>
-          <ToggleGroup type="single" onValueChange={handleParkTimeOptionSelect}>
-            <ToggleGroupItem value="timed" aria-label="Toggle timed" >
+          <ToggleGroup type="single" onValueChange={handleParkTimeOptionSelect} defaultValue="timed">
+            <ToggleGroupItem value="timed" aria-label="Toggle timed">
               <Tooltip>
                 <TooltipTrigger>
                   <Timer size={16} />
