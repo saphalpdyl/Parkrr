@@ -1,5 +1,7 @@
 import useSelect from "@/routes/renderer/hooks/useSelect";
+import { Canvas } from "@react-three/fiber";
 import { X } from "lucide-react";
+import ParkingSpace from "./models/ParkingSpace";
 
 function SelectedComponentInfoCard () {
   const { selectedObject, clearSelectedObject } = useSelect();
@@ -16,6 +18,36 @@ function SelectedComponentInfoCard () {
         </div>
       </div>
       <span className="capitalize font-light text-sm text-gray-400">Standard</span>
+      <span className="text-[10px] text-slate-300">{ selectedObject.id }</span>
+
+      <div className="flex relative">
+        <div className="absolute bottom-0 right-0 font-semibold text-gray-200">
+          H: { selectedObject.args[0] }
+          &nbsp;
+          W: { selectedObject.args[2] }
+        </div>
+        <div>
+          <Canvas 
+            camera={{
+              position: [-3,3,3],
+            }}>
+              <ambientLight intensity={3} />
+              <ParkingSpace
+                position={{x:0, y:0, z:0}}
+                rotation={selectedObject.rotation}
+                spaceType={selectedObject.type}
+                id={selectedObject.id}
+                args={selectedObject.args}
+                occupied={selectedObject.occupied}
+                pinged={false}
+                hovering={false}
+                selected={false}
+                onHoverHandler={() => {}}
+                onSelectHandler={() => {}}
+              />
+          </Canvas>
+        </div>
+      </div>
     </div>
   )
 }
