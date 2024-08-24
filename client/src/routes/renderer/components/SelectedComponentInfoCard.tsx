@@ -3,10 +3,10 @@ import { Canvas } from "@react-three/fiber";
 import { X } from "lucide-react";
 import ParkingSpace from "./models/ParkingSpace";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import SpotBookingPopoverForm from "./SpotBookingPopoverForm";
 
 function SelectedComponentInfoCard () {
@@ -54,16 +54,16 @@ function SelectedComponentInfoCard () {
           </Canvas>
         </div>
       </div>
-      <Popover>
-        <PopoverTrigger>
+      <Dialog>
+        <DialogTrigger>
           <div className="bg-blue-500 font-semibold text-white flex items-center justify-center rounded-sm py-1 mt-3 hover:bg-blue-600 cursor-pointer">
             Book spot
           </div>
-        </PopoverTrigger>
-        <PopoverContent>
+        </DialogTrigger>
+        <DialogContent>
           <SpotBookingPopoverForm />
-        </PopoverContent>
-      </Popover>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

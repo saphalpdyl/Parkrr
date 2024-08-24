@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useSelect from "../hooks/useSelect";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import {
   ToggleGroup,
@@ -10,11 +10,15 @@ import {
 
 import { Timer, Infinity } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
+import { Textarea } from "@/components/ui/textarea";
 
 function SpotBookingPopoverForm() {
   const { selectedObject } = useSelect();
   const focusRef = useRef<HTMLInputElement>(null);
+
   const [ parkType, setParkType ] = useState<string>("timed");
+  const [ parkDate, setParkDate ] = useState<Date | null>(new Date());
+  const [ note, setNote ] = useState("");
 
   // For automatically focusing on an element at start
   // Easier Accessibility
@@ -26,14 +30,13 @@ function SpotBookingPopoverForm() {
 
   if ( !selectedObject ) return null;
 
-  function handleParkTimeOptionSelect(value: string) {
-    setParkType(value);
-  }
+  const handleParkTimeOptionSelect = (value: string) => setParkType(value);
+  const handleNoteChange = (e: ChangeEvent<HTMLTextAreaElement>) => setNote(e.target.value);
 
   return (
     <TooltipProvider>
       <div className="flex flex-col text-xs gap-2">
-        <span className="text-md font-semibold">Book a spot</span>
+        <span className="text-xl font-bold">Book a spot</span>
         <hr />
         <div className="grid grid-cols-2 items-center gap-y-3">
           <Label>Parking type</Label>
@@ -62,13 +65,17 @@ function SpotBookingPopoverForm() {
           {
             parkType == "timed" && (
               <>
-                <Label>Est. park end time</Label>
-                <Input ref={focusRef} placeholder="MM/DD/YYYY" type="date"></Input>
+                <Label>Est. park end</Label>
+                <Input value={parkDate?.toISOString().split("T")[0]} onChange={(e) => setParkDate(e.target.valueAsDate)} ref={focusRef} placeholder="MM/DD/YYYY" type="date"></Input>
               </>
             )
           }
           <Label>Note</Label>
-          <Input placeholder="(Optional)" type="text"></Input>
+          <Textarea className="text-xs text-gray-600" onChange={handleNoteChange} value={note} placeholder="(Optional)" />
+
+        </div>
+        <div className="bg-blue-500 font-semibold text-white text-md flex items-center justify-center rounded-sm py-2 mt-3 hover:bg-blue-600 cursor-pointer">
+          Book spot
         </div>
       </div>
     </TooltipProvider>
