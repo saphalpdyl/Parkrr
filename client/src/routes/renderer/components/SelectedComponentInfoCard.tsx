@@ -2,6 +2,12 @@ import useSelect from "@/routes/renderer/hooks/useSelect";
 import { Canvas } from "@react-three/fiber";
 import { X } from "lucide-react";
 import ParkingSpace from "./models/ParkingSpace";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import SpotBookingPopoverForm from "./SpotBookingPopoverForm";
 
 function SelectedComponentInfoCard () {
   const { selectedObject, clearSelectedObject } = useSelect();
@@ -48,6 +54,16 @@ function SelectedComponentInfoCard () {
           </Canvas>
         </div>
       </div>
+      <Popover>
+        <PopoverTrigger>
+          <div className="bg-blue-500 font-semibold text-white flex items-center justify-center rounded-sm py-1 mt-3 hover:bg-blue-600 cursor-pointer">
+            Book spot
+          </div>
+        </PopoverTrigger>
+        <PopoverContent>
+          <SpotBookingPopoverForm />
+        </PopoverContent>
+      </Popover>
     </div>
   )
 }
