@@ -66,7 +66,10 @@ function SpotBookingPopoverForm() {
             parkType == "timed" && (
               <>
                 <Label>Est. park end</Label>
-                <Input value={parkDate?.toISOString().split("T")[0]} onChange={(e) => setParkDate(e.target.valueAsDate)} ref={focusRef} placeholder="MM/DD/YYYY" type="date"></Input>
+                <Input value={parkDate?.toISOString().split('.')[0]} onChange={(e) => {
+                  setParkDate(e.target.valueAsDate);
+                  console.log(e);
+                }} ref={focusRef} type="datetime-local"></Input>
               </>
             )
           }
