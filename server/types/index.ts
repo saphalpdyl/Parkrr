@@ -25,6 +25,7 @@ export type ParkingSpaceType = "standard" | "handicap" | "vip" | "electric";
 export interface IParkingSpace extends IWorldObject {
   occupied: boolean;
   type: ParkingSpaceType;
+  bookings: IBooking[];
 }
 
 export interface IParkingFloor {
@@ -42,6 +43,12 @@ export interface IParkingLot {
   floors: IParkingFloor[];
   lat?: number;
   lon?: number;
+}
+
+export interface IBooking {
+  createdOn: Date;
+  estimatedEndTime?: Date;
+  bookingRefId: string;
 }
 
 export interface CurrentUserInterface {
