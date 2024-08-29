@@ -68,5 +68,6 @@ export default function useRenderer() {
     setCameraMode,
     pinging,
     setPinging,
+    setCurrentParkingLot,
   }
 }

@@ -16,6 +16,8 @@ import HoveringObjectInfoCard from "@/routes/renderer/components/HoveringObjectI
 import HoveringArc from "@/routes/renderer/components/HoveringArc.tsx";
 import useSelect from "@/routes/renderer/hooks/useSelect.ts";
 import SelectedComponentInfoCard from "./components/SelectedComponentInfoCard";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 function ParkingSpaceRendererPage() {
   const navigate = useNavigate();
@@ -34,6 +36,20 @@ function ParkingSpaceRendererPage() {
   const { setSelectedObject, clearSelectedObject, selectedObject } = useSelect();
 
   const { startRendererLoading, stopRendererLoading } = useGlobalStore();
+
+  useEffect(() => {
+    void async function() {
+      // Fetching to the backend
+      if ( currentParkingLot == null || currentParkingLot._id == null ) return;
+
+      toast.loading("Saving", {id: "save"})
+      await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/update/`, {
+        updatedParkingLot: currentParkingLot,
+        parkingLotId: currentParkingLot!._id,
+      });
+      toast.success("Saved", {id: "save"})
+    }();
+  }, [currentParkingLot])
 
   useEffect(() => {
     if ( !currentParkingLot ) startRendererLoading();

@@ -11,9 +11,12 @@ import {
 import { Timer, Infinity } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import { Textarea } from "@/components/ui/textarea";
+import useRenderer from "@/hooks/useRenderer";
+import { produce } from "immer";
 
 function SpotBookingPopoverForm() {
   const { selectedObject } = useSelect();
+  const { setCurrentParkingLot, currentParkingLot } = useRenderer();
   const focusRef = useRef<HTMLInputElement>(null);
 
   const [ parkType, setParkType ] = useState<string>("timed");
@@ -32,6 +35,23 @@ function SpotBookingPopoverForm() {
 
   const handleParkTimeOptionSelect = (value: string) => setParkType(value);
   const handleNoteChange = (e: ChangeEvent<HTMLTextAreaElement>) => setNote(e.target.value);
+
+  function handleBookParkingSpot() {
+    const changedState = produce(currentParkingLot, draft => {
+      const parkingSpace = draft?.floors[0].spaces.find(space => space.id === selectedObject?.id);
+      if ( parkingSpace ) {
+        parkingSpace.bookings.push({
+          bookingRefId: "asdawdasd",
+          createdOn: new Date(),
+        });
+
+        // Change Booking status to occupied
+        parkingSpace.occupied = true;
+      }
+    });
+
+    setCurrentParkingLot(changedState);
+  }
 
   return (
     <TooltipProvider>
@@ -77,7 +97,9 @@ function SpotBookingPopoverForm() {
           <Textarea className="text-xs text-gray-600" onChange={handleNoteChange} value={note} placeholder="(Optional)" />
 
         </div>
-        <div className="bg-blue-500 font-semibold text-white text-md flex items-center justify-center rounded-sm py-2 mt-3 hover:bg-blue-600 cursor-pointer">
+        <div 
+          onClick={handleBookParkingSpot}
+          className="bg-blue-500 font-semibold text-white text-md flex items-center justify-center rounded-sm py-2 mt-3 hover:bg-blue-600 cursor-pointer">
           Book spot
         </div>
       </div>

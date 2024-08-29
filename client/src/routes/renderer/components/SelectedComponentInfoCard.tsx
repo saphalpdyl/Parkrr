@@ -6,6 +6,7 @@ import {
   Dialog,
   DialogContent,
   DialogTrigger,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import SpotBookingPopoverForm from "./SpotBookingPopoverForm";
 
@@ -61,6 +62,7 @@ function SelectedComponentInfoCard () {
           </div>
         </DialogTrigger>
         <DialogContent>
+          <DialogTitle></DialogTitle>
           <SpotBookingPopoverForm />
         </DialogContent>
       </Dialog>
