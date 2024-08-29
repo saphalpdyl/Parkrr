@@ -4,6 +4,7 @@ import { useSpring, animated } from "@react-spring/three";
 import { Select } from "@react-three/postprocessing";
 import useHover from "@/routes/renderer/hooks/useHover.ts";
 import VehicleFBX from "./Vehicle";
+import BookedSign from "./BookedSign";
 
 interface ParkingSpaceProps {
   position: vec3;
@@ -65,7 +66,12 @@ function ParkingSpace({
         <animated.meshStandardMaterial {...materialSpring} color={color} transparent/>
       </animated.mesh>
       {
-        occupied && <VehicleFBX rotation={[0,rotation + 1.57,0]} />
+        occupied && (
+          <>
+            <VehicleFBX rotation={[0,rotation + 1.57,0]} />
+            <BookedSign position={[-2,0,0]} />
+          </>
+        )
       }
     </animated.group>
     </Select>
