@@ -68,8 +68,8 @@ function ParkingSpace({
       {
         occupied && (
           <>
-            <VehicleFBX rotation={[0,rotation + 1.57,0]} />
-            <BookedSign position={[-2,0,0]} />
+            <VehicleFBX rotation={[0,Math.PI / 2 ,0]} />
+            <BookedSign position={[-2,0,0]} rotation={[0, rotation ? Math.PI : 0, 0]} />
           </>
         )
       }
