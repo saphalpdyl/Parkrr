@@ -3,6 +3,7 @@ import { parkingSpacesProperties } from "@/constants";
 import { useSpring, animated } from "@react-spring/three";
 import { Select } from "@react-three/postprocessing";
 import useHover from "@/routes/renderer/hooks/useHover.ts";
+import VehicleFBX from "./Vehicle";
 
 interface ParkingSpaceProps {
   position: vec3;
@@ -27,6 +28,7 @@ function ParkingSpace({
   pinged,
   hovering,
   selected,
+  occupied,
   onHoverHandler,
   onSelectHandler,
 }: ParkingSpaceProps) {
@@ -48,17 +50,24 @@ function ParkingSpace({
     <Select enabled={hovering || selected}>
     {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
     {/* @ts-expect-error*/}
+    <animated.group
+      onClick={onSelectHandler}
+      onPointerOver={onHoverHandler}
+      onPointerOut={clearHovering}
+      {...meshSpring}
+      rotation={[0, rotation, 0]}
+      key={id}
+    >
       <animated.mesh
-        onClick={onSelectHandler}
-        onPointerOver={onHoverHandler}
-        onPointerOut={clearHovering}
-        {...meshSpring}
-        rotation={[0, rotation, 0]}
-        key={id}
+        
       >
         <boxGeometry args={args} />
         <animated.meshStandardMaterial {...materialSpring} color={color} transparent/>
       </animated.mesh>
+      {
+        occupied && <VehicleFBX rotation={[0,rotation + 1.57,0]} />
+      }
+    </animated.group>
     </Select>
   )
 }
