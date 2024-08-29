@@ -18,7 +18,6 @@ import useSelect from "@/routes/renderer/hooks/useSelect.ts";
 import SelectedComponentInfoCard from "./components/SelectedComponentInfoCard";
 import toast from "react-hot-toast";
 import axios from "axios";
-import VehicleFBX from "./components/models/Vehicle";
 
 function ParkingSpaceRendererPage() {
   const navigate = useNavigate();

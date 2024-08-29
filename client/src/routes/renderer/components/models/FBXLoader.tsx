@@ -1,5 +1,5 @@
 import { useFBX } from "@react-three/drei"
-import { Suspense, useMemo } from "react";
+import { Suspense } from "react";
 
 interface FBXLoaderProps {
   rotation?: [number, number, number];
