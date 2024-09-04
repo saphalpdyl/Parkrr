@@ -29,6 +29,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "immer": "^10.1.1",
+    "javascript-time-ago": "^2.5.11",
     "lucide-react": "^0.407.0",
     "next-themes": "^0.3.0",
     "react": "^18.3.1",

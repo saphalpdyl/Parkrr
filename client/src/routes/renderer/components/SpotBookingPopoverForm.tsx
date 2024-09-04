@@ -43,6 +43,7 @@ function SpotBookingPopoverForm() {
         parkingSpace.bookings.push({
           bookingRefId: "asdawdasd",
           createdOn: new Date(),
+          estimatedEndTime: parkType == "infinite" ? undefined : parkDate!,
         });
 
         // Change Booking status to occupied
@@ -86,9 +87,8 @@ function SpotBookingPopoverForm() {
             parkType == "timed" && (
               <>
                 <Label>Est. park end</Label>
-                <Input value={parkDate?.toISOString().split('.')[0]} onChange={(e) => {
-                  setParkDate(e.target.valueAsDate);
-                  console.log(e);
+                <Input defaultValue={parkDate?.toISOString().split('.')[0]} onChange={(e) => {
+                  setParkDate(new Date(e.target.value));
                 }} ref={focusRef} type="datetime-local"></Input>
               </>
             )
