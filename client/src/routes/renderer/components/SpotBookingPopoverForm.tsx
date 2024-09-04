@@ -2,6 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useSelect from "../hooks/useSelect";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { DialogClose } from "@/components/ui/dialog";
 
 import {
   ToggleGroup,
@@ -11,9 +12,12 @@ import {
 import { Timer, Infinity } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip";
 import { Textarea } from "@/components/ui/textarea";
+import useRenderer from "@/hooks/useRenderer";
+import { produce } from "immer";
 
 function SpotBookingPopoverForm() {
   const { selectedObject } = useSelect();
+  const { setCurrentParkingLot, currentParkingLot } = useRenderer();
   const focusRef = useRef<HTMLInputElement>(null);
 
   const [ parkType, setParkType ] = useState<string>("timed");
@@ -32,6 +36,24 @@ function SpotBookingPopoverForm() {
 
   const handleParkTimeOptionSelect = (value: string) => setParkType(value);
   const handleNoteChange = (e: ChangeEvent<HTMLTextAreaElement>) => setNote(e.target.value);
+
+  function handleBookParkingSpot() {
+    const changedState = produce(currentParkingLot, draft => {
+      const parkingSpace = draft?.floors[0].spaces.find(space => space.id === selectedObject?.id);
+      if ( parkingSpace ) {
+        parkingSpace.bookings.push({
+          bookingRefId: "asdawdasd",
+          createdOn: new Date(),
+          estimatedEndTime: parkType == "infinite" ? undefined : parkDate!,
+        });
+
+        // Change Booking status to occupied
+        parkingSpace.occupied = true;
+      }
+    });
+
+    setCurrentParkingLot(changedState);
+  }
 
   return (
     <TooltipProvider>
@@ -66,9 +88,8 @@ function SpotBookingPopoverForm() {
             parkType == "timed" && (
               <>
                 <Label>Est. park end</Label>
-                <Input value={parkDate?.toISOString().split('.')[0]} onChange={(e) => {
-                  setParkDate(e.target.valueAsDate);
-                  console.log(e);
+                <Input defaultValue={parkDate?.toISOString().split('.')[0]} onChange={(e) => {
+                  setParkDate(new Date(e.target.value));
                 }} ref={focusRef} type="datetime-local"></Input>
               </>
             )
@@ -77,9 +98,13 @@ function SpotBookingPopoverForm() {
           <Textarea className="text-xs text-gray-600" onChange={handleNoteChange} value={note} placeholder="(Optional)" />
 
         </div>
-        <div className="bg-blue-500 font-semibold text-white text-md flex items-center justify-center rounded-sm py-2 mt-3 hover:bg-blue-600 cursor-pointer">
-          Book spot
-        </div>
+        <DialogClose asChild>
+          <div 
+            onClick={handleBookParkingSpot}
+            className="bg-blue-500 font-semibold text-white text-md flex items-center justify-center rounded-sm py-2 mt-3 hover:bg-blue-600 cursor-pointer">
+            Book spot
+          </div>
+        </DialogClose>
       </div>
     </TooltipProvider>
   )

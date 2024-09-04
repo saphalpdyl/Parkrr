@@ -6,14 +6,25 @@ import {
   Dialog,
   DialogContent,
   DialogTrigger,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import SpotBookingPopoverForm from "./SpotBookingPopoverForm";
+
+import TimeAgo from "javascript-time-ago";
+import en from "javascript-time-ago/locale/en";
+
+TimeAgo.addDefaultLocale(en);
+const timeAgo = new TimeAgo('en-US');
+console.log(timeAgo);
 
 function SelectedComponentInfoCard () {
   const { selectedObject, clearSelectedObject } = useSelect();
 
   // Return null if selectedObject is null or not a parking space
   if ( !selectedObject || !("occupied" in selectedObject) ) return null;
+
+  // If the spot is occupied
+  const estimatedParkEndTime = selectedObject.occupied ? selectedObject.bookings[selectedObject.bookings.length - 1].estimatedEndTime : null;
 
   return (
     <div className="absolute right-0 top-1/2 -translate-y-1/2 w-80 h-96 rounded-l-lg bg-white z-40 shadow-lg p-4 flex flex-col">
@@ -55,12 +66,27 @@ function SelectedComponentInfoCard () {
         </div>
       </div>
       <Dialog>
-        <DialogTrigger>
-          <div className="bg-blue-500 font-semibold text-white flex items-center justify-center rounded-sm py-1 mt-3 hover:bg-blue-600 cursor-pointer">
-            Book spot
-          </div>
-        </DialogTrigger>
+          {
+            selectedObject.occupied ? (
+              <div className="bg-gray-500 font-semibold text-white flex items-center justify-center rounded-sm py-1 mt-3 hover:bg-gray-600 cursor-pointer">
+                {
+                  estimatedParkEndTime ? (
+                    <span> Probably clear up {timeAgo.format(new Date(estimatedParkEndTime))} </span>
+                  ) : (
+                    <>Booked</>
+                  )
+                }
+              </div>
+            ) : (
+              <DialogTrigger>
+                <div className="bg-blue-500 font-semibold text-white flex items-center justify-center rounded-sm py-1 mt-3 hover:bg-blue-600 cursor-pointer">
+                  Book spot
+                </div>
+              </DialogTrigger>
+            )
+          }
         <DialogContent>
+          <DialogTitle></DialogTitle>
           <SpotBookingPopoverForm />
         </DialogContent>
       </Dialog>

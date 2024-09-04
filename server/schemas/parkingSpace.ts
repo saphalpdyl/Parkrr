@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { IParkingSpace } from "../types";
 import { positionSchema } from "./shared";
+import { bookingSchema } from "./booking";
 
 export const parkingSpaceSchema = new mongoose.Schema<IParkingSpace>({
   occupied: {
@@ -30,5 +31,9 @@ export const parkingSpaceSchema = new mongoose.Schema<IParkingSpace>({
   editorData: {
     type: Object,
     required: true,
+  },
+  bookings: {
+    type: [bookingSchema],
+    default: [],
   }
 });
