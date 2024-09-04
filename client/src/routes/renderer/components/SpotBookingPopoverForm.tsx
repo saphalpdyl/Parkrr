@@ -2,6 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useSelect from "../hooks/useSelect";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { DialogClose } from "@/components/ui/dialog";
 
 import {
   ToggleGroup,
@@ -97,11 +98,13 @@ function SpotBookingPopoverForm() {
           <Textarea className="text-xs text-gray-600" onChange={handleNoteChange} value={note} placeholder="(Optional)" />
 
         </div>
-        <div 
-          onClick={handleBookParkingSpot}
-          className="bg-blue-500 font-semibold text-white text-md flex items-center justify-center rounded-sm py-2 mt-3 hover:bg-blue-600 cursor-pointer">
-          Book spot
-        </div>
+        <DialogClose asChild>
+          <div 
+            onClick={handleBookParkingSpot}
+            className="bg-blue-500 font-semibold text-white text-md flex items-center justify-center rounded-sm py-2 mt-3 hover:bg-blue-600 cursor-pointer">
+            Book spot
+          </div>
+        </DialogClose>
       </div>
     </TooltipProvider>
   )
