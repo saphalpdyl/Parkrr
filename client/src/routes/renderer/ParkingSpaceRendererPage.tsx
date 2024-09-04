@@ -91,7 +91,7 @@ function ParkingSpaceRendererPage() {
         <CameraController cameraMode={cameraMode} />
         {
           cameraMode === "3d" ?
-            <OrbitControls minPolarAngle={Math.PI / 4} maxPolarAngle={Math.PI / 2.25}/>
+            <OrbitControls autoRotate autoRotateSpeed={0.1} minPolarAngle={Math.PI / 4} maxPolarAngle={Math.PI / 2.25}/>
           : <MapControls enablePan enableRotate={false} />
         }
         <pointLight position={[0,10,0]} intensity={300} />
