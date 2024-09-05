@@ -37,8 +37,11 @@ export interface IParkingLot {
   _id?: string;
 }
 
+export type BookingStatus = "active" | "completed" | "cancelled";
+
 export interface IBooking {
   createdOn: Date;
   estimatedEndTime?: Date;
   bookingRefId: string;
+  bookingStatus: BookingStatus;
 }

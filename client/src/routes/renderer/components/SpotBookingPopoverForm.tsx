@@ -45,6 +45,7 @@ function SpotBookingPopoverForm() {
           bookingRefId: "asdawdasd",
           createdOn: new Date(),
           estimatedEndTime: parkType == "infinite" ? undefined : parkDate!,
+          bookingStatus: "active",
         });
 
         // Change Booking status to occupied

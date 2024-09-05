@@ -9,4 +9,9 @@ export const bookingSchema = new mongoose.Schema<IBooking>({
   },
   estimatedEndTime: Date,
   bookingRefId: String,
+  bookingStatus: {
+    required: true,
+    default: "completed",
+    type: String,
+  }
 });

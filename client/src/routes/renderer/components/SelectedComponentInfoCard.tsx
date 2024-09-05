@@ -70,10 +70,12 @@ function SelectedComponentInfoCard () {
             selectedObject.occupied ? (
               <div className="bg-gray-500 font-semibold text-white flex items-center justify-center rounded-sm py-1 mt-3 hover:bg-gray-600 cursor-pointer">
                 {
-                  estimatedParkEndTime ? (
+                  estimatedParkEndTime ? (new Date(estimatedParkEndTime) < new Date()) ? (
+                    <span>Mark as completed</span>
+                  ) : (
                     <span> Probably clear up {timeAgo.format(new Date(estimatedParkEndTime))} </span>
                   ) : (
-                    <>Booked</>
+                    <span>Mark as completed</span>
                   )
                 }
               </div>

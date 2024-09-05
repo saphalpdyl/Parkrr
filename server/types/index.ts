@@ -45,10 +45,13 @@ export interface IParkingLot {
   lon?: number;
 }
 
+export type BookingStatus = "active" | "completed" | "cancelled";
+
 export interface IBooking {
   createdOn: Date;
   estimatedEndTime?: Date;
   bookingRefId: string;
+  bookingStatus: BookingStatus;
 }
 
 export interface CurrentUserInterface {
