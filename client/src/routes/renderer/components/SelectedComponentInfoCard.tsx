@@ -1,6 +1,6 @@
 import useSelect from "@/routes/renderer/hooks/useSelect";
 import { Canvas } from "@react-three/fiber";
-import { X } from "lucide-react";
+import { Flag, StopCircle, X } from "lucide-react";
 import ParkingSpace from "./models/ParkingSpace";
 import {
   Dialog,
@@ -68,17 +68,33 @@ function SelectedComponentInfoCard () {
       <Dialog>
           {
             selectedObject.occupied ? (
-              <div className="bg-gray-500 font-semibold text-white flex items-center justify-center rounded-sm py-1 mt-3 hover:bg-gray-600 cursor-pointer">
+              <>
                 {
                   estimatedParkEndTime ? (new Date(estimatedParkEndTime) < new Date()) ? (
-                    <span>Mark as completed</span>
+                    <div className="bg-green-500 gap-2 font-semibold text-white flex items-center justify-center rounded-sm py-1 mt-3 hover:bg-green-600 cursor-pointer">
+                      <span>Mark as completed</span>
+                      <Flag />
+                    </div>
                   ) : (
-                    <span> Probably clear up {timeAgo.format(new Date(estimatedParkEndTime))} </span>
+                    <div className="flex gap-2">
+                      <div className="bg-gray-500 font-semibold text-white flex items-center justify-center rounded-sm py-1 mt-3 hover:bg-gray-600 cursor-pointer px-2 flex-[4] text-xs">
+                        <span> Clears up {timeAgo.format(new Date(estimatedParkEndTime))} </span>
+                      </div>
+                      <div className="bg-red-500 gap-2 font-semibold text-white flex items-center justify-center rounded-sm py-1 mt-3 hover:bg-red-600 cursor-pointer px-4 flex-1">
+                        <span>End </span>
+                        <Flag size={17} />
+                      </div>
+                    </div>
                   ) : (
-                    <span>Mark as completed</span>
+                    <div className="bg-green-500 gap-2 font-semibold text-white flex items-center justify-center rounded-sm py-1 mt-3 hover:bg-green-600 cursor-pointer">
+                      <span>Mark as completed</span>
+                      <Flag />
+                    </div>
                   )
                 }
-              </div>
+              </>
+              // <div className="bg-gray-500 font-semibold text-white flex items-center justify-center rounded-sm py-1 mt-3 hover:bg-gray-600 cursor-pointer">
+              // </div>
             ) : (
               <DialogTrigger>
                 <div className="bg-blue-500 font-semibold text-white flex items-center justify-center rounded-sm py-1 mt-3 hover:bg-blue-600 cursor-pointer">
