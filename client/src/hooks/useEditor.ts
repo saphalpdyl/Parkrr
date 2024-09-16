@@ -6,6 +6,7 @@ import {OtherObject, IParkingLot} from "@/types/parking";
 import {convertToRadians} from "@/utils";
 import toast from "react-hot-toast";
 import useGlobalStore from "@/stores/globalStore.ts";
+import useRenderer from "./useRenderer.ts";
 
 export default function useEditor() {
   const { 
@@ -17,6 +18,9 @@ export default function useEditor() {
     currentEditor,
     setCurrentEditor,
   } = useEditorStore();
+  const {
+    setCurrentParkingLot,
+  } = useRenderer();
 
   const { startEditorLoading, stopEditorLoading } = useGlobalStore();
 
@@ -167,7 +171,8 @@ export default function useEditor() {
       updatedParkingLot: parkingLot,
       parkingLotId: parkingLot._id || currentEditorId,
     });
-    toast.success("Saved", {id: "save"})
+    toast.success("Saved", {id: "save"});
+    setCurrentParkingLot(null);
   }
 
   return { 
