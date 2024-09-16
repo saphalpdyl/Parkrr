@@ -37,18 +37,20 @@ function ParkingSpaceRendererPage() {
 
   const { startRendererLoading, stopRendererLoading } = useGlobalStore();
 
+  async function updateParkingLot() {
+    // Fetching to the backend
+    if ( currentParkingLot == null || currentParkingLot._id == null ) return;
+  
+    toast.loading("Saving", {id: "save"})
+    await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/update/`, {
+      updatedParkingLot: currentParkingLot,
+      parkingLotId: currentParkingLot!._id,
+    });
+    toast.success("Saved", {id: "save"})
+  }
+  
   useEffect(() => {
-    void async function() {
-      // Fetching to the backend
-      if ( currentParkingLot == null || currentParkingLot._id == null ) return;
-
-      toast.loading("Saving", {id: "save"})
-      await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/app/lots/update/`, {
-        updatedParkingLot: currentParkingLot,
-        parkingLotId: currentParkingLot!._id,
-      });
-      toast.success("Saved", {id: "save"})
-    }();
+    updateParkingLot();
   }, [currentParkingLot])
 
   useEffect(() => {
