@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { IParkingLot } from "../types";
-import { parkingFloorSchema } from "./parkingFloor";
 
 const parkingLotSchema = new mongoose.Schema<IParkingLot>({
   notes: String,
@@ -8,7 +7,10 @@ const parkingLotSchema = new mongoose.Schema<IParkingLot>({
   lat: Number,
   lon: Number,
   floors: {
-    type: [parkingFloorSchema],
+    type: [{
+      type: mongoose.Schema.ObjectId,
+      ref: "ParkingFloor"
+    }],
     default: [],
   },
 });
