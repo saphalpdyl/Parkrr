@@ -25,8 +25,30 @@ mongoose.connect(process.env.MONGODB_URL!);
 
 app.use("/app/*", authenticate);
 
+/*
+TODO:
+  Delete Parking Lot
+  Update Parking Lot
+  Create Parking Floor
+  Delete Parking Floor
+  Update Parking Floor
+  Read Parking Floor
+  Create Parking Spaces
+  Update Parking Spaces
+  Delete Parking Spaces
+  Read Parking Spaces
+  Create Bookings
+  Read Bookings
+  Update Bookings
+  Delete Bookings
+  Create OtherObject
+  Read OtherObject
+  Delete OtherObject
+  Update OtherObject  
+*/
+
 app.post("/app/lots/new/", createNewParkingLotController);
-app.post("/app/lots/update/", updateParkingLotController);
+// app.post("/app/lots/update/", updateParkingLotController);
 app.post("/app/lots/rename/", renameParkingLotController);
 app.get("/app/lots/:id", getParkingLotController);
 app.get("/app/lots/", getAllParkingLotsController);

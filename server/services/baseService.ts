@@ -26,7 +26,32 @@ export namespace BaseService {
   export async function getParkingLot(userId: string, parkingLotId: string) {
     const user = await _getUserById(userId);
 
-    const parkingLot = await ParkingLot.findById(parkingLotId);
+    const parkingLot = await ParkingLot.findById(parkingLotId).populate({
+      path: "floors",
+      model: "ParkingFloor",
+      populate: [
+        {
+          path: "entrances",
+          model: "OtherObject"
+        },
+        {
+          path: "exits",
+          model: "OtherObject"
+        },
+        {
+          path: "offices",
+          model: "OtherObject"
+        },
+        {
+          path: "spaces",
+          model: "ParkingSpace",
+          populate: {
+            path: "bookings",
+            model: "Booking",
+          }
+        }
+      ]
+    });
 
     if ( !parkingLot ) throw new ServiceError("Couldn't find corresponding parking lot", ErrorCode.SYSTEM_ITEM_NOT_FOUND);
 
