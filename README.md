@@ -8,6 +8,8 @@
 **Overview:**
 Parkrr is an innovative parking management software designed to streamline the process of parking spot booking and management using state-of-the-art web technologies. Built with React for a robust front-end experience and Three.js for immersive 3D rendering, Parkrr offers a user-friendly and visually engaging platform for users.
 
+[![Tech Stack](https://skillicons.dev/icons?i=react,express,typescript,mongodb,tailwind,threejs,bun,pnpm)]()
+
 **Key Features:**
 
 1. **3D/2D Parking Space Visualization:**
@@ -22,6 +24,7 @@ Parkrr is an innovative parking management software designed to streamline the p
    - Integrated editor allowing administrators to create, modify, and manage parking spaces directly within the application.
    - Drag-and-drop functionality for easy layout adjustments and the ability to switch between 3D and 2D editing modes.
    - Save and load custom parking lot layouts to adapt to different venues and events.
+
 
 ### Current Progress
 ![image](https://github.com/user-attachments/assets/398ecb90-e472-45cb-82de-b113fa161a1c)
